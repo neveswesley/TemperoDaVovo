@@ -1,0 +1,17 @@
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\bin\Debug\net8.0\TemperoDaVovo.Infrastructure.deps.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\bin\Debug\net8.0\TemperoDaVovo.Infrastructure.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\bin\Debug\net8.0\TemperoDaVovo.Infrastructure.pdb
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.AssemblyInfoInputs.cache
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.AssemblyInfo.cs
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\refint\TemperoDaVovo.Infrastructure.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.pdb
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\ref\TemperoDaVovo.Infrastructure.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\bin\Debug\net8.0\TemperoDaVovo.Infrastructure.runtimeconfig.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\bin\Debug\net8.0\TemperoDaVovo.Domain.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\bin\Debug\net8.0\TemperoDaVovo.Domain.pdb
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.csproj.AssemblyReference.cache
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoD.D5F7C509.Up2Date
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.genruntimeconfig.cache

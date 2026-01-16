@@ -1,0 +1,11 @@
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\bin\Debug\net8.0\TemperoDaVovo.Domain.deps.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\bin\Debug\net8.0\TemperoDaVovo.Domain.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\bin\Debug\net8.0\TemperoDaVovo.Domain.pdb
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.AssemblyInfoInputs.cache
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.AssemblyInfo.cs
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.csproj.CoreCompileInputs.cache
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\refint\TemperoDaVovo.Domain.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.pdb
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\ref\TemperoDaVovo.Domain.dll

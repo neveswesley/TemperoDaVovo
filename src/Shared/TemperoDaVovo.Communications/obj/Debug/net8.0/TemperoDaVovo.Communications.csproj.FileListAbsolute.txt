@@ -1,0 +1,11 @@
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\TemperoDaVovo.Communications.deps.json
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\TemperoDaVovo.Communications.dll
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\TemperoDaVovo.Communications.pdb
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoDaVovo.Communications.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoDaVovo.Communications.AssemblyInfoInputs.cache
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoDaVovo.Communications.AssemblyInfo.cs
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoDaVovo.Communications.csproj.CoreCompileInputs.cache
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoDaVovo.Communications.dll
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\refint\TemperoDaVovo.Communications.dll
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoDaVovo.Communications.pdb
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\ref\TemperoDaVovo.Communications.dll

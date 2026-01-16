@@ -1,0 +1,176 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "FluentValidation/12.1.1": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/FluentValidation.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/FluentValidation.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "TemperoDaVovo.Communications/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/TemperoDaVovo.Communications.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TemperoDaVovo.Communications.dll": {}
+        }
+      },
+      "TemperoDaVovo.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/TemperoDaVovo.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TemperoDaVovo.Domain.dll": {}
+        }
+      },
+      "TemperoDaVovo.Exceptions/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/TemperoDaVovo.Exceptions.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TemperoDaVovo.Exceptions.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FluentValidation/12.1.1": {
+      "sha512": "EPpkIe1yh1a0OXyC100oOA8WMbZvqUu5plwhvYcb7oSELfyUZzfxV48BLhvs3kKo4NwG7MGLNgy1RJiYtT8Dpw==",
+      "type": "package",
+      "path": "fluentvalidation/12.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fluent-validation-icon.png",
+        "fluentvalidation.12.1.1.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net8.0/FluentValidation.dll",
+        "lib/net8.0/FluentValidation.xml"
+      ]
+    },
+    "TemperoDaVovo.Communications/1.0.0": {
+      "type": "project",
+      "path": "../../Shared/TemperoDaVovo.Communications/TemperoDaVovo.Communications.csproj",
+      "msbuildProject": "../../Shared/TemperoDaVovo.Communications/TemperoDaVovo.Communications.csproj"
+    },
+    "TemperoDaVovo.Domain/1.0.0": {
+      "type": "project",
+      "path": "../TemperoDaVovo.Domain/TemperoDaVovo.Domain.csproj",
+      "msbuildProject": "../TemperoDaVovo.Domain/TemperoDaVovo.Domain.csproj"
+    },
+    "TemperoDaVovo.Exceptions/1.0.0": {
+      "type": "project",
+      "path": "../../Shared/TemperoDaVovo.Exceptions/TemperoDaVovo.Exceptions.csproj",
+      "msbuildProject": "../../Shared/TemperoDaVovo.Exceptions/TemperoDaVovo.Exceptions.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "FluentValidation >= 12.1.1",
+      "TemperoDaVovo.Communications >= 1.0.0",
+      "TemperoDaVovo.Domain >= 1.0.0",
+      "TemperoDaVovo.Exceptions >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\welly\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Application\\TemperoDaVovo.Application.csproj",
+      "projectName": "TemperoDaVovo.Application",
+      "projectPath": "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Application\\TemperoDaVovo.Application.csproj",
+      "packagesPath": "C:\\Users\\welly\\.nuget\\packages\\",
+      "outputPath": "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Application\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\welly\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Domain\\TemperoDaVovo.Domain.csproj": {
+              "projectPath": "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Domain\\TemperoDaVovo.Domain.csproj"
+            },
+            "D:\\Projetos\\TemperoDaVovo\\src\\Shared\\TemperoDaVovo.Communications\\TemperoDaVovo.Communications.csproj": {
+              "projectPath": "D:\\Projetos\\TemperoDaVovo\\src\\Shared\\TemperoDaVovo.Communications\\TemperoDaVovo.Communications.csproj"
+            },
+            "D:\\Projetos\\TemperoDaVovo\\src\\Shared\\TemperoDaVovo.Exceptions\\TemperoDaVovo.Exceptions.csproj": {
+              "projectPath": "D:\\Projetos\\TemperoDaVovo\\src\\Shared\\TemperoDaVovo.Exceptions\\TemperoDaVovo.Exceptions.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.200"
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "dependencies": {
+          "FluentValidation": {
+            "target": "Package",
+            "version": "[12.1.1, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "TemperoDaVovo.Communications/1.0.0": {
+        "runtime": {
+          "TemperoDaVovo.Communications.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TemperoDaVovo.Communications/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
