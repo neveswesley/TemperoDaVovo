@@ -15,3 +15,4 @@ D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\bin\Debug\net
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.csproj.AssemblyReference.cache
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoD.D5F7C509.Up2Date
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.genruntimeconfig.cache
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Infrastructure\obj\Debug\net8.0\TemperoDaVovo.Infrastructure.sourcelink.json

@@ -1,4 +1,5 @@
 using TemperoDaVovo.API.Filters;
+using TemperoDaVovo.API.Middleware;
 using TemperoDaVovo.Application;
 using TemperoDaVovo.Infrastructure.DataAccess;
 
@@ -38,6 +39,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAngular");
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

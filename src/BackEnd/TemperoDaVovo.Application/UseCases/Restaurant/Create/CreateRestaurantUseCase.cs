@@ -33,6 +33,7 @@ public class CreateRestaurantUseCase : ICreateRestaurantUseCase
 
         return new CreateRestaurantResponseJson
         {
+            Id = restaurant.Id,
             Name = restaurant.Name,
         };
     }

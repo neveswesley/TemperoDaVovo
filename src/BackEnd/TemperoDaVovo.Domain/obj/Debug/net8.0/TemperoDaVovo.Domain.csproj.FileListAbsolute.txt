@@ -9,3 +9,4 @@ D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\Temp
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\refint\TemperoDaVovo.Domain.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.pdb
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\ref\TemperoDaVovo.Domain.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.sourcelink.json

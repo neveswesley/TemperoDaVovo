@@ -28,6 +28,8 @@ public static class ServiceExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IRestaurantWriteOnlyRepository, RestaurantRepository>();
         services.AddScoped<IRestaurantReadOnlyRepository, RestaurantRepository>();
+        services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
+        services.AddScoped<IUserReadOnlyRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

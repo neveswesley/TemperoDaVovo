@@ -19,10 +19,10 @@ namespace TemperoDaVovo.API.Controllers
         }
 
         [HttpPost]
-        public async Task<CreateRestaurantResponseJson> Post([FromBody] CreateRestaurantRequestJson request)
+        public async Task<IActionResult> Post([FromBody] CreateRestaurantRequestJson request)
         {
             var result = await _createRestaurantUseCase.Execute(request);
-            return result;
+            return Created(string.Empty, result);
         }
     }
 }

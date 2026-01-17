@@ -358,7 +358,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Domain\\TemperoDaVovo.Domain.csproj": {
+                "projectPath": "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Domain\\TemperoDaVovo.Domain.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

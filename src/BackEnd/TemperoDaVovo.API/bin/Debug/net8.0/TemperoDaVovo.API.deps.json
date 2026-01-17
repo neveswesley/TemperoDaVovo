@@ -1765,6 +1765,9 @@
         }
       },
       "TemperoDaVovo.Communications/1.0.0": {
+        "dependencies": {
+          "TemperoDaVovo.Domain": "1.0.0"
+        },
         "runtime": {
           "TemperoDaVovo.Communications.dll": {
             "assemblyVersion": "1.0.0.0",

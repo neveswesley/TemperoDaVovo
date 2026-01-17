@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\BackEnd\TemperoDaVovo.Domain\TemperoDaVovo.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
