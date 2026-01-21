@@ -206,7 +206,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\Projetos\\TemperoDaVovo\\src\\Shared\\TemperoDaVovo.Exceptions\\TemperoDaVovo.Exceptions.csproj": {
+                "projectPath": "D:\\Projetos\\TemperoDaVovo\\src\\Shared\\TemperoDaVovo.Exceptions\\TemperoDaVovo.Exceptions.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -295,6 +299,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.23, )"

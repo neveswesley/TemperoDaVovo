@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\TemperoDaVovo.Exceptions\TemperoDaVovo.Exceptions.csproj" />
+    </ItemGroup>
+
 </Project>

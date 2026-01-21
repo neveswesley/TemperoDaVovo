@@ -19,3 +19,9 @@ D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\obj\Debug\net8.0
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\obj\Debug\net8.0\TemperoD.07840D09.Up2Date
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\obj\Debug\net8.0\TemperoDaVovo.Application.sourcelink.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Features.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\bin\Debug\net8.0\Microsoft.Net.Http.Headers.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\bin\Debug\net8.0\System.IO.Pipelines.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\bin\Debug\net8.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Application\bin\Debug\net8.0\Microsoft.Extensions.Features.dll

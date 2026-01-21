@@ -14,3 +14,5 @@ D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoDaVovo.Communications.csproj.AssemblyReference.cache
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoDaVovo.Communications.sourcelink.json
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoD.80902D4F.Up2Date
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\TemperoDaVovo.Exceptions.dll
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\TemperoDaVovo.Exceptions.pdb

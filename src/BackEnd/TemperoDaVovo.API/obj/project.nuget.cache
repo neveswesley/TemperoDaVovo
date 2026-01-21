@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "x9s/EY85Wjw=",
+  "dgSpecHash": "IHZ3OGmL51A=",
   "success": true,
   "projectFilePath": "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.API\\TemperoDaVovo.API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\welly\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\welly\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
     "C:\\Users\\welly\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\welly\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

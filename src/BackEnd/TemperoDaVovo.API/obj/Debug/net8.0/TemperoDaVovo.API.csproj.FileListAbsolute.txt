@@ -266,3 +266,4 @@ D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\zh-Hans
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\FluentValidation.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\TemperoDaVovo.API.sourcelink.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\BCrypt.Net-Next.dll

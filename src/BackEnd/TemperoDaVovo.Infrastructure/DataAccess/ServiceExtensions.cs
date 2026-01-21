@@ -30,6 +30,10 @@ public static class ServiceExtensions
         services.AddScoped<IRestaurantReadOnlyRepository, RestaurantRepository>();
         services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
         services.AddScoped<IUserReadOnlyRepository, UserRepository>();
+        services.AddScoped<IProductWriteOnlyRepository, ProductRepository>();
+        services.AddScoped<IProductReadOnlyRepository, ProductRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

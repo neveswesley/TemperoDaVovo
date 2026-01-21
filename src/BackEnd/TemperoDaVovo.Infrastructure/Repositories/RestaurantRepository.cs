@@ -29,4 +29,14 @@ public class RestaurantRepository : IRestaurantReadOnlyRepository, IRestaurantWr
         var restaurant = await _context.Restaurants.AnyAsync(r=>r.Phone.Equals(phone));
         return restaurant;
     }
+
+    public Task<bool> PhoneExists(string phone)
+    {
+        return _context.Restaurants.AnyAsync(r => r.Phone.Equals(phone));
+    }
+
+    public Task<bool> RestaurantExists(Guid restaurantId)
+    {
+        return _context.Restaurants.AnyAsync(r => r.Id == restaurantId);
+    }
 }

@@ -15,7 +15,15 @@ namespace TemperoDaVovo.API.Filters
                 case ErrorOnValidationException validationEx:
                     HandleValidationException(context, validationEx);
                     break;
-
+                
+                case UnauthorizedException unauthorizedEx:
+                    HandleUnauthorizedException(context, unauthorizedEx);
+                    break;
+                
+                case BusinessException businessEx:
+                    HandleBusinessException(context, businessEx);
+                    break;
+                    
                 case TemperoDaVovoException projectEx:
                     HandleProjectException(context, projectEx);
                     break;
@@ -26,10 +34,22 @@ namespace TemperoDaVovo.API.Filters
             }
         }
 
+        private void HandleBusinessException(ExceptionContext context, BusinessException ex)
+        {
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            context.Result = new BadRequestObjectResult(new ResponseErrorJson(ex.ErrorMessages));
+        }
+
         private void HandleValidationException(ExceptionContext context, ErrorOnValidationException ex)
         {
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             context.Result = new BadRequestObjectResult(new ResponseErrorJson(ex.ErrorMessages));
+        }
+
+        private void HandleUnauthorizedException(ExceptionContext context, UnauthorizedException ex)
+        {
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            context.Result = new UnauthorizedObjectResult(new ResponseErrorJson(ex.ErrorMessages));
         }
 
         private void HandleProjectException(ExceptionContext context, TemperoDaVovoException ex)

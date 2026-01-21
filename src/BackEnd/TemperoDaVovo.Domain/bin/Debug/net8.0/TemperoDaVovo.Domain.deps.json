@@ -7,14 +7,30 @@
   "targets": {
     ".NETCoreApp,Version=v8.0": {
       "TemperoDaVovo.Domain/1.0.0": {
+        "dependencies": {
+          "TemperoDaVovo.Exceptions": "1.0.0"
+        },
         "runtime": {
           "TemperoDaVovo.Domain.dll": {}
+        }
+      },
+      "TemperoDaVovo.Exceptions/1.0.0": {
+        "runtime": {
+          "TemperoDaVovo.Exceptions.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
   },
   "libraries": {
     "TemperoDaVovo.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TemperoDaVovo.Exceptions/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

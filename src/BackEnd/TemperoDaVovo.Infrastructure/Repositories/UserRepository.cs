@@ -26,8 +26,14 @@ public class UserRepository : IUserWriteOnlyRepository, IUserReadOnlyRepository
        return await _context.Users.AnyAsync(x=>x.Email.Equals(email));
     }
 
-    public async Task<bool> RestaurantHasUser(Guid restaurantId)
+    
+    public async Task<bool> RestaurantHasAnyUser(Guid restaurantId)
     {
         return await _context.Users.AnyAsync(x => x.RestaurantId == restaurantId);
+    }
+
+    public async Task<User> GetByEmail(string email)
+    {
+        return await _context.Users.FirstOrDefaultAsync(x => x.Email.Equals(email));
     }
 }

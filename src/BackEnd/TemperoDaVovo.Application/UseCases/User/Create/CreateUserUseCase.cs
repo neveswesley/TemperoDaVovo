@@ -1,5 +1,7 @@
-﻿using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Application.Services;
+using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
+using TemperoDaVovo.Domain.Interfaces;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
@@ -10,12 +12,14 @@ public class CreateUserUseCase : ICreateUserUseCase
 {
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository;
     private readonly IUserReadOnlyRepository _userReadOnlyRepository;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateUserUseCase(IUserWriteOnlyRepository userWriteOnlyRepository, IUserReadOnlyRepository userReadOnlyRepository, IUnitOfWork unitOfWork)
+    public CreateUserUseCase(IUserWriteOnlyRepository userWriteOnlyRepository, IUserReadOnlyRepository userReadOnlyRepository, IPasswordHasher passwordHasher, IUnitOfWork unitOfWork)
     {
         _userWriteOnlyRepository = userWriteOnlyRepository;
         _userReadOnlyRepository = userReadOnlyRepository;
+        _passwordHasher = passwordHasher;
         _unitOfWork = unitOfWork;
     }
 
@@ -28,6 +32,8 @@ public class CreateUserUseCase : ICreateUserUseCase
             Email = request.Email,
             PasswordHash = request.Password
         };
+        
+        user.PasswordHash = _passwordHasher.Hash(request.Password);
 
         await _userWriteOnlyRepository.RegisterUser(user);
         await _unitOfWork.Commit();
@@ -45,7 +51,8 @@ public class CreateUserUseCase : ICreateUserUseCase
         if (await _userReadOnlyRepository.EmailExists(request.Email))
             result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, "Este e-mail já está sendo utilizado."));
         
-        if (await _userReadOnlyRepository.RestaurantHasUser(request.RestaurantId))
+        
+        if (await _userReadOnlyRepository.RestaurantHasAnyUser(request.RestaurantId))
             result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, "Restaurante já cadastrado."));
         
         // restaurante já tem login

@@ -10,3 +10,7 @@ D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\refi
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.pdb
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\ref\TemperoDaVovo.Domain.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.sourcelink.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoDaVovo.Domain.csproj.AssemblyReference.cache
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\bin\Debug\net8.0\TemperoDaVovo.Exceptions.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\bin\Debug\net8.0\TemperoDaVovo.Exceptions.pdb
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.Domain\obj\Debug\net8.0\TemperoD.2D5515F9.Up2Date

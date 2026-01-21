@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "TemperoDaVovo.Infrastructure/1.0.0": {
         "dependencies": {
+          "BCrypt.Net-Next": "4.0.3",
           "Microsoft.EntityFrameworkCore": "8.0.23",
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.23",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.23",
@@ -15,6 +16,14 @@
         },
         "runtime": {
           "TemperoDaVovo.Infrastructure.dll": {}
+        }
+      },
+      "BCrypt.Net-Next/4.0.3": {
+        "runtime": {
+          "lib/net6.0/BCrypt.Net-Next.dll": {
+            "assemblyVersion": "4.0.3.0",
+            "fileVersion": "4.0.3.0"
+          }
         }
       },
       "Humanizer.Core/2.14.1": {
@@ -691,8 +700,19 @@
       },
       "System.Threading.Channels/6.0.0": {},
       "TemperoDaVovo.Domain/1.0.0": {
+        "dependencies": {
+          "TemperoDaVovo.Exceptions": "1.0.0"
+        },
         "runtime": {
           "TemperoDaVovo.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "TemperoDaVovo.Exceptions/1.0.0": {
+        "runtime": {
+          "TemperoDaVovo.Exceptions.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -705,6 +725,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "BCrypt.Net-Next/4.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA==",
+      "path": "bcrypt.net-next/4.0.3",
+      "hashPath": "bcrypt.net-next.4.0.3.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",
@@ -1022,6 +1049,11 @@
       "hashPath": "system.threading.channels.6.0.0.nupkg.sha512"
     },
     "TemperoDaVovo.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TemperoDaVovo.Exceptions/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
