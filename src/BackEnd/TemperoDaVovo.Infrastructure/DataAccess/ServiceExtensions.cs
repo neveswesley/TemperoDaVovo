@@ -34,6 +34,8 @@ public static class ServiceExtensions
         services.AddScoped<IProductReadOnlyRepository, ProductRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<ICategoryWriteOnlyRepository, CategoryRepository>();
+        services.AddScoped<ICategoryReadOnlyRepository, CategoryRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

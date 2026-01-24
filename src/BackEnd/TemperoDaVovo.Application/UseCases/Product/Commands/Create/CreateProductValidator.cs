@@ -18,9 +18,9 @@ public class CreateProductValidator : AbstractValidator<CreateProductRequestJson
             .NotEmpty().WithMessage("Por favor, insira o preço do produto.")
             .GreaterThanOrEqualTo(0).WithMessage("Preço inválido.");
 
-        RuleFor(x => x.ProductType)
-            .NotEmpty().WithMessage("Por favor, selecione um tipo.")
-            .IsInEnum().WithMessage("Tipo inválido.");
+        RuleFor(x => x.CategoryId)
+            .NotEmpty().WithMessage("Por favor, selecione uma categoria.")
+            .IsInEnum().WithMessage("Categoria inválida.");
 
     }
 }

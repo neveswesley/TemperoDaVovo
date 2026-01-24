@@ -1,6 +1,9 @@
+using System.Globalization;
+using System.Text.Json;
 using TemperoDaVovo.API.Filters;
 using TemperoDaVovo.API.Middleware;
 using TemperoDaVovo.Application;
+using TemperoDaVovo.Application.Services;
 using TemperoDaVovo.Infrastructure.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +29,13 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
+
+builder.Services.AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.PropertyNamingPolicy =
+            JsonNamingPolicy.CamelCase;
+    });
 
 
 

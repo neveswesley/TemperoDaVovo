@@ -25,4 +25,8 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UseCases\Product\Commands\Update\" />
+    </ItemGroup>
+
 </Project>

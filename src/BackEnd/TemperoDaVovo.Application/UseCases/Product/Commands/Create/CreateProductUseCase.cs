@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Http;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
@@ -52,7 +53,7 @@ public class CreateProductUseCase : ICreateProductUseCase
             Name = request.Name,
             Description = request.Description,
             Price = request.Price,
-            Category = request.ProductType,
+            CategoryId = request.CategoryId,
             ImageUrl = request.ImageUrl,
         };
         

@@ -17,15 +17,13 @@ public class GetAllProductProductUseCase : IGetAllProductUseCase
     {
         var products = await _productReadOnlyRepository.GetAllProductByRestaurantId(restaurantId);
 
-        if (products == null)
-            throw new KeyNotFoundException("Restaurante não encontrado.");
-
         var response = products.Select(p => new GetAllProductsResponse
             {
                 Id = p.Id,
                 Name = p.Name,
                 Price = p.Price,
-                Category = p.Category.ToString(),
+                Category = p.Category.Name,
+                IsActive = p.IsActive,
                 Description = p.Description,
             })
             .ToList();

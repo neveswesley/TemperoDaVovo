@@ -21,7 +21,6 @@ public class LoginUseCase : ILoginUseCase
 
     public async Task<LoginUserResponseJson> Execute(LoginUserRequestJson request)
     {
-        
         Validate(request);
         
         var user = await _userReadOnlyRepository.GetByEmail(request.Email);
