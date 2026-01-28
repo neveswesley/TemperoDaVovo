@@ -60,8 +60,20 @@ namespace TemperoDaVovo.API.Filters
 
         private void HandleUnknownException(ExceptionContext context)
         {
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            context.Result = new ObjectResult(new ResponseErrorJson("Erro desconhecido!"));
+            var exception = context.Exception;
+
+            context.HttpContext.Response.StatusCode =
+                (int)HttpStatusCode.InternalServerError;
+
+            context.Result = new ObjectResult(new
+            {
+                message = exception.Message,
+                exception = exception.GetType().Name,
+                stackTrace = exception.StackTrace
+            });
+
+            context.ExceptionHandled = true;
         }
+
     }
 }

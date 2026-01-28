@@ -1,11 +1,10 @@
-﻿using TemperoDaVovo.Application.UseCases.Restaurant.Create;
-using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
 
-namespace TemperoDaVovo.Application.UseCases.Restaurant;
+namespace TemperoDaVovo.Application.UseCases.Restaurant.Create;
 
 public class CreateRestaurantUseCase : ICreateRestaurantUseCase
 {

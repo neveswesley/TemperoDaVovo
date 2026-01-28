@@ -10,4 +10,5 @@ public interface IProductWriteOnlyRepository
     Task<Guid> DeactivateProduct(Product product);
     Task<Guid> ActiveProduct(Product product);
     Task<Guid> ToggleActive(Product product);
+    Task<Guid> UpdateProduct(Guid id);
 }

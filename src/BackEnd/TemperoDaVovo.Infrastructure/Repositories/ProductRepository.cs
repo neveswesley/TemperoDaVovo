@@ -62,10 +62,26 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
         return entity.Id;
     }
 
-
-    public async Task<List<Product>> GetAllProductByRestaurantId(Guid restaurantId)
+    public async Task<Guid> UpdateProduct(Guid id)
     {
-        return await _context.Products.Include(p=> p.Category).Where(p=>p.RestaurantId==restaurantId && p.IsActive == true).ToListAsync();
+       var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+       _context.Products.Update(product);
+       return await Task.FromResult(product.Id);
+    }
+
+
+    public async Task<List<Product>> GetAllProductByRestaurantId(Guid restaurantId, string? search)
+    {
+        
+        var query = _context.Products.Where(p=>p.RestaurantId == restaurantId && p.IsActive);
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query = query.Where(p=>p.Name.Contains(search) || p.Description.Contains(search));
+        }
+        
+        
+        return await query.Include(p=>p.Category).ToListAsync();
     }
 
     public async Task<Product> GetProductByIdWithCategory(Guid productId)

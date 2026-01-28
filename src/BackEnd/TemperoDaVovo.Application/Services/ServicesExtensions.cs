@@ -6,7 +6,10 @@ using TemperoDaVovo.Application.UseCases.Category.Queries.GetCategoriesWithProdu
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Product.Commands.ToggleProductActive;
+using TemperoDaVovo.Application.UseCases.Product.Commands.Update;
+using TemperoDaVovo.Application.UseCases.Product.Commands.UpdateImage;
 using TemperoDaVovo.Application.UseCases.Product.Queries.GetAll;
+using TemperoDaVovo.Application.UseCases.Product.Queries.GetById;
 using TemperoDaVovo.Application.UseCases.Restaurant;
 using TemperoDaVovo.Application.UseCases.Restaurant.Create;
 using TemperoDaVovo.Application.UseCases.User.Create;
@@ -35,5 +38,8 @@ public static class ServicesExtensions
         services.AddScoped<IDeleteProductUseCase, DeleteProductUseCase>();
         services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
         services.AddScoped<IToggleProductActiveUseCase, ToggleProductActiveUseCase>();
+        services.AddScoped<IUpdateProductUseCase, UpdateProductUseCase>();
+        services.AddScoped<IGetProductByIdUseCase, GetProductByIdUseCase>();
+        services.AddScoped<IUpdateProductImageUseCase , UpdateProductImageUseCase >();
     }
 }

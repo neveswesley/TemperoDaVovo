@@ -26,6 +26,7 @@ public class CreateUserUseCase : ICreateUserUseCase
     public async Task<CreateUserResponseJson> Execute(CreateUserRequestJson request)
     {
         await Validate(request);
+        
         var user = new Domain.Entities.User()
         {
             RestaurantId = request.RestaurantId,
@@ -54,8 +55,6 @@ public class CreateUserUseCase : ICreateUserUseCase
         
         if (await _userReadOnlyRepository.RestaurantHasAnyUser(request.RestaurantId))
             result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, "Restaurante já cadastrado."));
-        
-        // restaurante já tem login
 
         if (result.IsValid == false)
         {

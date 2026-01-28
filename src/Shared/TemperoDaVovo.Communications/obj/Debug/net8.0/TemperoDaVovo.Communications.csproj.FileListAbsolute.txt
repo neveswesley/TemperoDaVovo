@@ -16,3 +16,9 @@ D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\obj\Debug\net8.0\TemperoD.80902D4F.Up2Date
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\TemperoDaVovo.Exceptions.dll
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\TemperoDaVovo.Exceptions.pdb
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Features.dll
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\Microsoft.Net.Http.Headers.dll
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\System.IO.Pipelines.dll
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Communications\bin\Debug\net8.0\Microsoft.Extensions.Features.dll

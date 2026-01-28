@@ -4,5 +4,5 @@ namespace TemperoDaVovo.Application.UseCases.Product.Queries.GetAll;
 
 public interface IGetAllProductUseCase
 {
-    Task<List<GetAllProductsResponse>> Execute(Guid restaurantId);
+    Task<List<GetAllProductsResponse>> Execute(Guid restaurantId, string? search);
 }

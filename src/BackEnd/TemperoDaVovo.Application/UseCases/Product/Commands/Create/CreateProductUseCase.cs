@@ -38,8 +38,7 @@ public class CreateProductUseCase : ICreateProductUseCase
             using var stream = new FileStream(filePath, FileMode.Create);
             await file.CopyToAsync(stream);
 
-            request.ImageUrl = $"https://meusite.com/uploads/{fileName}";
-
+            request.ImageUrl = $"/uploads/{fileName}";
         }
 
         var restaurant = await _restaurantReadOnlyRepository.RestaurantExists(request.RestaurantId);
