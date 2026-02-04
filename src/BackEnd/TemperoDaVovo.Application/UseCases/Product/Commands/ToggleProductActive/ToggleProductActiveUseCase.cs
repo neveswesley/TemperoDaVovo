@@ -19,7 +19,7 @@ public class ToggleProductActiveUseCase : IToggleProductActiveUseCase
     }
 
 
-    public async Task<ToggleProductActiveResponse> Execute(Guid productId, bool isActive)
+    public async Task<ToggleProductActiveResponseJson> Execute(Guid productId, bool isActive)
     {
         var product = await _productReadOnlyRepository.GetProductByIdWithCategory(productId);
 
@@ -31,9 +31,9 @@ public class ToggleProductActiveUseCase : IToggleProductActiveUseCase
         product.IsActive = isActive;
     
         await _productWriteOnlyRepository.ToggleActive(product);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
 
-        return new ToggleProductActiveResponse()
+        return new ToggleProductActiveResponseJson()
         {
             Id = product.Id,
             Name = product.Name,

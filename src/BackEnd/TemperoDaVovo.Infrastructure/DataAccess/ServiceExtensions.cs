@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
@@ -32,10 +33,12 @@ public static class ServiceExtensions
         services.AddScoped<IUserReadOnlyRepository, UserRepository>();
         services.AddScoped<IProductWriteOnlyRepository, ProductRepository>();
         services.AddScoped<IProductReadOnlyRepository, ProductRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ICategoryWriteOnlyRepository, CategoryRepository>();
         services.AddScoped<ICategoryReadOnlyRepository, CategoryRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ISideDishReadOnlyRepository, SideDishRepository>();
+        services.AddScoped<ISideDishWriteOnlyRepository, SideDishRepository>();
+        services.AddScoped<IProductSideDishGroupWriteOnlyRepository, ProductSideDishGroupRepository>();
+        services.AddScoped<IProductSideDishGroupReadOnlyRepository, ProductSideDishGroupRepository>();
     }
 }

@@ -36,6 +36,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("TEXT");
 
@@ -60,6 +63,7 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImageUrl")
@@ -83,6 +87,31 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.ProductSideDishGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("SideDishGroupId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SideDishGroupId");
+
+                    b.HasIndex("ProductId", "SideDishGroupId")
+                        .IsUnique();
+
+                    b.ToTable("ProductSideDishGroups");
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Restaurant", b =>
@@ -118,6 +147,77 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Restaurant", (string)null);
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDish", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("SideDishGroupId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SideDishGroupId");
+
+                    b.ToTable("SideDishes");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDishGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MaxQuantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MinQuantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SideDishesGroups");
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.User", b =>
@@ -165,9 +265,49 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.ProductSideDishGroup", b =>
+                {
+                    b.HasOne("TemperoDaVovo.Domain.Entities.Product", "Product")
+                        .WithMany("ProductSideDishGroups")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TemperoDaVovo.Domain.Entities.SideDishGroup", "SideDishGroup")
+                        .WithMany()
+                        .HasForeignKey("SideDishGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SideDishGroup");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDish", b =>
+                {
+                    b.HasOne("TemperoDaVovo.Domain.Entities.SideDishGroup", "SideDishGroup")
+                        .WithMany("SideDishes")
+                        .HasForeignKey("SideDishGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SideDishGroup");
+                });
+
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Product", b =>
+                {
+                    b.Navigation("ProductSideDishGroups");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDishGroup", b =>
+                {
+                    b.Navigation("SideDishes");
                 });
 #pragma warning restore 612, 618
         }

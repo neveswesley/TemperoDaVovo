@@ -18,6 +18,6 @@ public class DeleteProductUseCase : IDeleteProductUseCase
     public async Task Execute(Guid productId)
     {
         await _write.DeleteProduct(productId);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
     }
 }

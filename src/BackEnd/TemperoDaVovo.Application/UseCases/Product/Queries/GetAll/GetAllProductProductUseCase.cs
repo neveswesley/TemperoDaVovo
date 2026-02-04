@@ -13,11 +13,11 @@ public class GetAllProductProductUseCase : IGetAllProductUseCase
         _productReadOnlyRepository = productReadOnlyRepository;
     }
 
-    public async Task<List<GetAllProductsResponse>> Execute(Guid restaurantId, string? search)
+    public async Task<List<GetAllProductsResponseJson>> Execute(Guid restaurantId, string? search)
     {
         var products = await _productReadOnlyRepository.GetAllProductByRestaurantId(restaurantId, search);
 
-        var response = products.Select(p => new GetAllProductsResponse
+        var response = products.Select(p => new GetAllProductsResponseJson
             {
                 Id = p.Id,
                 Name = p.Name,

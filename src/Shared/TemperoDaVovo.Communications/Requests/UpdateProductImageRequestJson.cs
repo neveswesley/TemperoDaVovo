@@ -2,7 +2,7 @@
 
 namespace TemperoDaVovo.Communications.Requests;
 
-public class UpdateProductImageRequest
+public class UpdateProductImageRequestJson
 {
     public IFormFile Image { get; set; }
 }

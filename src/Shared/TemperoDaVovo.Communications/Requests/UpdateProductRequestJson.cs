@@ -1,6 +1,6 @@
 ﻿namespace TemperoDaVovo.Communications.Requests;
 
-public class UpdateProductRequest
+public class UpdateProductRequestJson
 {
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; } = string.Empty;

@@ -12,6 +12,19 @@ using TemperoDaVovo.Application.UseCases.Product.Queries.GetAll;
 using TemperoDaVovo.Application.UseCases.Product.Queries.GetById;
 using TemperoDaVovo.Application.UseCases.Restaurant;
 using TemperoDaVovo.Application.UseCases.Restaurant.Create;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.CreateSideDish;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDishGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.LinkGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.RemoveSideDishGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.UpdateSideDishGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Queries.GetAllProductSideDish;
+using TemperoDaVovo.Application.UseCases.SideDish.Queries.GetAllSideDishGroups;
+using TemperoDaVovo.Application.UseCases.SideDish.Queries.GetAllSideDishGroupsByProduct;
+using TemperoDaVovo.Application.UseCases.SideDish.Queries.GetSideDishGroupsByProduct;
+using TemperoDaVovo.Application.UseCases.SideDishGroup.Commands;
+using TemperoDaVovo.Application.UseCases.SideDishGroup.Commands.CreateSideDish;
+using TemperoDaVovo.Application.UseCases.SideDishGroup.Commands.CreateSideDishGroup;
+using TemperoDaVovo.Application.UseCases.SideDishGroup.Queries.GetAllSideDishGroups;
 using TemperoDaVovo.Application.UseCases.User.Create;
 using TemperoDaVovo.Application.UseCases.User.Login;
 
@@ -41,5 +54,14 @@ public static class ServicesExtensions
         services.AddScoped<IUpdateProductUseCase, UpdateProductUseCase>();
         services.AddScoped<IGetProductByIdUseCase, GetProductByIdUseCase>();
         services.AddScoped<IUpdateProductImageUseCase , UpdateProductImageUseCase >();
+        services.AddScoped<ICreateSideDishGroupUseCase , CreateSideDishGroupUseCase >();
+        services.AddScoped<ICreateSideDishUseCase , CreateSideDishUseCase >();
+        services.AddScoped<IGetAllSideDishGroupsUseCase , GetAllSideDishGroupsUseCase >();
+        services.AddScoped<ILinkSideDishSideDishGroupsToProductsToProductUseCase , LinkSideDishSideDishSideDishSideDishGroupsToProductsToProductsToProductsToProductUseCase >();
+        services.AddScoped<IGetAllSideDishGroupByRestaurant0UseCase , GetAllSideDishGroupDishGroupByRestaurantUseCase >();
+        services.AddScoped<IGetAllSideDishGroupsByProduct , GetAllSideDishGroupsByProduct >();
+        services.AddScoped<IUpdateSideDishGroupUseCase , UpdateSideDishGroupUseCase >();
+        services.AddScoped<IDeleteSideDishUseCase , DeleteSideDishUseCase >();
+        services.AddScoped<IRemoveSideDishGroupUseCase , RemoveSideDishGroupUseCase >();
     }
 }

@@ -53,7 +53,7 @@ public class UpdateProductImageUseCase : IUpdateProductImageUseCase
         product.ImageUrl = $"/uploads/{fileName}";
 
         await _productWriteOnlyRepository.UpdateProduct(product);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
     }
 
 }

@@ -31,7 +31,7 @@ public class CreateRestaurantUseCase : ICreateRestaurantUseCase
         };
 
         await _restaurantWriteOnlyRepository.AddAsync(restaurant);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
 
         return new CreateRestaurantResponseJson
         {

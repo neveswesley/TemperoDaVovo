@@ -40,7 +40,7 @@ public class CreateCategoryUseCase : ICreateCategoryUseCase
         };
 
         await _categoryWriteOnlyRepository.CreateAsync(category);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
 
         return new CreateCategoryResponseJson()
         {
@@ -48,10 +48,7 @@ public class CreateCategoryUseCase : ICreateCategoryUseCase
             
         };
     }
-    private static string GenerateCategoryName(
-        string baseName,
-        List<string> existingNames
-    )
+    private static string GenerateCategoryName(string baseName, List<string> existingNames)
     {
         if (!existingNames.Any())
             return baseName;

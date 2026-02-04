@@ -77,11 +77,15 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            query = query.Where(p=>p.Name.Contains(search) || p.Description.Contains(search));
+            query = query.Where(p => p.Name.Contains(search) || p.Description.Contains(search));
         }
         
-        
-        return await query.Include(p=>p.Category).ToListAsync();
+        return await query.Include(p=>p.Category).OrderBy(p=>p.Price).ToListAsync();
+    }
+
+    public async Task<Product> GetProductByRestaurantId(Guid restaurantId, Guid productId)
+    {
+        return await _context.Products.FirstOrDefaultAsync(p => p.Id == productId && p.RestaurantId == restaurantId);
     }
 
     public async Task<Product> GetProductByIdWithCategory(Guid productId)

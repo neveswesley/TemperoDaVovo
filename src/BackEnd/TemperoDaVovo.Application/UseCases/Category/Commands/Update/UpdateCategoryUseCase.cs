@@ -26,7 +26,7 @@ public class UpdateCategoryUseCase : IUpdateCategoryUseCase
         category.UpdateName(request.Name);
         
         await _categoryWriteOnlyRepository.UpdateAsync(category);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
         
         return new UpdateCategoryResponseJson()
         {

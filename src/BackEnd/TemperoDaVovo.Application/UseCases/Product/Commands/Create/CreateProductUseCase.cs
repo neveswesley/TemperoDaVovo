@@ -57,7 +57,7 @@ public class CreateProductUseCase : ICreateProductUseCase
         };
         
         await _productWriteOnlyRepository.CreateProduct(product);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
 
         return new CreateProductResponseJson()
         {

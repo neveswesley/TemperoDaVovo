@@ -37,7 +37,7 @@ public class CreateUserUseCase : ICreateUserUseCase
         user.PasswordHash = _passwordHasher.Hash(request.Password);
 
         await _userWriteOnlyRepository.RegisterUser(user);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
 
         return new CreateUserResponseJson()
         {

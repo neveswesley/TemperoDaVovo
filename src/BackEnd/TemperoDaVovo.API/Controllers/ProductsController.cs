@@ -46,13 +46,12 @@ namespace TemperoDaVovo.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<GetAllProductsResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<GetAllProductsResponseJson>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll([FromQuery] Guid restaurantId, string? search)
         {
             var request = await _getAllProductUseCase.Execute(restaurantId, search);
             return Ok(request);
         }
-
 
         [HttpDelete("{productId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -64,9 +63,9 @@ namespace TemperoDaVovo.API.Controllers
 
         [HttpPatch("{id}/active")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ToggleActive(Guid id, [FromBody] ToggleProductActiveRequest request)
+        public async Task<IActionResult> ToggleActive(Guid id, [FromBody] ToggleProductActiveRequestJson requestJson)
         {
-            var response = await _toggleProductActiveUseCase.Execute(id, request.IsActive);
+            var response = await _toggleProductActiveUseCase.Execute(id, requestJson.IsActive);
             return Ok(response);
         }
 
@@ -74,9 +73,9 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Update(
             [FromRoute] Guid id,
-            [FromBody] UpdateProductRequest request)
+            [FromBody] UpdateProductRequestJson requestJson)
         {
-            await _updateProductUseCase.Execute(request, id);
+            await _updateProductUseCase.Execute(requestJson, id);
             return NoContent();
         }
 
@@ -84,10 +83,10 @@ namespace TemperoDaVovo.API.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> UpdateImage(
             [FromRoute] Guid id,
-            [FromForm] UpdateProductImageRequest request
+            [FromForm] UpdateProductImageRequestJson requestJson
         )
         {
-            var image = request.Image;
+            var image = requestJson.Image;
 
             if (image == null || image.Length == 0)
                 return BadRequest("Imagem inválida");

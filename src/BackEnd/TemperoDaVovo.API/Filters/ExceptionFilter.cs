@@ -15,19 +15,23 @@ namespace TemperoDaVovo.API.Filters
                 case ErrorOnValidationException validationEx:
                     HandleValidationException(context, validationEx);
                     break;
-                
+
                 case UnauthorizedException unauthorizedEx:
                     HandleUnauthorizedException(context, unauthorizedEx);
                     break;
-                
+
                 case BusinessException businessEx:
                     HandleBusinessException(context, businessEx);
                     break;
-                    
+                
+                case NotFoundException projectEx:
+                    HandleNotFoundException(context, projectEx);
+                    break;
+
                 case TemperoDaVovoException projectEx:
                     HandleProjectException(context, projectEx);
                     break;
-
+                
                 default:
                     HandleUnknownException(context);
                     break;
@@ -58,6 +62,12 @@ namespace TemperoDaVovo.API.Filters
             context.Result = new BadRequestObjectResult(new ResponseErrorJson(ex.Message));
         }
 
+        private void HandleNotFoundException(ExceptionContext context, NotFoundException ex)
+        {
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            context.Result = new NotFoundObjectResult(new ResponseErrorJson(ex.Message));
+        }
+
         private void HandleUnknownException(ExceptionContext context)
         {
             var exception = context.Exception;
@@ -74,6 +84,5 @@ namespace TemperoDaVovo.API.Filters
 
             context.ExceptionHandled = true;
         }
-
     }
 }

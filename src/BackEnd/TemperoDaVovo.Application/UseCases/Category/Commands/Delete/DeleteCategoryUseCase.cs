@@ -17,6 +17,6 @@ public class DeleteCategoryUseCase : IDeleteCategoryUseCase
     public async Task Execute(Guid categoryId)
     {
         await _write.DeleteAsync(categoryId);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
     }
 }
