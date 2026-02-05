@@ -27,6 +27,10 @@ namespace TemperoDaVovo.API.Filters
                 case NotFoundException projectEx:
                     HandleNotFoundException(context, projectEx);
                     break;
+                
+                case DomainException businessEx:
+                    HandleDomainException(context, businessEx);
+                    break;
 
                 case TemperoDaVovoException projectEx:
                     HandleProjectException(context, projectEx);
@@ -66,6 +70,12 @@ namespace TemperoDaVovo.API.Filters
         {
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
             context.Result = new NotFoundObjectResult(new ResponseErrorJson(ex.Message));
+        }
+        
+        private void HandleDomainException(ExceptionContext context, DomainException ex)
+        {
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            context.Result = new BadRequestObjectResult(new ResponseErrorJson(ex.Message));
         }
 
         private void HandleUnknownException(ExceptionContext context)

@@ -2,6 +2,7 @@
 using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
+using TemperoDaVovo.Exceptions.ExceptionsBase;
 using TemperoDaVovo.Infrastructure.DataAccess;
 
 namespace TemperoDaVovo.Infrastructure.Repositories;
@@ -48,9 +49,8 @@ public class SideDishRepository : ISideDishReadOnlyRepository, ISideDishWriteOnl
 
     public async Task DeleteSideDish(Guid sideDishId)
     {
-        await _context.SideDishes.Where(x=>x.Id == sideDishId).ExecuteDeleteAsync();
+        await _context.SideDishes.Where(s=>s.Id == sideDishId).ExecuteDeleteAsync();
     }
-
 
     public async Task<List<string>> GetExistingSideDishNames(Guid restaurantId, string name)
     {
