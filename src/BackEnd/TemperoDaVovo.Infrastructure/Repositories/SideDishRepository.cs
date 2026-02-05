@@ -40,10 +40,15 @@ public class SideDishRepository : ISideDishReadOnlyRepository, ISideDishWriteOnl
         return Task.CompletedTask;
     }
 
-    public async Task RemoveSidhDishGroupsAsync(Guid productId, List<Guid> sideDishGroupIds)
+    public async Task RemoveSideDishGroupsAsync(Guid productId, List<Guid> sideDishGroupIds)
     {
         await _context.ProductSideDishGroups
             .Where(x => x.ProductId == productId && sideDishGroupIds.Contains(x.SideDishGroupId)).ExecuteDeleteAsync();
+    }
+
+    public async Task DeleteSideDish(Guid sideDishId)
+    {
+        await _context.SideDishes.Where(x=>x.Id == sideDishId).ExecuteDeleteAsync();
     }
 
 
@@ -70,5 +75,10 @@ public class SideDishRepository : ISideDishReadOnlyRepository, ISideDishWriteOnl
     public async Task<List<ProductSideDishGroup>> GetAllSideDishesByProductId(Guid productId)
     {
         return await _context.ProductSideDishGroups.Where(s=>s.ProductId == productId).ToListAsync();
+    }
+
+    public async Task<SideDish> GetSideDishById(Guid sideDishId)
+    {
+        return await _context.SideDishes.FirstOrDefaultAsync(s=>s.Id == sideDishId);
     }
 }

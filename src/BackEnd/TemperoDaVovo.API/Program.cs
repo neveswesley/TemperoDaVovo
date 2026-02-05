@@ -37,6 +37,16 @@ builder.Services.AddControllers()
             JsonNamingPolicy.CamelCase;
     });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5128);
+    options.ListenLocalhost(44356, listenOptions =>
+    {
+        listenOptions.UseHttps();
+    });
+});
+
+
 
 var app = builder.Build();
 
@@ -47,12 +57,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
+Directory.CreateDirectory(uploadsPath);
+
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
+    FileProvider = new PhysicalFileProvider(uploadsPath),
     RequestPath = "/uploads"
 });
+
 
 app.UseCors("AllowAngular");
 

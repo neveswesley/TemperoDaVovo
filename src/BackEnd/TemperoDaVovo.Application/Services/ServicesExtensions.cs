@@ -63,5 +63,6 @@ public static class ServicesExtensions
         services.AddScoped<IUpdateSideDishGroupUseCase , UpdateSideDishGroupUseCase >();
         services.AddScoped<IDeleteSideDishUseCase , DeleteSideDishUseCase >();
         services.AddScoped<IRemoveSideDishGroupUseCase , RemoveSideDishGroupUseCase >();
+        services.AddScoped<IDeleteSideDishUseCase , DeleteSideDishUseCase >();
     }
 }

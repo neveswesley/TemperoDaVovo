@@ -8,5 +8,6 @@ public interface ISideDishWriteOnlyRepository
     Task<SideDish> CreateSideDish(SideDish sideDish);
     Task<Guid> UpdateSideDishGroup(SideDishGroup sideDish);
     Task DeleteSideDishGroup(SideDishGroup sideDish);
-    Task RemoveSidhDishGroupsAsync(Guid productId, List<Guid> sideDishGroupIds);
+    Task RemoveSideDishGroupsAsync(Guid productId, List<Guid> sideDishGroupIds);
+    Task DeleteSideDish(Guid sideDishId);
 }

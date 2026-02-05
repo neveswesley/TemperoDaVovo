@@ -2,5 +2,5 @@
 
 public interface IDeleteSideDishUseCase
 {
-    Task Execute(Guid sideDishGroupId);
+    Task Execute(Guid sideDishId);
 }

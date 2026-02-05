@@ -2,20 +2,18 @@
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
 
-namespace TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDishGroup;
+namespace TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDish;
 
 public class DeleteSideDishUseCase : IDeleteSideDishUseCase
 {
     
     private readonly ISideDishWriteOnlyRepository _sideDishWriteOnlyRepository;
     private readonly ISideDishReadOnlyRepository _sideDishReadOnlyRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteSideDishUseCase(ISideDishWriteOnlyRepository sideDishWriteOnlyRepository, ISideDishReadOnlyRepository sideDishReadOnlyRepository, IUnitOfWork unitOfWork)
+    public DeleteSideDishUseCase(ISideDishWriteOnlyRepository sideDishWriteOnlyRepository, ISideDishReadOnlyRepository sideDishReadOnlyRepository)
     {
         _sideDishWriteOnlyRepository = sideDishWriteOnlyRepository;
         _sideDishReadOnlyRepository = sideDishReadOnlyRepository;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task Execute(Guid sideDishId)
@@ -23,9 +21,8 @@ public class DeleteSideDishUseCase : IDeleteSideDishUseCase
         var sideDish = await _sideDishReadOnlyRepository.GetSideDishById(sideDishId);
 
         if (sideDish is null)
-            throw new NotFoundException(["Complemento não encontrado"]);
+            throw new NotFoundException(["Complemento não encontrado."]);
         
         await _sideDishWriteOnlyRepository.DeleteSideDish(sideDishId);
-        await _unitOfWork.CommitAsync();
     }
 }
