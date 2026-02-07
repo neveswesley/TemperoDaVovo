@@ -7,4 +7,5 @@ public interface ICategoryWriteOnlyRepository
     Task<Category> CreateAsync(Category category);
     Task<Guid> UpdateAsync(Category category);
     Task DeleteAsync(Guid categoryId);
+    Task<bool> UpdateCategoryOrderAsync(Guid restaurantId, List<Guid> categoryIds);
 }

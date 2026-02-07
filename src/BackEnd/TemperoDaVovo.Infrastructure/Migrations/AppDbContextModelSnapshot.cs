@@ -29,15 +29,15 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("TEXT");
@@ -91,25 +91,21 @@ namespace TemperoDaVovo.Infrastructure.Migrations
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.ProductSideDishGroup", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsRequired")
-                        .HasColumnType("INTEGER");
-
                     b.Property<Guid>("ProductId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("SideDishGroupId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ProductId", "SideDishGroupId");
 
                     b.HasIndex("SideDishGroupId");
-
-                    b.HasIndex("ProductId", "SideDishGroupId")
-                        .IsUnique();
 
                     b.ToTable("ProductSideDishGroups");
                 });
@@ -287,7 +283,7 @@ namespace TemperoDaVovo.Infrastructure.Migrations
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDish", b =>
                 {
                     b.HasOne("TemperoDaVovo.Domain.Entities.SideDishGroup", "SideDishGroup")
-                        .WithMany("SideDishes")
+                        .WithMany("SideDish")
                         .HasForeignKey("SideDishGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -307,7 +303,7 @@ namespace TemperoDaVovo.Infrastructure.Migrations
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDishGroup", b =>
                 {
-                    b.Navigation("SideDishes");
+                    b.Navigation("SideDish");
                 });
 #pragma warning restore 612, 618
         }

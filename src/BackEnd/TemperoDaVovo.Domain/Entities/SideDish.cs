@@ -28,4 +28,9 @@ public class SideDish : BaseEntity
         Quantity = newQuantity;
         UnitPrice = newUnitPrice;
     }
+
+    public void Pause()
+    {
+        
+    }
 }

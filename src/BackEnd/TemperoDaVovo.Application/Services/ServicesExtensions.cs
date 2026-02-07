@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TemperoDaVovo.Application.UseCases.Category.Commands;
 using TemperoDaVovo.Application.UseCases.Category.Commands.Delete;
+using TemperoDaVovo.Application.UseCases.Category.Commands.Reorder;
 using TemperoDaVovo.Application.UseCases.Category.Commands.UpdateProduct;
 using TemperoDaVovo.Application.UseCases.Category.Queries.GetCategoriesWithProducts;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
@@ -16,6 +17,7 @@ using TemperoDaVovo.Application.UseCases.SideDish.Commands.CreateSideDish;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDishGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.LinkGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.RemoveSideDishGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.ToggleSideDishActive;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.UpdateSideDish;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.UpdateSideDishGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Queries.GetAllProductSideDish;
@@ -66,5 +68,7 @@ public static class ServicesExtensions
         services.AddScoped<IRemoveSideDishGroupUseCase , RemoveSideDishGroupUseCase >();
         services.AddScoped<IDeleteSideDishUseCase , DeleteSideDishUseCase >();
         services.AddScoped<IUpdateSideDishUseCase , UpdateSideDishUseCase >();
+        services.AddScoped<IToggleSideDishActiveUseCase , ToggleSideDishActiveUseCase >();
+        services.AddScoped<IReorderCategoriesUseCase , ReorderCategoriesUseCase >();
     }
 }

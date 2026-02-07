@@ -31,7 +31,8 @@ public class CreateSideDishUseCase : ICreateSideDishUseCase
             SideDishGroupId = request.SideDishGroupId,
             Name = request.Name,
             Quantity = request.Quantity,
-            UnitPrice = request.UnitPrice
+            UnitPrice = request.UnitPrice,
+            IsActive = true
         };
         
         await _sideDishWriteOnlyRepository.CreateSideDish(sideDish);
@@ -43,7 +44,8 @@ public class CreateSideDishUseCase : ICreateSideDishUseCase
             SideDishGroupId = sideDish.SideDishGroupId,
             Name = sideDish.Name,
             Quantity = sideDish.Quantity,
-            UnitPrice = sideDish.UnitPrice
+            UnitPrice = sideDish.UnitPrice,
+            IsActive = sideDish.IsActive
         };
 
     }

@@ -34,6 +34,25 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
         _context.Remove(category);
     }
 
+    public async Task<bool> UpdateCategoryOrderAsync(Guid restaurantId, List<Guid> categoryIds)
+    {
+        var categories = await _context.Categories
+            .Where(c => c.RestaurantId == restaurantId)
+            .ToListAsync();
+        
+        for (int i = 0; i < categoryIds.Count; i++)
+        {
+            var category = categories.FirstOrDefault(c => c.Id == categoryIds[i]);
+            if (category != null)
+            {
+                category.DisplayOrder = i;
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
     public async Task<List<string>> GetExistingCategoryNames(Guid restaurantId, string name)
     {
         return await _context.Categories
@@ -49,7 +68,7 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
     {
         return await _context.Categories
             .Include(c => c.Products)
-            .OrderBy(c=>c.CreatedAt)
+            .OrderBy(c=>c.DisplayOrder)
             .Where(c => c.RestaurantId == restaurantId && c.IsActive == true)
             .ToListAsync();
     }
@@ -57,5 +76,15 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
     public async Task<Category> GetCategoryById(Guid categoryId)
     {
         return await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
+    }
+
+    public async Task<List<Category>> GetCategoriesByRestaurantId(Guid restaurantId)
+    {
+        return await _context.Categories
+            .Where(c => c.RestaurantId == restaurantId)
+            .OrderBy(c => c.DisplayOrder)
+            .ThenBy(c => c.CreatedAt)
+            .Include(c => c.Products)
+            .ToListAsync();
     }
 }

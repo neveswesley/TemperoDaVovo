@@ -10,4 +10,6 @@ public interface ISideDishWriteOnlyRepository
     Task DeleteSideDishGroup(SideDishGroup sideDish);
     Task RemoveSideDishGroupsAsync(Guid productId, List<Guid> sideDishGroupIds);
     Task DeleteSideDish(Guid sideDishId);
+    Task<Guid> ToggleActive(SideDish sideDish);
+
 }

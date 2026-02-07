@@ -7,4 +7,5 @@ public interface ICategoryReadOnlyRepository
     Task<List<string>> GetExistingCategoryNames(Guid restaurantId, string name);
     Task<List<Category>> GetCategoriesWithProducts(Guid restaurantId);
     Task<Category> GetCategoryById(Guid categoryId);
+    Task<List<Category>> GetCategoriesByRestaurantId(Guid restaurantId);
 }

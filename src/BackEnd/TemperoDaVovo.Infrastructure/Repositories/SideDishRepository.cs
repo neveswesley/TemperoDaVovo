@@ -52,6 +52,21 @@ public class SideDishRepository : ISideDishReadOnlyRepository, ISideDishWriteOnl
         await _context.SideDishes.Where(s=>s.Id == sideDishId).ExecuteDeleteAsync();
     }
 
+    public async Task<Guid> ToggleActive(SideDish sideDish)
+    {
+        var entity = await _context.SideDishes.FirstOrDefaultAsync(x => x.Id == sideDish.Id);
+        if (entity == null)
+        {
+            throw new KeyNotFoundException($"Produto com ID {sideDish.Id} não encontrado.");
+        }
+        
+        entity.IsActive = sideDish.IsActive;
+        
+        _context.SideDishes.Update(entity);
+
+        return entity.Id;
+    }
+
     public async Task<List<string>> GetExistingSideDishNames(Guid restaurantId, string name)
     {
         return await _context.SideDishesGroups.Where(s=>s.RestaurantId == restaurantId && (s.Name == name || s.Name.StartsWith(name + " ("))).Select(s => s.Name).ToListAsync();

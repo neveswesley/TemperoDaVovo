@@ -4,6 +4,7 @@ using TemperoDaVovo.Application.UseCases.SideDish.Commands.CreateSideDish;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDishGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.LinkGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.RemoveSideDishGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.ToggleSideDishActive;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.UpdateSideDish;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.UpdateSideDishGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Queries.GetAllProductSideDish;
@@ -29,8 +30,9 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IDeleteSideDishUseCase _deleteSideDishUseCase;
         private readonly IRemoveSideDishGroupUseCase _removeSideDishGroupUseCase;
         private readonly IUpdateSideDishUseCase _updateSideDishUseCase;
+        private readonly IToggleSideDishActiveUseCase _toggleSideDishActiveUseCase;
 
-        public SideDishesController(ICreateSideDishGroupUseCase createSideDishGroupUseCase, IGetAllSideDishGroupsUseCase getAllSideDishGroupsUseCase, ICreateSideDishUseCase createSideDishUseCase, ILinkSideDishSideDishGroupsToProductsToProductUseCase linkSideDishSideDishGroupsToProductsToProductUseCase, IGetAllSideDishGroupByRestaurant0UseCase getAllSideDishGroupByRestaurant0UseCase, IGetAllSideDishGroupsByProduct getAllSideDishGroupsByProduct, IUpdateSideDishGroupUseCase updateSideDishGroupUseCase, IDeleteSideDishUseCase deleteSideDishUseCase, IRemoveSideDishGroupUseCase removeSideDishGroupUseCase, IUpdateSideDishUseCase updateSideDishUseCase)
+        public SideDishesController(ICreateSideDishGroupUseCase createSideDishGroupUseCase, IGetAllSideDishGroupsUseCase getAllSideDishGroupsUseCase, ICreateSideDishUseCase createSideDishUseCase, ILinkSideDishSideDishGroupsToProductsToProductUseCase linkSideDishSideDishGroupsToProductsToProductUseCase, IGetAllSideDishGroupByRestaurant0UseCase getAllSideDishGroupByRestaurant0UseCase, IGetAllSideDishGroupsByProduct getAllSideDishGroupsByProduct, IUpdateSideDishGroupUseCase updateSideDishGroupUseCase, IDeleteSideDishUseCase deleteSideDishUseCase, IRemoveSideDishGroupUseCase removeSideDishGroupUseCase, IUpdateSideDishUseCase updateSideDishUseCase, IToggleSideDishActiveUseCase toggleSideDishActiveUseCase)
         {
             _createSideDishGroupUseCase = createSideDishGroupUseCase;
             _getAllSideDishGroupsUseCase = getAllSideDishGroupsUseCase;
@@ -42,6 +44,7 @@ namespace TemperoDaVovo.API.Controllers
             _deleteSideDishUseCase = deleteSideDishUseCase;
             _removeSideDishGroupUseCase = removeSideDishGroupUseCase;
             _updateSideDishUseCase = updateSideDishUseCase;
+            _toggleSideDishActiveUseCase = toggleSideDishActiveUseCase;
         }
 
         [HttpPost("create-side-dish-group")]
@@ -150,8 +153,18 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateSideDish([FromRoute] Guid sideDishId, UpdateSideDishRequestJson request)
         {
-            await _updateSideDishUseCase.Execute(sideDishId, request.Name, request.Quantity, request.Price);
+            await _updateSideDishUseCase.Execute(sideDishId, request.Name, request.Quantity, request.UnitPrice);
             return NoContent();
+        }
+
+        [HttpPatch("active/{sideDishId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ToggleActive([FromRoute] Guid sideDishId,
+            ToggleSideDishActiveRequestJson request)
+        {
+            var result = await _toggleSideDishActiveUseCase.Execute(sideDishId, request.IsActive);
+            return Ok(result);
         }
         
     }
