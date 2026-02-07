@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Delete;
+using TemperoDaVovo.Application.UseCases.Product.Commands.Duplicate;
 using TemperoDaVovo.Application.UseCases.Product.Commands.ToggleProductActive;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Update;
 using TemperoDaVovo.Application.UseCases.Product.Commands.UpdateImage;
@@ -22,11 +23,9 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IUpdateProductUseCase _updateProductUseCase;
         private readonly IGetProductByIdUseCase _getProductByIdUseCase;
         private readonly IUpdateProductImageUseCase _updateProductImageUseCase;
+        private readonly IDuplicateProductUseCase _duplicateProductUseCase;
 
-        public ProductsController(ICreateProductUseCase createProductUseCase,
-            IGetAllProductUseCase getAllProductUseCase, IDeleteProductUseCase deleteProductUseCase,
-            IToggleProductActiveUseCase toggleProductActiveUseCase, IUpdateProductUseCase updateProductUseCase,
-            IGetProductByIdUseCase getProductByIdUseCase, IUpdateProductImageUseCase updateProductImageUseCase)
+        public ProductsController(ICreateProductUseCase createProductUseCase, IGetAllProductUseCase getAllProductUseCase, IDeleteProductUseCase deleteProductUseCase, IToggleProductActiveUseCase toggleProductActiveUseCase, IUpdateProductUseCase updateProductUseCase, IGetProductByIdUseCase getProductByIdUseCase, IUpdateProductImageUseCase updateProductImageUseCase, IDuplicateProductUseCase duplicateProductUseCase)
         {
             _createProductUseCase = createProductUseCase;
             _getAllProductUseCase = getAllProductUseCase;
@@ -35,6 +34,7 @@ namespace TemperoDaVovo.API.Controllers
             _updateProductUseCase = updateProductUseCase;
             _getProductByIdUseCase = getProductByIdUseCase;
             _updateProductImageUseCase = updateProductImageUseCase;
+            _duplicateProductUseCase = duplicateProductUseCase;
         }
 
         [HttpPost]
@@ -115,6 +115,16 @@ namespace TemperoDaVovo.API.Controllers
         {
             var product = await _getProductByIdUseCase.Execute(id);
             return Ok(product);
+        }
+
+        [HttpPost("duplicate-product")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Duplicate([FromBody] DuplicateProductRequestJson request)
+        {
+            var product = await _duplicateProductUseCase.ExecuteAsync(request);
+            return Created(string.Empty, product);
         }
     }
 }

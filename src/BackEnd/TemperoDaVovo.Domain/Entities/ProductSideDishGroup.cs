@@ -10,6 +10,8 @@ public class ProductSideDishGroup
     public Product Product { get; set; }
     public SideDishGroup SideDishGroup { get; set; }
     public bool IsRequired { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
     
     // Construtor
     public ProductSideDishGroup() { }

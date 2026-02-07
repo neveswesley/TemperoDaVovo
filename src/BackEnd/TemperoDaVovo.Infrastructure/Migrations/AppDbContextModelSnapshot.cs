@@ -42,6 +42,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -82,6 +85,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -97,11 +103,17 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<Guid>("SideDishGroupId")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsRequired")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ProductId", "SideDishGroupId");
 
@@ -140,6 +152,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Restaurant", (string)null);
@@ -171,6 +186,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("UnitPrice")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -211,6 +229,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("SideDishesGroups");
@@ -244,6 +265,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
 
                     b.Property<int>("Role")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

@@ -6,6 +6,7 @@ using TemperoDaVovo.Application.UseCases.Category.Commands.UpdateProduct;
 using TemperoDaVovo.Application.UseCases.Category.Queries.GetCategoriesWithProducts;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Delete;
+using TemperoDaVovo.Application.UseCases.Product.Commands.Duplicate;
 using TemperoDaVovo.Application.UseCases.Product.Commands.ToggleProductActive;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Update;
 using TemperoDaVovo.Application.UseCases.Product.Commands.UpdateImage;
@@ -70,5 +71,6 @@ public static class ServicesExtensions
         services.AddScoped<IUpdateSideDishUseCase , UpdateSideDishUseCase >();
         services.AddScoped<IToggleSideDishActiveUseCase , ToggleSideDishActiveUseCase >();
         services.AddScoped<IReorderCategoriesUseCase , ReorderCategoriesUseCase >();
+        services.AddScoped<IDuplicateProductUseCase , DuplicateProductUseCase >();
     }
 }

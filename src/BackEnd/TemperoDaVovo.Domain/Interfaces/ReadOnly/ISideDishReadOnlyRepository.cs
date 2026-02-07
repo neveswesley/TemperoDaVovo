@@ -9,6 +9,7 @@ public interface ISideDishReadOnlyRepository
     Task<SideDishGroup> GetSideDishGroupById(Guid id);
     Task<List<SideDishGroup>> GetByIdsAsync(List<Guid> ids);
     Task<List<ProductSideDishGroup>> GetAllSideDishesByProductId(Guid productId);
+    Task<List<Guid>> GetSideDishesGroupIds(Guid productId);
     Task<SideDish> GetSideDishById(Guid sideDishId);
 
 }

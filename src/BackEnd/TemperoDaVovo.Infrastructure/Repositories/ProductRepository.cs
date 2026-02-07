@@ -16,10 +16,10 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
         _context = context;
     }
 
-    public async Task<Guid> CreateProduct(Product product)
+    public async Task<Product> CreateProduct(Product product)
     {
         await _context.Products.AddAsync(product);
-        return product.Id;
+        return product;
     }
 
     public async Task<Guid> UpdateProduct(Product product)
@@ -90,6 +90,6 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
 
     public async Task<Product> GetProductByIdWithCategory(Guid productId)
     {
-        return await _context.Products.Include(c=>c.Category).FirstOrDefaultAsync(p => p.Id == productId);
+        return await _context.Products.Include(c=>c.Category).Include(c=>c.ProductSideDishGroups).ThenInclude(c=>c.SideDishGroup).ThenInclude(c=>c.SideDish).FirstOrDefaultAsync(p => p.Id == productId);
     }
 }

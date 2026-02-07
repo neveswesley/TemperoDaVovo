@@ -27,9 +27,7 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IUpdateCategoryUseCase _updateCategoryUseCase;
         private readonly IDeleteCategoryUseCase _deleteCategoryUseCase;
         private readonly IReorderCategoriesUseCase _reorderCategoriesUseCase;
-
         
-
         [HttpPost]
         [ProducesResponseType(typeof(CreateCategoryResponseJson), StatusCodes.Status201Created)]
         public async Task<IActionResult> Post([FromBody] CreateCategoryRequestJson request, [FromHeader(Name = "X-Restaurant-Id")] Guid restaurantId)

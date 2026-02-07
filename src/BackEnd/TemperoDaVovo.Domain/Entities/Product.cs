@@ -17,7 +17,6 @@ public class Product : BaseEntity
     public Guid CategoryId { get; set; }
     public Category Category { get; set; } = null!;
     public virtual ICollection<ProductSideDishGroup> ProductSideDishGroups { get; set; }
-    
 
     public void UpdatePrice(decimal newPrice)
     {

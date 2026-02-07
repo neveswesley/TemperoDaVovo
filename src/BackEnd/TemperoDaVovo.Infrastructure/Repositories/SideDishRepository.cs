@@ -67,6 +67,24 @@ public class SideDishRepository : ISideDishReadOnlyRepository, ISideDishWriteOnl
         return entity.Id;
     }
 
+    public async Task<bool> AddComplementGroupsToProductAsync(Guid productId, List<Guid> complementGroupIds)
+    {
+        foreach (var groupId in complementGroupIds)
+        {
+            var productSideDishGroup = new ProductSideDishGroup
+            {
+                ProductId = productId,
+                SideDishGroupId = groupId,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _context.ProductSideDishGroups.AddAsync(productSideDishGroup);
+        }
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
     public async Task<List<string>> GetExistingSideDishNames(Guid restaurantId, string name)
     {
         return await _context.SideDishesGroups.Where(s=>s.RestaurantId == restaurantId && (s.Name == name || s.Name.StartsWith(name + " ("))).Select(s => s.Name).ToListAsync();
@@ -90,6 +108,14 @@ public class SideDishRepository : ISideDishReadOnlyRepository, ISideDishWriteOnl
     public async Task<List<ProductSideDishGroup>> GetAllSideDishesByProductId(Guid productId)
     {
         return await _context.ProductSideDishGroups.Where(s=>s.ProductId == productId).ToListAsync();
+    }
+
+    public async Task<List<Guid>> GetSideDishesGroupIds(Guid productId)
+    {
+        return await _context.ProductSideDishGroups
+            .Where(psg => psg.ProductId == productId)
+            .Select(psg => psg.SideDishGroupId)
+            .ToListAsync();
     }
 
     public async Task<SideDish> GetSideDishById(Guid sideDishId)

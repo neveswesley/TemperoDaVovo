@@ -4,7 +4,7 @@ namespace TemperoDaVovo.Domain.Interfaces.WriteOnly;
 
 public interface IProductWriteOnlyRepository
 {
-    Task<Guid> CreateProduct(Product product);
+    Task<Product> CreateProduct(Product product);
     Task<Guid> UpdateProduct(Product product);
     Task DeleteProduct(Guid productId);
     Task<Guid> DeactivateProduct(Product product);

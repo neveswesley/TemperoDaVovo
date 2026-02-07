@@ -11,5 +11,6 @@ public interface ISideDishWriteOnlyRepository
     Task RemoveSideDishGroupsAsync(Guid productId, List<Guid> sideDishGroupIds);
     Task DeleteSideDish(Guid sideDishId);
     Task<Guid> ToggleActive(SideDish sideDish);
+    Task<bool> AddComplementGroupsToProductAsync(Guid productId, List<Guid> complementGroupIds);
 
 }
