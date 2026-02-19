@@ -25,7 +25,7 @@ public class UpdateSideDishGroupUseCase : IUpdateSideDishGroupUseCase
         sideDishGroup.MinQuantity = request.MinQuantity;
         sideDishGroup.MaxQuantity = request.MaxQuantity;
         
-        await _sideDishWriteOnlyRepository.UpdateSideDishGroup(sideDishGroup);
+        await _sideDishWriteOnlyRepository.UpdateGroupAsync(sideDishGroup);
         await _unitOfWork.CommitAsync();
         
         return sideDishGroup.Id;

@@ -6,18 +6,18 @@ namespace TemperoDaVovo.Application.UseCases.Product.Commands.Delete;
 
 public class DeleteProductUseCase : IDeleteProductUseCase
 {
-    private readonly IProductWriteOnlyRepository _write;
+    private readonly IProductWriteOnlyRepository _productWriteOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteProductUseCase(IProductWriteOnlyRepository write, IUnitOfWork unitOfWork)
+    public DeleteProductUseCase(IProductWriteOnlyRepository productWriteOnlyRepository, IUnitOfWork unitOfWork)
     {
-        _write = write;
+        _productWriteOnlyRepository = productWriteOnlyRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task Execute(Guid productId)
     {
-        await _write.DeleteProduct(productId);
+        _productWriteOnlyRepository.DeleteProduct(productId);
         await _unitOfWork.CommitAsync();
     }
 }

@@ -17,7 +17,7 @@ namespace TemperoDaVovo.API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ICreateProductUseCase _createProductUseCase;
-        private readonly IGetAllProductUseCase _getAllProductUseCase;
+        private readonly IGetProductWithSideDishesUseCase _getProductWithSideDishesUseCase;
         private readonly IDeleteProductUseCase _deleteProductUseCase;
         private readonly IToggleProductActiveUseCase _toggleProductActiveUseCase;
         private readonly IUpdateProductUseCase _updateProductUseCase;
@@ -25,10 +25,10 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IUpdateProductImageUseCase _updateProductImageUseCase;
         private readonly IDuplicateProductUseCase _duplicateProductUseCase;
 
-        public ProductsController(ICreateProductUseCase createProductUseCase, IGetAllProductUseCase getAllProductUseCase, IDeleteProductUseCase deleteProductUseCase, IToggleProductActiveUseCase toggleProductActiveUseCase, IUpdateProductUseCase updateProductUseCase, IGetProductByIdUseCase getProductByIdUseCase, IUpdateProductImageUseCase updateProductImageUseCase, IDuplicateProductUseCase duplicateProductUseCase)
+        public ProductsController(ICreateProductUseCase createProductUseCase, IGetProductWithSideDishesUseCase getProductWithSideDishesUseCase, IDeleteProductUseCase deleteProductUseCase, IToggleProductActiveUseCase toggleProductActiveUseCase, IUpdateProductUseCase updateProductUseCase, IGetProductByIdUseCase getProductByIdUseCase, IUpdateProductImageUseCase updateProductImageUseCase, IDuplicateProductUseCase duplicateProductUseCase)
         {
             _createProductUseCase = createProductUseCase;
-            _getAllProductUseCase = getAllProductUseCase;
+            _getProductWithSideDishesUseCase = getProductWithSideDishesUseCase;
             _deleteProductUseCase = deleteProductUseCase;
             _toggleProductActiveUseCase = toggleProductActiveUseCase;
             _updateProductUseCase = updateProductUseCase;
@@ -46,14 +46,14 @@ namespace TemperoDaVovo.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<GetAllProductsResponseJson>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<GetProductWithSideDishesResponseJson>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll([FromQuery] Guid restaurantId, string? search)
         {
-            var request = await _getAllProductUseCase.Execute(restaurantId, search);
+            var request = await _getProductWithSideDishesUseCase.Execute(restaurantId, search);
             return Ok(request);
         }
 
-        [HttpDelete("{productId}")]
+        [HttpPatch("delete-product/{productId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Delete([FromRoute] Guid productId)
         {

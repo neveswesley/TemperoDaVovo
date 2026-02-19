@@ -42,7 +42,7 @@ public class CreateSideDishGroupUseCase : ICreateSideDishGroupUseCase
         
         
         
-        await _sideDishWriteOnlyRepository.CreateSideDishGroup(sideDish);
+        await _sideDishWriteOnlyRepository.CreateGroupAsync(sideDish);
         await _unitOfWork.CommitAsync();
 
         return new CreateSideDishGroupResponseJson()

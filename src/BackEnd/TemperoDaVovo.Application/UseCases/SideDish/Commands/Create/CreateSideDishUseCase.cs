@@ -35,17 +35,15 @@ public class CreateSideDishUseCase : ICreateSideDishUseCase
             IsActive = true
         };
         
-        await _sideDishWriteOnlyRepository.CreateSideDish(sideDish);
+        await _sideDishWriteOnlyRepository.CreateAsync(sideDish);
         await _unitOfWork.CommitAsync();
 
         return new SideDishResponseJson()
         {
             Id = sideDish.Id,
-            SideDishGroupId = sideDish.SideDishGroupId,
             Name = sideDish.Name,
             Quantity = sideDish.Quantity,
             UnitPrice = sideDish.UnitPrice,
-            IsActive = sideDish.IsActive
         };
 
     }

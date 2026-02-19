@@ -16,7 +16,7 @@ public class RemoveSideDishGroupUseCase : IRemoveSideDishGroupUseCase
 
     public async Task Execute(Guid productId, List<Guid> sideDishGroupIds)
     {
-        await _sideDishWriteOnlyRepository.RemoveSideDishGroupsAsync(productId, sideDishGroupIds);
+        await _sideDishWriteOnlyRepository.RemoveGroupsAsync(productId, sideDishGroupIds);
         await _unitOfWork.CommitAsync();
     }
 }

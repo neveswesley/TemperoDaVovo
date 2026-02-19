@@ -50,6 +50,120 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClientSessionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CustomerPhone")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Observation")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("OriginalProductId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.OrderItemSideDish", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("OrderItemId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("OriginalSideDishId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderItemId");
+
+                    b.ToTable("OrderItemSideDishes");
+                });
+
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -73,6 +187,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsPaused")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -213,6 +330,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsPaused")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsRequired")
                         .HasColumnType("INTEGER");
 
@@ -274,6 +394,20 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.OrderItem", b =>
+                {
+                    b.HasOne("TemperoDaVovo.Domain.Entities.Order", null)
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.OrderItemSideDish", b =>
+                {
+                    b.HasOne("TemperoDaVovo.Domain.Entities.OrderItem", null)
+                        .WithMany("SideDishes")
+                        .HasForeignKey("OrderItemId");
+                });
+
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Product", b =>
                 {
                     b.HasOne("TemperoDaVovo.Domain.Entities.Category", "Category")
@@ -318,6 +452,16 @@ namespace TemperoDaVovo.Infrastructure.Migrations
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Order", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.OrderItem", b =>
+                {
+                    b.Navigation("SideDishes");
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Product", b =>

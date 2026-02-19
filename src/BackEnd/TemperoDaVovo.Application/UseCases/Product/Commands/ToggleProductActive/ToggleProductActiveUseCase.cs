@@ -19,7 +19,7 @@ public class ToggleProductActiveUseCase : IToggleProductActiveUseCase
     }
 
 
-    public async Task<ToggleProductActiveResponseJson> Execute(Guid productId, bool isActive)
+    public async Task<ToggleProductActiveResponseJson> Execute(Guid productId, bool isPaused)
     {
         var product = await _productReadOnlyRepository.GetProductByIdWithCategory(productId);
 
@@ -28,7 +28,7 @@ public class ToggleProductActiveUseCase : IToggleProductActiveUseCase
             throw new KeyNotFoundException($"Produto com ID {productId} não encontrado.");
         }
         
-        product.IsActive = isActive;
+        product.IsPaused = isPaused;
     
         await _productWriteOnlyRepository.ToggleActive(product);
         await _unitOfWork.CommitAsync();
@@ -37,7 +37,7 @@ public class ToggleProductActiveUseCase : IToggleProductActiveUseCase
         {
             Id = product.Id,
             Name = product.Name,
-            IsActive = product.IsActive,
+            IsPaused = product.IsPaused,
             Message = product.IsActive ? "Produto ativado com sucesso" : "Produto pausado com sucesso"
         };
     }

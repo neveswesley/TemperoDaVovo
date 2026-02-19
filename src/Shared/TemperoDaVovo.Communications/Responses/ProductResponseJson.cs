@@ -10,5 +10,5 @@ public class ProductResponseJson
     public decimal Price { get; set; }
     public string? ImageUrl { get; set; }
     public bool IsActive { get; set; }
-    public CategoryResponseJson? Category { get; set; }  // ← CORRETO: é objeto
+    public CategoryResponseJson? Category { get; set; }
 }

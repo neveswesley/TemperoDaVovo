@@ -21,19 +21,19 @@ public class UpdateProductUseCase : IUpdateProductUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Execute(UpdateProductRequestJson requestJson, Guid productId)
+    public async Task Execute(UpdateProductRequestJson request, Guid productId)
     {
         var product = await _productReadOnlyRepository.GetProductByIdWithCategory(productId);
 
         if (product == null)
             throw new BusinessException(["Produto não encontrado"]);
 
-        product.Name = requestJson.Name;
-        product.Description = requestJson.Description;
-        product.Price = requestJson.Price;
+        product.UpdateName(request.Name);
+        if (request.Description != null) product.UpdateDescription(request.Description);
+        product.UpdatePrice(request.Price);
 
-        if (requestJson.CategoryId.HasValue)
-            product.CategoryId = requestJson.CategoryId.Value;
+        if (request.CategoryId.HasValue)
+            product.CategoryId = request.CategoryId.Value;
 
         await _productWriteOnlyRepository.UpdateProduct(product);
         await _unitOfWork.CommitAsync();

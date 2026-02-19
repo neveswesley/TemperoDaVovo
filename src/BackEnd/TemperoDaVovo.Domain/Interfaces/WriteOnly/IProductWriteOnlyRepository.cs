@@ -6,9 +6,7 @@ public interface IProductWriteOnlyRepository
 {
     Task<Product> CreateProduct(Product product);
     Task<Guid> UpdateProduct(Product product);
-    Task DeleteProduct(Guid productId);
-    Task<Guid> DeactivateProduct(Product product);
-    Task<Guid> ActiveProduct(Product product);
+    void DeleteProduct(Guid productId);
     Task<Guid> ToggleActive(Product product);
     Task<Guid> UpdateProduct(Guid id);
 }

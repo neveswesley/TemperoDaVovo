@@ -4,6 +4,7 @@ using TemperoDaVovo.Application.UseCases.Category.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Category.Commands.Reorder;
 using TemperoDaVovo.Application.UseCases.Category.Commands.UpdateProduct;
 using TemperoDaVovo.Application.UseCases.Category.Queries.GetCategoriesWithProducts;
+using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Duplicate;
@@ -15,7 +16,8 @@ using TemperoDaVovo.Application.UseCases.Product.Queries.GetById;
 using TemperoDaVovo.Application.UseCases.Restaurant;
 using TemperoDaVovo.Application.UseCases.Restaurant.Create;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.CreateSideDish;
-using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDishGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDish;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.LinkGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.RemoveSideDishGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.ToggleSideDishActive;
@@ -48,7 +50,7 @@ public static class ServicesExtensions
         services.AddScoped<ICreateUserUseCase, CreateUserUseCase>();
         services.AddScoped<ICreateProductUseCase, CreateProductUseCase>();
         services.AddScoped<ILoginUseCase, LoginUseCase>();
-        services.AddScoped<IGetAllProductUseCase, GetAllProductProductUseCase>();
+        services.AddScoped<IGetProductWithSideDishesUseCase, GetProductWithSideDishesProductWithSideDishesUseCase>();
         services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
         services.AddScoped<IUpdateCategoryUseCase, UpdateCategoryUseCase>();
         services.AddScoped<IGetCategoryWithProductsUseCase, GetCategoryWithProductsUseCase>();
@@ -65,12 +67,14 @@ public static class ServicesExtensions
         services.AddScoped<IGetAllSideDishGroupByRestaurant0UseCase , GetAllSideDishGroupDishGroupByRestaurantUseCase >();
         services.AddScoped<IGetAllSideDishGroupsByProduct , GetAllSideDishGroupsByProduct >();
         services.AddScoped<IUpdateSideDishGroupUseCase , UpdateSideDishGroupUseCase >();
-        services.AddScoped<IDeleteSideDishUseCase , DeleteSideDishUseCase >();
+        services.AddScoped<IDeleteSideDishGroupUseCase , DeleteSideDishGroupUseCase >();
         services.AddScoped<IRemoveSideDishGroupUseCase , RemoveSideDishGroupUseCase >();
-        services.AddScoped<IDeleteSideDishUseCase , DeleteSideDishUseCase >();
+        services.AddScoped<IDeleteSideDishGroupUseCase , DeleteSideDishGroupUseCase >();
         services.AddScoped<IUpdateSideDishUseCase , UpdateSideDishUseCase >();
         services.AddScoped<IToggleSideDishActiveUseCase , ToggleSideDishActiveUseCase >();
         services.AddScoped<IReorderCategoriesUseCase , ReorderCategoriesUseCase >();
         services.AddScoped<IDuplicateProductUseCase , DuplicateProductUseCase >();
+        services.AddScoped<IDeleteSideDishUseCase , DeleteSideDishUseCase >();
+        services.AddScoped<IAddItemToOrderUseCase , AddItemToOrderUseCase >();
     }
 }

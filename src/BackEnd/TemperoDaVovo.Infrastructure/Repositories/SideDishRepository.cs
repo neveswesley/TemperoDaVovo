@@ -17,37 +17,38 @@ public class SideDishRepository : ISideDishReadOnlyRepository, ISideDishWriteOnl
         _context = context;
     }
 
-    public async Task<SideDishGroup> CreateSideDishGroup(SideDishGroup sideDish)
+    public async Task<SideDishGroup> CreateGroupAsync(SideDishGroup sideDish)
     {
         await _context.SideDishesGroups.AddAsync(sideDish);
         return sideDish;
     }
 
-    public async Task<SideDish> CreateSideDish(SideDish sideDish)
+    public async Task<SideDish> CreateAsync(SideDish sideDish)
     {
         await _context.SideDishes.AddAsync(sideDish);
         return sideDish;
     }
 
-    public async Task<Guid> UpdateSideDishGroup(SideDishGroup sideDishGroup)
+    public async Task<Guid> UpdateGroupAsync(SideDishGroup sideDishGroup)
     {
         _context.SideDishesGroups.Update(sideDishGroup);
         return await Task.FromResult(sideDishGroup.Id);
     }
 
-    public Task DeleteSideDishGroup(SideDishGroup sideDish)
+    public async Task DeleteGroupAsync(Guid groupId)
     {
-        _context.SideDishesGroups.Remove(sideDish);
-        return Task.CompletedTask;
+        var group = await _context.SideDishesGroups.FirstOrDefaultAsync(g=>g.Id == groupId);
+        group.IsActive = false;
+        group.DeletedAt = DateTime.UtcNow;
     }
 
-    public async Task RemoveSideDishGroupsAsync(Guid productId, List<Guid> sideDishGroupIds)
+    public async Task RemoveGroupsAsync(Guid productId, List<Guid> sideDishGroupIds)
     {
         await _context.ProductSideDishGroups
             .Where(x => x.ProductId == productId && sideDishGroupIds.Contains(x.SideDishGroupId)).ExecuteDeleteAsync();
     }
 
-    public async Task DeleteSideDish(Guid sideDishId)
+    public async Task DeleteAsync(Guid sideDishId)
     {
         await _context.SideDishes.Where(s=>s.Id == sideDishId).ExecuteDeleteAsync();
     }
@@ -92,7 +93,7 @@ public class SideDishRepository : ISideDishReadOnlyRepository, ISideDishWriteOnl
 
     public async Task<List<SideDishGroup>> GetAllSideDishesByRestaurant(Guid restaurantId)
     {
-        return await _context.SideDishesGroups.Where(x=>x.RestaurantId == restaurantId).ToListAsync();
+        return await _context.SideDishesGroups.Where(x=>x.RestaurantId == restaurantId && x.IsActive == true).ToListAsync();
     }
 
     public async Task<SideDishGroup> GetSideDishGroupById(Guid id)

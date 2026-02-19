@@ -54,6 +54,7 @@ public class CreateProductUseCase : ICreateProductUseCase
             Price = request.Price,
             CategoryId = request.CategoryId,
             ImageUrl = request.ImageUrl,
+            IsPaused = false
         };
         
         await _productWriteOnlyRepository.CreateProduct(product);

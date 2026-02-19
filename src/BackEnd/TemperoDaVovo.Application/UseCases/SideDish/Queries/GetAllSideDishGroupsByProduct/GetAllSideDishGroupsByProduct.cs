@@ -30,7 +30,6 @@ public class GetAllSideDishGroupsByProduct : IGetAllSideDishGroupsByProduct
                 Id = sd.Id,
                 Name = sd.Name,
                 UnitPrice = sd.UnitPrice,
-                IsActive = sd.IsActive,
             }).ToList()
         }).ToList();
         

@@ -8,4 +8,5 @@ public class SideDishGroup : BaseEntity
     public bool IsRequired { get; set; }
     public int MinQuantity { get; set; }
     public int MaxQuantity { get; set; }
+    public bool IsPaused { get; set; } = false;
 }

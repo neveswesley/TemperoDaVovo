@@ -8,6 +8,7 @@ public class ProductRequest
     public decimal Price { get; set; }
     public string ImageUrl { get; set; } = string.Empty;
     public bool IsActive { get; set; }
+    public bool IsPaused { get; set; }
     public Guid CategoryId { get; set; }
     public List<SideDishGroupRequest> ComplementGroups { get; set; } = [];
 }

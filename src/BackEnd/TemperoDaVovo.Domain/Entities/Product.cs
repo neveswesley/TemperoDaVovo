@@ -12,11 +12,10 @@ public class Product : BaseEntity
     [Column(TypeName = "decimal(10,2)")]
     public decimal Price { get; set; }
     public string? ImageUrl { get; set; } = string.Empty;
-    
-    // FK de category
     public Guid CategoryId { get; set; }
     public Category Category { get; set; } = null!;
     public virtual ICollection<ProductSideDishGroup> ProductSideDishGroups { get; set; }
+    public bool IsPaused { get; set; }
 
     public void UpdatePrice(decimal newPrice)
     {
@@ -25,20 +24,20 @@ public class Product : BaseEntity
         
         Price = newPrice;
     }
+    
+    public void UpdateName(string newName)
+    {
+        if (string.IsNullOrWhiteSpace(newName))
+            throw new BusinessException([ "O nome não pode ser vazio." ]);
+        
+        Name = newName;
+    }
 
     public void UpdateDescription(string newDescription)
     {
         if (string.IsNullOrWhiteSpace(newDescription))
             throw new BusinessException([ "A descrição não pode ser vazia." ]);
-    }
-
-    public void DeactivateProduct()
-    {
-        IsActive = false;
-    }
-
-    public void ActiveProduct()
-    {
-        IsActive = true;
+        
+        Description = newDescription;
     }
 }

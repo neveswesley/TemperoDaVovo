@@ -52,7 +52,7 @@ namespace TemperoDaVovo.API.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{categoryId}")]
+        [HttpPatch("{categoryId}")]
         public async Task<IActionResult> Delete(Guid categoryId)
         {
             await _deleteCategoryUseCase.Execute(categoryId);

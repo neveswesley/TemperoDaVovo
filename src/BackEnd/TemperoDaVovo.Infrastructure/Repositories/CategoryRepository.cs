@@ -31,7 +31,8 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
     public async Task DeleteAsync(Guid categoryId)
     {
         var category  = await _context.Categories.FirstOrDefaultAsync(x=>x.Id == categoryId);
-        _context.Remove(category);
+        category.IsActive = false;
+        category.DeletedAt = DateTime.UtcNow;
     }
 
     public async Task<bool> UpdateCategoryOrderAsync(Guid restaurantId, List<Guid> categoryIds)
@@ -42,7 +43,7 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
         
         for (int i = 0; i < categoryIds.Count; i++)
         {
-            var category = categories.FirstOrDefault(c => c.Id == categoryIds[i]);
+            var category = categories.FirstOrDefault(c => c.Id == categoryIds[i] && c.IsActive == true);
             if (category != null)
             {
                 category.DisplayOrder = i;
@@ -58,7 +59,7 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
         return await _context.Categories
             .Where(c =>
                 c.RestaurantId == restaurantId &&
-                (c.Name == name || c.Name.StartsWith(name + " ("))
+                (c.Name == name || c.Name.StartsWith(name + " (") && c.IsActive == true)
             )
             .Select(c => c.Name)
             .ToListAsync();
@@ -67,21 +68,21 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
     public async Task<List<Category>> GetCategoriesWithProducts(Guid restaurantId)
     {
         return await _context.Categories
-            .Include(c => c.Products)
+            .Where(c=>c.RestaurantId == restaurantId && c.IsActive == true)
+            .Include(c => c.Products.Where(p => p.IsActive))
             .OrderBy(c=>c.DisplayOrder)
-            .Where(c => c.RestaurantId == restaurantId && c.IsActive == true)
             .ToListAsync();
     }
 
     public async Task<Category> GetCategoryById(Guid categoryId)
     {
-        return await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
+        return await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId && c.IsActive == true);
     }
 
     public async Task<List<Category>> GetCategoriesByRestaurantId(Guid restaurantId)
     {
         return await _context.Categories
-            .Where(c => c.RestaurantId == restaurantId)
+            .Where(c => c.RestaurantId == restaurantId && c.IsActive == true)
             .OrderBy(c => c.DisplayOrder)
             .ThenBy(c => c.CreatedAt)
             .Include(c => c.Products)

@@ -23,6 +23,6 @@ public class DeleteSideDishUseCase : IDeleteSideDishUseCase
         if (sideDish is null)
             throw new NotFoundException(["Complemento não encontrado."]);
         
-        await _sideDishWriteOnlyRepository.DeleteSideDish(sideDishId);
+        await _sideDishWriteOnlyRepository.DeleteAsync(sideDishId);
     }
 }

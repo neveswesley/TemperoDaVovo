@@ -17,6 +17,9 @@ public class AppDbContext : DbContext
     public DbSet<SideDish> SideDishes { get; set; }
     public DbSet<SideDishGroup> SideDishesGroups { get; set; }
     public DbSet<ProductSideDishGroup> ProductSideDishGroups { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<OrderItemSideDish> OrderItemSideDishes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,7 +28,5 @@ public class AppDbContext : DbContext
             .HasKey(x => new { x.ProductId, x.SideDishGroupId });
         
         base.OnModelCreating(modelBuilder);
-        
-
     }
 }

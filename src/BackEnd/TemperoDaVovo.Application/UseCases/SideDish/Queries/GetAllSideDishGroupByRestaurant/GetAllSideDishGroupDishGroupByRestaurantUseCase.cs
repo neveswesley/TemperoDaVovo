@@ -25,7 +25,6 @@ public class GetAllSideDishGroupDishGroupByRestaurantUseCase : IGetAllSideDishGr
                 SideDish = s.SideDish.Select(d => new SideDishResponseJson
                 {
                     Id = d.Id,
-                    SideDishGroupId = d.SideDishGroupId,
                     Name = d.Name,
                     Quantity = d.Quantity,
                     UnitPrice = d.UnitPrice

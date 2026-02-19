@@ -77,6 +77,7 @@ public class DuplicateProductUseCase : IDuplicateProductUseCase
             Price = completeProduct.Price,
             ImageUrl = completeProduct.ImageUrl,
             IsActive = completeProduct.IsActive,
+            IsPaused = completeProduct.IsPaused,
             CategoryId = completeProduct.CategoryId,
             ComplementGroups = completeProduct.ProductSideDishGroups?.Select(psg => new SideDishGroupRequest
             {

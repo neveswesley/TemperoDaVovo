@@ -6,6 +6,7 @@ namespace TemperoDaVovo.Application.UseCases.Category.Commands.Delete;
 public class DeleteCategoryUseCase : IDeleteCategoryUseCase
 {
     private readonly ICategoryWriteOnlyRepository _write;
+    private readonly ICategoryReadOnlyRepository _read;
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteCategoryUseCase(ICategoryWriteOnlyRepository write, IUnitOfWork unitOfWork)

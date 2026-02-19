@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.CreateSideDish;
-using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDishGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteGroup;
+using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDish;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.LinkGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.RemoveSideDishGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.ToggleSideDishActive;
@@ -27,12 +28,13 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IGetAllSideDishGroupByRestaurant0UseCase _getAllSideDishGroupByRestaurant0UseCase;
         private readonly IGetAllSideDishGroupsByProduct _getAllSideDishGroupsByProduct;
         private readonly IUpdateSideDishGroupUseCase _updateSideDishGroupUseCase;
+        private readonly IDeleteSideDishGroupUseCase _deleteSideDishGroupUseCase;
         private readonly IDeleteSideDishUseCase _deleteSideDishUseCase;
         private readonly IRemoveSideDishGroupUseCase _removeSideDishGroupUseCase;
         private readonly IUpdateSideDishUseCase _updateSideDishUseCase;
         private readonly IToggleSideDishActiveUseCase _toggleSideDishActiveUseCase;
 
-        public SideDishesController(ICreateSideDishGroupUseCase createSideDishGroupUseCase, IGetAllSideDishGroupsUseCase getAllSideDishGroupsUseCase, ICreateSideDishUseCase createSideDishUseCase, ILinkSideDishSideDishGroupsToProductsToProductUseCase linkSideDishSideDishGroupsToProductsToProductUseCase, IGetAllSideDishGroupByRestaurant0UseCase getAllSideDishGroupByRestaurant0UseCase, IGetAllSideDishGroupsByProduct getAllSideDishGroupsByProduct, IUpdateSideDishGroupUseCase updateSideDishGroupUseCase, IDeleteSideDishUseCase deleteSideDishUseCase, IRemoveSideDishGroupUseCase removeSideDishGroupUseCase, IUpdateSideDishUseCase updateSideDishUseCase, IToggleSideDishActiveUseCase toggleSideDishActiveUseCase)
+        public SideDishesController(ICreateSideDishGroupUseCase createSideDishGroupUseCase, IGetAllSideDishGroupsUseCase getAllSideDishGroupsUseCase, ICreateSideDishUseCase createSideDishUseCase, ILinkSideDishSideDishGroupsToProductsToProductUseCase linkSideDishSideDishGroupsToProductsToProductUseCase, IGetAllSideDishGroupByRestaurant0UseCase getAllSideDishGroupByRestaurant0UseCase, IGetAllSideDishGroupsByProduct getAllSideDishGroupsByProduct, IUpdateSideDishGroupUseCase updateSideDishGroupUseCase, IDeleteSideDishGroupUseCase deleteSideDishGroupUseCase, IDeleteSideDishUseCase deleteSideDishUseCase, IRemoveSideDishGroupUseCase removeSideDishGroupUseCase, IUpdateSideDishUseCase updateSideDishUseCase, IToggleSideDishActiveUseCase toggleSideDishActiveUseCase)
         {
             _createSideDishGroupUseCase = createSideDishGroupUseCase;
             _getAllSideDishGroupsUseCase = getAllSideDishGroupsUseCase;
@@ -41,6 +43,7 @@ namespace TemperoDaVovo.API.Controllers
             _getAllSideDishGroupByRestaurant0UseCase = getAllSideDishGroupByRestaurant0UseCase;
             _getAllSideDishGroupsByProduct = getAllSideDishGroupsByProduct;
             _updateSideDishGroupUseCase = updateSideDishGroupUseCase;
+            _deleteSideDishGroupUseCase = deleteSideDishGroupUseCase;
             _deleteSideDishUseCase = deleteSideDishUseCase;
             _removeSideDishGroupUseCase = removeSideDishGroupUseCase;
             _updateSideDishUseCase = updateSideDishUseCase;
@@ -120,12 +123,12 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{sideDishGroupId}")]
+        [HttpPatch("delete-group/{groupId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteSideDishGroup([FromRoute] Guid sideDishGroupId)
+        public async Task<IActionResult> DeleteSideDishGroup([FromRoute] Guid groupId)
         {
-            await _deleteSideDishUseCase.Execute(sideDishGroupId);
+            await _deleteSideDishGroupUseCase.Execute(groupId);
             return NoContent();
         }
 
