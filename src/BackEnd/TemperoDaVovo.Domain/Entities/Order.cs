@@ -18,7 +18,7 @@ public class Order : BaseEntity
     public decimal Total { get; private set; }
 
     public ICollection<OrderItem> Items { get; private set; } = new List<OrderItem>();
-    
+   
     protected Order() {}
    
     public Order(Guid restaurantId, string clientSessionId, string customerName, string customerPhone)
@@ -32,15 +32,15 @@ public class Order : BaseEntity
         Status = OrderStatus.PendingConfirmation;
     }
 
-    public void CalculateTotals()
-    {
-        SubTotal = Items.Sum(i=>i.TotalPrice);
-        Total = SubTotal;
-    }
-
     public void AddItem(OrderItem item)
     {
         Items.Add(item);
+    }
+
+    public void CalculateTotals()
+    {
+        SubTotal = Items.Sum(i => i.TotalPrice);
+        Total = SubTotal;
     }
 
 }

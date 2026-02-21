@@ -106,7 +106,7 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<string>("Observation")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("OrderId")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("OriginalProductId")
@@ -114,22 +114,25 @@ namespace TemperoDaVovo.Infrastructure.Migrations
 
                     b.Property<string>("ProductName")
                         .IsRequired()
+                        .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.OrderItemSideDish", b =>
@@ -140,9 +143,11 @@ namespace TemperoDaVovo.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("OrderItemId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("OriginalSideDishId")
@@ -152,16 +157,18 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderItemId");
+                    b.HasIndex("OrderItemId", "OriginalSideDishId");
 
-                    b.ToTable("OrderItemSideDishes");
+                    b.ToTable("OrderItemSideDishes", (string)null);
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Product", b =>
@@ -398,14 +405,18 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                 {
                     b.HasOne("TemperoDaVovo.Domain.Entities.Order", null)
                         .WithMany("Items")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.OrderItemSideDish", b =>
                 {
                     b.HasOne("TemperoDaVovo.Domain.Entities.OrderItem", null)
                         .WithMany("SideDishes")
-                        .HasForeignKey("OrderItemId");
+                        .HasForeignKey("OrderItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Product", b =>

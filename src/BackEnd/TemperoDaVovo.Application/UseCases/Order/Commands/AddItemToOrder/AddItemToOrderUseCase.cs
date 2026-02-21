@@ -28,22 +28,23 @@ public class AddItemToOrderUseCase : IAddItemToOrderUseCase
 
     public async Task<OrderResponseJson> Execute(AddItemToOrderRequestJson request)
     {
-        var order = await _orderReadOnlyRepository.GetOpenBySession(request.RestaurantId, request.ClientSessionId) ??
-                    new Domain.Entities.Order(request.RestaurantId, request.ClientSessionId, "", "");
+        var order = await _orderReadOnlyRepository.GetOpenBySession(request.RestaurantId, request.ClientSessionId);
+        var isNew = order == null;
+
+        if (isNew)
+            order = new Domain.Entities.Order(request.RestaurantId, request.ClientSessionId, "", "");
 
         var product = await _productReadOnlyRepository.GetProductByIdWithCategory(request.ProductId);
-
         if (product == null)
             throw new BusinessException(["Produto não existe"]);
 
-        var item = new OrderItem(product.Id, product.Name, product.Price, request.Quantity, request.Observation);
+        var item = new OrderItem(order.Id, product.Id, product.Name, product.Price, request.Quantity, request.Observation);
 
         foreach (var sd in request.SideDishes)
         {
             var sideDish = await _sideDishReadOnlyRepository.GetSideDishById(sd.SideDishId);
             if (sideDish is null)
                 throw new BusinessException(["Acompanhamento inválido"]);
-
             item.AddSideDish(new OrderItemSideDish(sideDish.Id, sideDish.Name, sideDish.UnitPrice, sd.Quantity));
         }
 
@@ -51,15 +52,13 @@ public class AddItemToOrderUseCase : IAddItemToOrderUseCase
         order.AddItem(item);
         order.CalculateTotals();
 
-        if (order.Id == Guid.Empty)
+        if (isNew)
             await _orderWriteOnlyRepository.Create(order);
-
         else
-            await _orderWriteOnlyRepository.Update(order);
+            await _orderWriteOnlyRepository.AddItemToExistingOrder(item);
 
         await _unitOfWork.CommitAsync();
 
-        return new OrderResponseJson(
-            order.Id, order.SubTotal, order.Total, order.Items.Count);
+        return new OrderResponseJson(order.Id, order.SubTotal, order.Total, order.Items.Count);
     }
 }

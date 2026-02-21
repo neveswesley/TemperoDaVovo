@@ -69,7 +69,7 @@ public class DuplicateProductUseCase : IDuplicateProductUseCase
 
         var completeProduct = await _productReadOnlyRepository.GetProductByIdWithCategory(createdProduct.Id);
 
-        var productDto = new ProductRequest
+        var productDto = new ProductRequestJson
         {
             Id = completeProduct.Id,
             Name = completeProduct.Name,

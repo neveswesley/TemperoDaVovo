@@ -8,5 +8,5 @@ public class DuplicateProductResponseJson
     
     public bool Success { get; set; }
     public string Message { get; set; } = string.Empty;
-    public ProductRequest DuplicatedProduct { get; set; } = new ProductRequest();
+    public ProductRequestJson DuplicatedProduct { get; set; } = new ProductRequestJson();
 }

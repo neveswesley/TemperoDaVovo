@@ -39,4 +39,5 @@ public class RestaurantRepository : IRestaurantReadOnlyRepository, IRestaurantWr
     {
         return _context.Restaurants.AnyAsync(r => r.Id == restaurantId);
     }
+
 }
