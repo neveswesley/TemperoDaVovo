@@ -21,12 +21,6 @@ D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\scopedc
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets.build.json
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets.development.json
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets\msbuild.TemperoDaVovo.API.Microsoft.AspNetCore.StaticWebAssets.props
-D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets\msbuild.TemperoDaVovo.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets\msbuild.build.TemperoDaVovo.API.props
-D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.TemperoDaVovo.API.props
-D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.TemperoDaVovo.API.props
-D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets.pack.json
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\TemperoD.CDBADD72.Up2Date
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\TemperoDaVovo.API.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\refint\TemperoDaVovo.API.dll
@@ -124,7 +118,6 @@ D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\System.
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\System.Reflection.MetadataLoadContext.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\System.Text.Json.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\af\Humanizer.resources.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\ar\Humanizer.resources.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\az\Humanizer.resources.dll
@@ -267,3 +260,9 @@ D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\zh-Hant
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\FluentValidation.dll
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\TemperoDaVovo.API.sourcelink.json
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\rjimswa.dswa.cache.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets.build.json.cache
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\swae.build.ex.cache

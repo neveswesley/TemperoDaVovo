@@ -22,26 +22,32 @@ public class UpdateOrderItemUseCase : IUpdateOrderItemUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> ExecuteAsync(Guid orderItemId, UpdateOrderItemRequest request, CancellationToken ct = default)
+    public async Task<Guid> Execute(Guid orderItemId, UpdateOrderItemRequest request, CancellationToken ct = default)
     {
         await Validate(request);
-
+        
         var orderItem = await _orderReadOnlyRepository.GetByIdWithSideDishesAsync(orderItemId, ct);
         if (orderItem is null)
             throw new NotFoundException(["O item não foi encontrado."]);
+        
+        var order = await _orderReadOnlyRepository.GetOrderById(orderItem.OrderId);
+        if (order is null)
+            throw new NotFoundException(["Pedido não encontrado."]);
 
-        // Build new side dishes snapshot
         var newSideDishes = new List<OrderItemSideDish>();
         foreach (var sdDto in request.SideDishes)
         {
             var sideDish = await _sideDishReadOnlyRepository.GetSideDishById(sdDto.SideDishId);
             if (sideDish is null)
                 throw new NotFoundException(["O complemento não foi encontrado."]);
+            
+            var groupName = sideDish.SideDishGroup.Name;
 
             newSideDishes.Add(OrderItemSideDish.Create(
                 orderItemId:        orderItemId,
                 originalSideDishId: sideDish.Id,
                 name:               sideDish.Name,
+                groupName:         groupName,
                 unitPrice:          sideDish.UnitPrice,
                 quantity:           sdDto.Quantity
             ));
@@ -52,6 +58,9 @@ public class UpdateOrderItemUseCase : IUpdateOrderItemUseCase
             observation: request.Observation,
             sideDishes:  newSideDishes
         );
+        
+        orderItem.Recalculate();
+        order.CalculateTotals();
 
         await _orderWriteOnlyRepository.UpdateOrderItem(orderItem, ct);
         await _unitOfWork.CommitAsync();

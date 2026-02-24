@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
+using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Queries.CurrentOrder;
 using TemperoDaVovo.Communications.Requests;
@@ -10,16 +11,17 @@ namespace TemperoDaVovo.API.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        
         private readonly IAddItemToOrderUseCase _addItemToOrderUseCase;
         private readonly IGetCurrentOrderUseCase _getCurrentOrderUseCase;
         private readonly IUpdateOrderItemUseCase _updateOrderItemUseCase;
+        private readonly IRemoveOrderItemUseCase _removeOrderItemUseCase;
 
-        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase)
+        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase)
         {
             _addItemToOrderUseCase = addItemToOrderUseCase;
             _getCurrentOrderUseCase = getCurrentOrderUseCase;
             _updateOrderItemUseCase = updateOrderItemUseCase;
+            _removeOrderItemUseCase = removeOrderItemUseCase;
         }
 
         [HttpPost("add-item")]
@@ -29,8 +31,6 @@ namespace TemperoDaVovo.API.Controllers
         public async Task<IActionResult> AddItem(AddItemToOrderRequestJson request)
         {
             var result = await _addItemToOrderUseCase.Execute(request);
-            Console.WriteLine($"result é null? {result == null}");
-            Console.WriteLine($"result.OrderId: {result?.OrderId}");
             return Ok(result);
         }
         
@@ -53,7 +53,17 @@ namespace TemperoDaVovo.API.Controllers
             [FromBody] UpdateOrderItemRequest request,
             CancellationToken ct)
         {
-            await _updateOrderItemUseCase.ExecuteAsync(orderItemId, request, ct);
+            await _updateOrderItemUseCase.Execute(orderItemId, request, ct);
+            return NoContent();
+        }
+
+        [HttpDelete("delete-order-item/{orderItemId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteOrderItem([FromRoute] Guid orderItemId)
+        {
+            await _removeOrderItemUseCase.Execute(orderItemId);
             return NoContent();
         }
     }

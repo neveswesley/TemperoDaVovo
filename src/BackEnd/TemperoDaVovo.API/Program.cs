@@ -37,18 +37,6 @@ builder.Services.AddControllers()
             JsonNamingPolicy.CamelCase;
     });
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenLocalhost(5128);
-    options.ListenLocalhost(44356, listenOptions =>
-    {
-        listenOptions.UseHttps(
-            Path.Combine(builder.Environment.ContentRootPath, "certs", "localhost+2.pem"),
-            Path.Combine(builder.Environment.ContentRootPath, "certs", "localhost+2-key.pem")
-        );
-    });
-});
-
 
 var app = builder.Build();
 

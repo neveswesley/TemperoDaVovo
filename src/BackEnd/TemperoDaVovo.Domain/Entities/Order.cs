@@ -42,5 +42,16 @@ public class Order : BaseEntity
         SubTotal = Items.Sum(i => i.TotalPrice);
         Total = SubTotal;
     }
+    
+    public void RemoveItemAndRecalculate(Guid orderItemId)
+    {
+        var item = Items.FirstOrDefault(i => i.Id == orderItemId);
+        if (item != null)
+            Items.Remove(item);
+
+        CalculateTotals();
+    }
+    
+    
 
 }

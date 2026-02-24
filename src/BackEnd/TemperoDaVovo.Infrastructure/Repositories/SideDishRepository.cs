@@ -121,6 +121,6 @@ public class SideDishRepository : ISideDishReadOnlyRepository, ISideDishWriteOnl
 
     public async Task<SideDish> GetSideDishById(Guid sideDishId)
     {
-        return await _context.SideDishes.FirstOrDefaultAsync(s=>s.Id == sideDishId);
+        return await _context.SideDishes.Include((sd=>sd.SideDishGroup)).FirstOrDefaultAsync(s=>s.Id == sideDishId);
     }
 }

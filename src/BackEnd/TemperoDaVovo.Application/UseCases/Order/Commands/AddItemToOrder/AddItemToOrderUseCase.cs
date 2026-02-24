@@ -45,7 +45,9 @@ public class AddItemToOrderUseCase : IAddItemToOrderUseCase
             var sideDish = await _sideDishReadOnlyRepository.GetSideDishById(sd.SideDishId);
             if (sideDish is null)
                 throw new BusinessException(["Acompanhamento inválido"]);
-            item.AddSideDish(new OrderItemSideDish(sideDish.Id, sideDish.Name, sideDish.UnitPrice, sd.Quantity));
+            
+            var groupName = sideDish.SideDishGroup?.Name ?? string.Empty;
+            item.AddSideDish(new OrderItemSideDish(sideDish.Id, sideDish.Name, groupName, sideDish.UnitPrice, sd.Quantity));
         }
 
         item.Recalculate();

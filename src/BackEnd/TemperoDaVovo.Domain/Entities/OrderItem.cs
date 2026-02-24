@@ -1,9 +1,9 @@
 ﻿namespace TemperoDaVovo.Domain.Entities;
 
 public class OrderItem
-{
+{    public Guid OrderId { get; private set; }
+
     public Guid Id { get; private set; }
-    public Guid OrderId { get; private set; }
 
     // snapshot do produto
     public Guid? OriginalProductId { get; private set; }
@@ -65,7 +65,7 @@ public class OrderItem
         SideDishes.Remove(sideDish);
         Recalculate();
     }
-
+    
     public void Recalculate()
     {
         var sideDishTotal = SideDishes.Sum(x => x.TotalPrice);

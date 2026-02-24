@@ -1,12 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "wGkk67sCzpTxuBxsjrEgUdjHk/wwdo7ppVa8AXiPqo4=",
-  "Source": "TemperoDaVovo.API",
-  "BasePath": "_content/TemperoDaVovo.API",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
-}
+{"Version":1,"Hash":"ieJn2LTQWMRQgQpJAHUrVV95pTF0M9A2NASkXjwZTEs=","Source":"TemperoDaVovo.API","BasePath":"/","Mode":"Root","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

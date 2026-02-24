@@ -7,6 +7,7 @@ public class OrderItemSideDish
 
     public Guid? OriginalSideDishId { get; private set; }
     public string Name { get; private set; } = string.Empty;
+    public string GroupName { get; private set; } = string.Empty;
     public decimal UnitPrice { get; private set; }
     public int Quantity { get; private set; }
     public decimal TotalPrice { get; private set; }
@@ -16,6 +17,7 @@ public class OrderItemSideDish
     public OrderItemSideDish(
         Guid? originalSideDishId,
         string name,
+        string groupName,
         decimal unitPrice,
         int quantity
     )
@@ -23,6 +25,7 @@ public class OrderItemSideDish
         Id = Guid.NewGuid();
         OriginalSideDishId = originalSideDishId;
         Name = name;
+        GroupName = groupName;
         UnitPrice = unitPrice;
         Quantity = quantity;
         TotalPrice = unitPrice * quantity;
@@ -30,7 +33,7 @@ public class OrderItemSideDish
 
     public static OrderItemSideDish Create(
         Guid orderItemId, Guid originalSideDishId,
-        string name, decimal unitPrice, int quantity)
+        string name, string groupName, decimal unitPrice, int quantity)
     {
         return new OrderItemSideDish
         {
@@ -38,6 +41,7 @@ public class OrderItemSideDish
             OrderItemId        = orderItemId,
             OriginalSideDishId = originalSideDishId,
             Name               = name,
+            GroupName = groupName,
             UnitPrice          = unitPrice,
             Quantity           = quantity,
             TotalPrice         = unitPrice * quantity

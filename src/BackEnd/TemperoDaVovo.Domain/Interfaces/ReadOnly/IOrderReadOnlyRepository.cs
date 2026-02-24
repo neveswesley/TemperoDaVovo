@@ -8,5 +8,6 @@ public interface IOrderReadOnlyRepository
     Task<OrderItem> GetOrderItemById(Guid orderItemId);
     Task<OrderItem?> GetTrackedById(Guid id);
     Task<OrderItem?> GetByIdWithSideDishesAsync(Guid orderItemId, CancellationToken ct = default);
-
+    Task<Order?> GetOrderById(Guid orderId);
+    
 }

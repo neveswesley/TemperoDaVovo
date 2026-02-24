@@ -5,6 +5,7 @@ using TemperoDaVovo.Application.UseCases.Category.Commands.Reorder;
 using TemperoDaVovo.Application.UseCases.Category.Commands.UpdateProduct;
 using TemperoDaVovo.Application.UseCases.Category.Queries.GetCategoriesWithProducts;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
+using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Queries.CurrentOrder;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
@@ -80,5 +81,6 @@ public static class ServicesExtensions
         services.AddScoped<IAddItemToOrderUseCase , AddItemToOrderUseCase >();
         services.AddScoped<IGetCurrentOrderUseCase , GetCurrentOrderUseCase >();
         services.AddScoped<IUpdateOrderItemUseCase , UpdateOrderItemUseCase >();
+        services.AddScoped<IRemoveOrderItemUseCase , RemoveOrderItemUseCase >();
     }
 }

@@ -84,4 +84,22 @@ public class OrderRepository : IOrderWriteOnlyRepository, IOrderReadOnlyReposito
             .Include(oi => oi.SideDishes)
             .FirstOrDefaultAsync(oi => oi.Id == orderItemId, ct);
     }
+
+    public async Task<Order?> GetOrderById(Guid orderId)
+    {
+        return await _context.Orders
+            .Include(o => o.Items)
+            .ThenInclude(i => i.SideDishes)
+            .FirstOrDefaultAsync(o => o.Id == orderId);
+    }
+
+    public async Task RemoveItemByCart(Guid orderItemId)
+    {
+        var item = await _context.OrderItems
+            .Include(i => i.SideDishes)
+            .FirstOrDefaultAsync(o => o.Id == orderItemId);
+    
+        if (item != null)
+            _context.OrderItems.Remove(item);
+    }
 }
