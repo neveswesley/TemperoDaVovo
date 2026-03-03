@@ -18,7 +18,7 @@ namespace TemperoDaVovo.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(CreateRestaurantResponseJson), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status201Created)]
         public async Task<IActionResult> Post([FromBody] CreateRestaurantRequestJson request)
         {
             var result = await _createRestaurantUseCase.Execute(request);

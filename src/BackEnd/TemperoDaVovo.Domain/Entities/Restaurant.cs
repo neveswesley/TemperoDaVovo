@@ -5,4 +5,11 @@ public class Restaurant : BaseEntity
     public string Name { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
+    public int GlobalAdditionalDeliveryMinutes { get; private set; }
+    public ICollection<Neighborhood> Neighborhoods { get; set; } = new List<Neighborhood>();
+
+    public void UpdateGlobalDeliveryDelay(int minutes)
+    {
+        GlobalAdditionalDeliveryMinutes = minutes;
+    }
 }

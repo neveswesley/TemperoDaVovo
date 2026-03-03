@@ -5,5 +5,5 @@ namespace TemperoDaVovo.Application.UseCases.Restaurant.Create;
 
 public interface ICreateRestaurantUseCase
 {
-    Task<CreateRestaurantResponseJson> Execute(CreateRestaurantRequestJson request);
+    Task<RestaurantResponseJson> Execute(CreateRestaurantRequestJson request);
 }

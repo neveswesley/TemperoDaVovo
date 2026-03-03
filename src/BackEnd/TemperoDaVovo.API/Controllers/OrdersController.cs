@@ -1,8 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
+using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
+using TemperoDaVovo.Application.UseCases.Order.Commands.ExistingPhone;
+using TemperoDaVovo.Application.UseCases.Order.Commands.Finalize;
+using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveAll;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Queries.CurrentOrder;
+using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByCliente;
 using TemperoDaVovo.Communications.Requests;
 
 namespace TemperoDaVovo.API.Controllers
@@ -15,13 +20,23 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IGetCurrentOrderUseCase _getCurrentOrderUseCase;
         private readonly IUpdateOrderItemUseCase _updateOrderItemUseCase;
         private readonly IRemoveOrderItemUseCase _removeOrderItemUseCase;
+        private readonly IRemoveAllOrderItemUseCase _removeAllOrderItemUseCase;
+        private readonly ICompleteCheckoutUseCase _completeCheckoutUseCase;
+        private readonly IExistingPhoneUseCase _existingPhoneUseCase;
+        private readonly IFinalizeOrderUseCase _finalizeOrderUseCase;
+        private readonly IGetOrderByClientUseCase _getOrderByClientUseCase;
 
-        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase)
+        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase)
         {
             _addItemToOrderUseCase = addItemToOrderUseCase;
             _getCurrentOrderUseCase = getCurrentOrderUseCase;
             _updateOrderItemUseCase = updateOrderItemUseCase;
             _removeOrderItemUseCase = removeOrderItemUseCase;
+            _removeAllOrderItemUseCase = removeAllOrderItemUseCase;
+            _completeCheckoutUseCase = completeCheckoutUseCase;
+            _existingPhoneUseCase = existingPhoneUseCase;
+            _finalizeOrderUseCase = finalizeOrderUseCase;
+            _getOrderByClientUseCase = getOrderByClientUseCase;
         }
 
         [HttpPost("add-item")]
@@ -65,6 +80,57 @@ namespace TemperoDaVovo.API.Controllers
         {
             await _removeOrderItemUseCase.Execute(orderItemId);
             return NoContent();
+        }
+
+        [HttpDelete("remove-all-order-item/{orderId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RemoveAllOrderItem([FromRoute] Guid orderId)
+        {
+            await _removeAllOrderItemUseCase.Execute(orderId);
+            return NoContent();
+        }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPatch("complete-checkout/{orderId}")]
+        public async Task<IActionResult> CompleteCheckout(
+            [FromRoute] Guid orderId,
+            [FromBody] CompleteCheckoutRequestJson request)
+        {
+            await _completeCheckoutUseCase.Execute(request);
+            return NoContent();
+        }
+        
+        [HttpGet("existing-phone/{phone}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> ExistingPhone([FromRoute] string phone)
+        {
+            var name = await _existingPhoneUseCase.Execute(phone);
+            if (name is null) return NoContent();
+            return Ok(new { name });
+        }
+
+        [HttpPut("finalize-order/{orderId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> FinalizeOrder([FromRoute] Guid orderId, [FromBody] CheckoutOrderRequestJson request)
+        {
+            var result = await _finalizeOrderUseCase.ExecuteAsync(request);
+            return Ok(result);
+        }
+        
+        [HttpGet("orders/{clientSessionId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCurrent([FromRoute] string clientSessionId)
+        {
+            var result = await _getOrderByClientUseCase.Execute(clientSessionId);
+            return Ok(result);
         }
     }
 }

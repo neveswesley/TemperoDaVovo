@@ -50,14 +50,73 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.City", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Neighborhood", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("CityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("DeliveryFee")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("RestaurantId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Neighborhoods");
+                });
+
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("AddressName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ClientSessionId")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Complement")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -74,14 +133,38 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal?>("DeliveryFee")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DeliveryMode")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("NeighborhoodId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("PaymentId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Reference")
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("SubTotal")
                         .HasColumnType("TEXT");
@@ -93,6 +176,11 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NeighborhoodId");
+
+                    b.HasIndex("PaymentId")
+                        .IsUnique();
 
                     b.ToTable("Orders");
                 });
@@ -173,6 +261,50 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.HasIndex("OrderItemId", "OriginalSideDishId");
 
                     b.ToTable("OrderItemSideDishes", (string)null);
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Change")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PaymentWay")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Product", b =>
@@ -405,6 +537,47 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.City", b =>
+                {
+                    b.HasOne("TemperoDaVovo.Domain.Entities.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Neighborhood", b =>
+                {
+                    b.HasOne("TemperoDaVovo.Domain.Entities.City", "City")
+                        .WithMany("Neighborhoods")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TemperoDaVovo.Domain.Entities.Restaurant", null)
+                        .WithMany("Neighborhoods")
+                        .HasForeignKey("RestaurantId");
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Order", b =>
+                {
+                    b.HasOne("TemperoDaVovo.Domain.Entities.Neighborhood", "Neighborhood")
+                        .WithMany()
+                        .HasForeignKey("NeighborhoodId");
+
+                    b.HasOne("TemperoDaVovo.Domain.Entities.Payment", "Payment")
+                        .WithOne()
+                        .HasForeignKey("TemperoDaVovo.Domain.Entities.Order", "PaymentId");
+
+                    b.Navigation("Neighborhood");
+
+                    b.Navigation("Payment");
+                });
+
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.OrderItem", b =>
                 {
                     b.HasOne("TemperoDaVovo.Domain.Entities.Order", null)
@@ -469,6 +642,11 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.City", b =>
+                {
+                    b.Navigation("Neighborhoods");
+                });
+
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Order", b =>
                 {
                     b.Navigation("Items");
@@ -482,6 +660,11 @@ namespace TemperoDaVovo.Infrastructure.Migrations
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Product", b =>
                 {
                     b.Navigation("ProductSideDishGroups");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Restaurant", b =>
+                {
+                    b.Navigation("Neighborhoods");
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDishGroup", b =>

@@ -4,7 +4,6 @@ public class OrderItemSideDish
 {
     public Guid Id { get; private set; }
     public Guid? OrderItemId { get; private set; }
-
     public Guid? OriginalSideDishId { get; private set; }
     public string Name { get; private set; } = string.Empty;
     public string GroupName { get; private set; } = string.Empty;
@@ -12,7 +11,9 @@ public class OrderItemSideDish
     public int Quantity { get; private set; }
     public decimal TotalPrice { get; private set; }
 
-    protected OrderItemSideDish() { }
+    protected OrderItemSideDish()
+    {
+    }
 
     public OrderItemSideDish(
         Guid? originalSideDishId,
@@ -31,22 +32,19 @@ public class OrderItemSideDish
         TotalPrice = unitPrice * quantity;
     }
 
-    public static OrderItemSideDish Create(
-        Guid orderItemId, Guid originalSideDishId,
-        string name, string groupName, decimal unitPrice, int quantity)
+    public static OrderItemSideDish Create(Guid orderItemId, Guid originalSideDishId, string name, string groupName,
+    decimal unitPrice, int quantity)
     {
         return new OrderItemSideDish
         {
-            Id                 = Guid.NewGuid(),
-            OrderItemId        = orderItemId,
+            Id = Guid.NewGuid(),
+            OrderItemId = orderItemId,
             OriginalSideDishId = originalSideDishId,
-            Name               = name,
+            Name = name,
             GroupName = groupName,
-            UnitPrice          = unitPrice,
-            Quantity           = quantity,
-            TotalPrice         = unitPrice * quantity
+            UnitPrice = unitPrice,
+            Quantity = quantity,
+            TotalPrice = unitPrice * quantity
         };
     }
-    
-    
 }

@@ -28,26 +28,52 @@ public class AddItemToOrderUseCase : IAddItemToOrderUseCase
 
     public async Task<OrderResponseJson> Execute(AddItemToOrderRequestJson request)
     {
-        var order = await _orderReadOnlyRepository.GetOpenBySession(request.RestaurantId, request.ClientSessionId);
+        var order = await _orderReadOnlyRepository
+            .GetOpenBySession(request.RestaurantId, request.ClientSessionId);
+
         var isNew = order == null;
 
         if (isNew)
-            order = new Domain.Entities.Order(request.RestaurantId, request.ClientSessionId, "", "");
+            order = new Domain.Entities.Order(
+                request.RestaurantId, 
+                request.ClientSessionId, 
+                "", ""
+            );
 
-        var product = await _productReadOnlyRepository.GetProductByIdWithCategory(request.ProductId);
+        var product = await _productReadOnlyRepository
+            .GetProductByIdWithCategory(request.ProductId);
+
         if (product == null)
             throw new BusinessException(["Produto não existe"]);
 
-        var item = new OrderItem(order.Id, product.Id, product.Name, product.Price, request.Quantity, request.Observation);
+        var item = new OrderItem(
+            order.Id,
+            product.Id,
+            product.Name,
+            product.Price,
+            request.Quantity,
+            request.Observation
+        );
 
         foreach (var sd in request.SideDishes)
         {
-            var sideDish = await _sideDishReadOnlyRepository.GetSideDishById(sd.SideDishId);
+            var sideDish = await _sideDishReadOnlyRepository
+                .GetSideDishById(sd.SideDishId);
+
             if (sideDish is null)
                 throw new BusinessException(["Acompanhamento inválido"]);
-            
+
             var groupName = sideDish.SideDishGroup?.Name ?? string.Empty;
-            item.AddSideDish(new OrderItemSideDish(sideDish.Id, sideDish.Name, groupName, sideDish.UnitPrice, sd.Quantity));
+
+            item.AddSideDish(
+                new OrderItemSideDish(
+                    sideDish.Id,
+                    sideDish.Name,
+                    groupName,
+                    sideDish.UnitPrice,
+                    sd.Quantity
+                )
+            );
         }
 
         item.Recalculate();
@@ -55,12 +81,23 @@ public class AddItemToOrderUseCase : IAddItemToOrderUseCase
         order.CalculateTotals();
 
         if (isNew)
+        {
+            var nextNumber = await _orderWriteOnlyRepository.GetNextOrderNumber();
+            order.SetOrderNumber(nextNumber);
             await _orderWriteOnlyRepository.Create(order);
+        }
         else
+        {
             await _orderWriteOnlyRepository.AddItemToExistingOrder(item);
+        }
 
         await _unitOfWork.CommitAsync();
 
-        return new OrderResponseJson(order.Id, order.SubTotal, order.Total, order.Items.Count);
+        return new OrderResponseJson(
+            order.Id,
+            order.SubTotal,
+            order.Total,
+            order.Items.Count
+        );
     }
 }

@@ -25,4 +25,9 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UseCases\Payment\Commands\" />
+      <Folder Include="UseCases\Payment\Queries\" />
+    </ItemGroup>
+
 </Project>

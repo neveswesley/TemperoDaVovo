@@ -9,5 +9,8 @@ public interface IOrderReadOnlyRepository
     Task<OrderItem?> GetTrackedById(Guid id);
     Task<OrderItem?> GetByIdWithSideDishesAsync(Guid orderItemId, CancellationToken ct = default);
     Task<Order?> GetOrderById(Guid orderId);
+    Task<string?> ExistingPhone(string phone);
+    Task<List<Order>> GetOrdersByClienteId(string sessionId);
+    Task<bool> ExistingClient(string sessionId);
     
 }

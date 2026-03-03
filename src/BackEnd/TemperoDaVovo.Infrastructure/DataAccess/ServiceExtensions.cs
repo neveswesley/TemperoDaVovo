@@ -42,5 +42,10 @@ public static class ServiceExtensions
         services.AddScoped<IProductSideDishGroupReadOnlyRepository, ProductSideDishGroupRepository>();
         services.AddScoped<IOrderReadOnlyRepository, OrderRepository>();
         services.AddScoped<IOrderWriteOnlyRepository, OrderRepository>();
+        services.AddScoped<INeighborhoodWriteOnlyRepository, NeighborhoodRepository>();
+        services.AddScoped<INeighborhoodReadOnlyRepository, NeighborhoodRepository>();
+        services.AddScoped<ICityReadOnlyRepository, CityRepository>();
+        services.AddScoped<ICityWriteOnlyRepository, CityRepository>();
+        services.AddScoped<IPaymentWriteOnlyRepository, PaymentRepository>();
     }
 }

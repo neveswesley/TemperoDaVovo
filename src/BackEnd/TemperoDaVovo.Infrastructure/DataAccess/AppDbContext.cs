@@ -21,6 +21,9 @@ public class AppDbContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<OrderItemSideDish> OrderItemSideDishes { get; set; }
+    public DbSet<Neighborhood> Neighborhoods { get; set; }
+    public DbSet<City> Cities { get; set; }
+    public DbSet<Payment> Payments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,6 +34,7 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
         modelBuilder.ApplyConfiguration(new OrderItemSideDishConfiguration());
         modelBuilder.ApplyConfiguration(new RestaurantConfiguration());
+        modelBuilder.ApplyConfiguration(new NeighborhoodConfiguration());
         
         base.OnModelCreating(modelBuilder);
         

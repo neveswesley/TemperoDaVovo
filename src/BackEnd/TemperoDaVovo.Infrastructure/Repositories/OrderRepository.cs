@@ -25,11 +25,14 @@ public class OrderRepository : IOrderWriteOnlyRepository, IOrderReadOnlyReposito
     public async Task<Guid> Update(Order order)
     {
         var tracked = await _context.Orders
-            .Include(o => EF.Property<ICollection<OrderItem>>(o, "_items"))
+            .Include(o => o.Items)
             .ThenInclude(i => i.SideDishes)
             .FirstAsync(o => o.Id == order.Id);
 
+        _context.Entry(tracked).CurrentValues.SetValues(order);
+
         tracked.CalculateTotals();
+
         return tracked.Id;
     }
 
@@ -93,6 +96,34 @@ public class OrderRepository : IOrderWriteOnlyRepository, IOrderReadOnlyReposito
             .FirstOrDefaultAsync(o => o.Id == orderId);
     }
 
+    public async Task<string?> ExistingPhone(string name)
+    {
+        var orders = await _context.Orders.ToListAsync();
+        foreach (var order in orders)
+        {
+            if (order.CustomerPhone == name)
+                return order.CustomerName;
+        }
+
+        return null;
+    }
+
+    public async Task<List<Order>> GetOrdersByClienteId(string sessionId)
+    {
+        return await _context.Orders
+            .Include(o => o.Payment)
+            .Include(o => o.Items)
+            .ThenInclude(i => i.SideDishes)
+            .Where(o => o.ClientSessionId == sessionId)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
+    }
+
+    public Task<bool> ExistingClient(string sessionId)
+    {
+        return _context.Orders.AnyAsync(o => o.ClientSessionId == sessionId);
+    }
+
     public async Task RemoveItemByCart(Guid orderItemId)
     {
         var item = await _context.OrderItems
@@ -101,5 +132,28 @@ public class OrderRepository : IOrderWriteOnlyRepository, IOrderReadOnlyReposito
     
         if (item != null)
             _context.OrderItems.Remove(item);
+    }
+
+    public Task<Guid> FinalizeOrder(Order order)
+    {
+        _context.Orders.Update(order);
+        return Task.FromResult(order.Id);
+    }
+    
+    public async Task<int> GetNextOrderNumber()
+    {
+        var random = new Random();
+        int number;
+        bool exists;
+
+        do
+        {
+            number = random.Next(1000, 10000);
+            exists = await _context.Orders
+                .AnyAsync(o => o.OrderNumber == number);
+
+        } while (exists);
+
+        return number;
     }
 }

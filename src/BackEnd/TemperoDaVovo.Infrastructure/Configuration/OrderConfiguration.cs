@@ -12,5 +12,20 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .WithOne()
             .HasForeignKey(i => i.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder
+            .HasOne(o => o.Neighborhood)
+            .WithMany()
+            .HasForeignKey(o => o.NeighborhoodId)
+            .IsRequired(false);
+        
+        builder.Property(o => o.AddressName)
+            .HasConversion<string>();
+        
+        builder
+            .HasOne(o => o.Payment)
+            .WithOne()
+            .HasForeignKey<Order>(o => o.PaymentId)
+            .IsRequired(false);
     }
 }

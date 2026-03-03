@@ -20,7 +20,7 @@ public class CreateRestaurantUseCase : ICreateRestaurantUseCase
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
     }
 
-    public async Task<CreateRestaurantResponseJson> Execute(CreateRestaurantRequestJson request)
+    public async Task<RestaurantResponseJson> Execute(CreateRestaurantRequestJson request)
     {
         await Validate(request);
         var restaurant = new Domain.Entities.Restaurant()
@@ -33,7 +33,7 @@ public class CreateRestaurantUseCase : ICreateRestaurantUseCase
         await _restaurantWriteOnlyRepository.AddAsync(restaurant);
         await _unitOfWork.CommitAsync();
 
-        return new CreateRestaurantResponseJson
+        return new RestaurantResponseJson
         {
             Id = restaurant.Id,
             Name = restaurant.Name,
