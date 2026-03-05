@@ -37,6 +37,8 @@ builder.Services.AddControllers()
             JsonNamingPolicy.CamelCase;
     });
 
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 

@@ -23,12 +23,7 @@ public class CreateRestaurantUseCase : ICreateRestaurantUseCase
     public async Task<RestaurantResponseJson> Execute(CreateRestaurantRequestJson request)
     {
         await Validate(request);
-        var restaurant = new Domain.Entities.Restaurant()
-        {
-            Name = request.Name,
-            Address = request.Address,
-            Phone = request.Phone
-        };
+        var restaurant = new Domain.Entities.Restaurant(request.Name, request.Address, request.Phone);
 
         await _restaurantWriteOnlyRepository.AddAsync(restaurant);
         await _unitOfWork.CommitAsync();
@@ -50,7 +45,7 @@ public class CreateRestaurantUseCase : ICreateRestaurantUseCase
             result.Errors.Add(
                 new FluentValidation.Results.ValidationFailure(string.Empty, "Número de telefone já cadastrado."));
 
-        if (result.IsValid == false)
+        if (!result.IsValid)
         {
             var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
 

@@ -12,20 +12,21 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
     private readonly IOrderWriteOnlyRepository _orderWriteOnlyRepository;
     private readonly IOrderReadOnlyRepository _orderReadOnlyRepository;
     private readonly INeighborhoodReadOnlyRepository _neighborhoodReadOnlyRepository;
-    private readonly ICityReadOnlyRepository _cityReadOnlyRepository;
     private readonly IPaymentWriteOnlyRepository _paymentWriteOnlyRepository;
+    private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public FinalizeOrderUseCase(IOrderWriteOnlyRepository orderWriteOnlyRepository,
         IOrderReadOnlyRepository orderReadOnlyRepository,
-        INeighborhoodReadOnlyRepository neighborhoodReadOnlyRepository, ICityReadOnlyRepository cityReadOnlyRepository,
-        IPaymentWriteOnlyRepository paymentWriteOnlyRepository, IUnitOfWork unitOfWork)
+        INeighborhoodReadOnlyRepository neighborhoodReadOnlyRepository,
+        IPaymentWriteOnlyRepository paymentWriteOnlyRepository,
+        IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork)
     {
         _orderWriteOnlyRepository = orderWriteOnlyRepository;
         _orderReadOnlyRepository = orderReadOnlyRepository;
         _neighborhoodReadOnlyRepository = neighborhoodReadOnlyRepository;
-        _cityReadOnlyRepository = cityReadOnlyRepository;
         _paymentWriteOnlyRepository = paymentWriteOnlyRepository;
+        _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -38,7 +39,19 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
         if (order == null)
             throw new NotFoundException(["Pedido não encontrado."]);
 
+        var restaurant = await _restaurantReadOnlyRepository.GetRestaurantById(order.RestaurantId);
+        if (restaurant == null)
+            throw new NotFoundException(["Restaurante não encontrado."]);
+
+        var neighborhood = await _neighborhoodReadOnlyRepository.GetNeighborhoodById(request.NeighborhoodId);
+        if (neighborhood == null)
+            throw new NotFoundException(["Bairro não encontdado"]);
+
+        var estimatedTime = neighborhood.BaseDeliveryTimeInMinutes + restaurant.GlobalAdditionalDeliveryMinutes;
+        
         order.SetDeliveryFee(request.DeliveryFee);
+        order.SetEstimatedDeliveryTimeInMinutes(estimatedTime);
+        
 
         if (request.DeliveryMode == DeliveryMode.Delivery)
         {
@@ -67,7 +80,7 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
             payment.ProcessCard();
             order.SetPayment(payment.Id);
         }
-
+        
         order.UpdateStatus(OrderStatus.Preparing);
 
         await _orderWriteOnlyRepository.Update(order);

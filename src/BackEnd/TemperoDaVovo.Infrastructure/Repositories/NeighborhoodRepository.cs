@@ -32,4 +32,9 @@ public class NeighborhoodRepository : INeighborhoodWriteOnlyRepository, INeighbo
         return await _dbContext.Neighborhoods.Include(n=>n.City).Where(n=>n.City.RestaurantId == restaurantId).ToListAsync();
         
     }
+
+    public async Task<Neighborhood> GetNeighborhoodById(Guid? neighborhoodId)
+    {
+        return await _dbContext.Neighborhoods.FirstOrDefaultAsync(n => n.Id == neighborhoodId);
+    }
 }

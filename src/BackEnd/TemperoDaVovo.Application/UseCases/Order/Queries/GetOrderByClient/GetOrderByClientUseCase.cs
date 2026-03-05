@@ -37,6 +37,7 @@ public class GetOrderByClientUseCase : IGetOrderByClientUseCase
             Street = o.Street,
             Number = o.Number,
             Complement = o.Complement,
+            EstimatedDeliveryTimeInMinutes = o.EstimatedDeliveryTimeInMinutes,
             PaymentWay = o.Payment?.PaymentWay,
             Items = o.Items.Select(i => new OrderItemResponseJson()
             {

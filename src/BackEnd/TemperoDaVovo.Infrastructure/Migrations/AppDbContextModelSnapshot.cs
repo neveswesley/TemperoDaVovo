@@ -76,6 +76,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("BaseDeliveryTimeInMinutes")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("CityId")
                         .HasColumnType("TEXT");
 
@@ -109,6 +112,18 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<string>("AddressName")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("CanceledAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CanceledBy")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CancellationDescription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CancellationReasonType")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("City")
                         .HasColumnType("TEXT");
 
@@ -139,6 +154,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<int>("DeliveryMode")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("EstimatedDeliveryTimeInMinutes")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
@@ -148,10 +166,19 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<string>("Number")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("OnTheWayAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("OrderNumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("PaymentId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("PreparingStartedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ReadyAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Reference")
@@ -398,6 +425,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("GlobalAdditionalDeliveryMinutes")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");

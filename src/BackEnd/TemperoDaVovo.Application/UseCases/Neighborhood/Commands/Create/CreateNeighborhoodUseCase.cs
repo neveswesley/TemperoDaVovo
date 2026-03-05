@@ -31,7 +31,7 @@ public class CreateNeighborhoodUseCase : ICreateNeighborhoodUseCase
         if (city is null)
             throw new NotFoundException(["Cidade não encontrada."]);
 
-        var neighborhood = new Domain.Entities.Neighborhood(request.Name, request.DeliveryFee, request.CityId);
+        var neighborhood = new Domain.Entities.Neighborhood(request.Name, request.DeliveryFee, request.CityId, request.BaseDeliveryTimeInMinutes);
         
         await _neighborhoodWriteOnlyRepository.AddAsync(neighborhood);
         await _unitOfWork.CommitAsync();

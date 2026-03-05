@@ -273,6 +273,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Application\\TemperoDaVovo.Application.csproj": {
+                "projectPath": "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Application\\TemperoDaVovo.Application.csproj"
+              },
               "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Domain\\TemperoDaVovo.Domain.csproj": {
                 "projectPath": "D:\\Projetos\\TemperoDaVovo\\src\\BackEnd\\TemperoDaVovo.Domain\\TemperoDaVovo.Domain.csproj"
               }

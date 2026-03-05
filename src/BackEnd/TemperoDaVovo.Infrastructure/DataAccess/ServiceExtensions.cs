@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TemperoDaVovo.Application.Interfaces;
 using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Infrastructure.Repositories;
+using TemperoDaVovo.Infrastructure.Services;
 
 namespace TemperoDaVovo.Infrastructure.DataAccess;
 
@@ -47,5 +49,6 @@ public static class ServiceExtensions
         services.AddScoped<ICityReadOnlyRepository, CityRepository>();
         services.AddScoped<ICityWriteOnlyRepository, CityRepository>();
         services.AddScoped<IPaymentWriteOnlyRepository, PaymentRepository>();
+        services.AddScoped<ICurrentUser, CurrentUser>();
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
+using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
 using TemperoDaVovo.Application.UseCases.Order.Commands.ExistingPhone;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Finalize;
@@ -25,8 +26,9 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IExistingPhoneUseCase _existingPhoneUseCase;
         private readonly IFinalizeOrderUseCase _finalizeOrderUseCase;
         private readonly IGetOrderByClientUseCase _getOrderByClientUseCase;
+        private readonly ICancelOrderUseCase _cancelOrderUseCase;
 
-        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase)
+        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase, ICancelOrderUseCase cancelOrderUseCase)
         {
             _addItemToOrderUseCase = addItemToOrderUseCase;
             _getCurrentOrderUseCase = getCurrentOrderUseCase;
@@ -37,6 +39,7 @@ namespace TemperoDaVovo.API.Controllers
             _existingPhoneUseCase = existingPhoneUseCase;
             _finalizeOrderUseCase = finalizeOrderUseCase;
             _getOrderByClientUseCase = getOrderByClientUseCase;
+            _cancelOrderUseCase = cancelOrderUseCase;
         }
 
         [HttpPost("add-item")]
@@ -131,6 +134,16 @@ namespace TemperoDaVovo.API.Controllers
         {
             var result = await _getOrderByClientUseCase.Execute(clientSessionId);
             return Ok(result);
+        }
+
+        [HttpPut("cancel-order/{orderId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CancelOrder([FromRoute] Guid orderId, [FromBody] CancelOrderRequestJson request)
+        {
+            await _cancelOrderUseCase.ExecuteAsync(request);
+            return NoContent();
         }
     }
 }

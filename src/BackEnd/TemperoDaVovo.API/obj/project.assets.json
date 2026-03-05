@@ -2416,6 +2416,7 @@
           "BCrypt.Net-Next": "4.0.3",
           "Microsoft.EntityFrameworkCore": "8.0.23",
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.23",
+          "TemperoDaVovo.Application": "1.0.0",
           "TemperoDaVovo.Domain": "1.0.0"
         },
         "compile": {

@@ -15,6 +15,7 @@ public class GetOrderByClientResponse
     public string? Street { get; set; }
     public string? Number { get; set; }
     public string? Complement { get; set; }
+    public int EstimatedDeliveryTimeInMinutes { get; set; }
     public PaymentWay? PaymentWay { get; set; }
     public List<OrderItemResponseJson> Items { get; set; } = new();
 }

@@ -6,4 +6,5 @@ public interface INeighborhoodReadOnlyRepository
 {
     Task<bool> ExistingNameByCity(string name, Guid  cityId);
     Task<List<Neighborhood>> GetNeighborhoodByRestaurantId(Guid restaurantId);
+    Task<Neighborhood> GetNeighborhoodById(Guid? neighborhoodId);
 }

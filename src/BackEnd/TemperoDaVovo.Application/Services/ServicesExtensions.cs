@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TemperoDaVovo.Application.Interfaces;
 using TemperoDaVovo.Application.UseCases.Category.Commands;
 using TemperoDaVovo.Application.UseCases.Category.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Category.Commands.Reorder;
