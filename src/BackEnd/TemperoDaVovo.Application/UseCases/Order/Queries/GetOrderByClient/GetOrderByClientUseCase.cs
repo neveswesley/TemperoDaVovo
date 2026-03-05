@@ -20,7 +20,7 @@ public class GetOrderByClientUseCase : IGetOrderByClientUseCase
         if (client == null)
             throw new NotFoundException(["Cliente não encontrado."]);
 
-        var orders = await _orderReadOnlyRepository.GetOrdersByClienteId(clientId);
+        var orders = await _orderReadOnlyRepository.GetOrdersByClientId(clientId);
         if (orders is null)
             throw new NotFoundException(["Nenhum pedido encontrado."]);
 
@@ -36,9 +36,23 @@ public class GetOrderByClientUseCase : IGetOrderByClientUseCase
             DeliveryMode = o.DeliveryMode,
             Street = o.Street,
             Number = o.Number,
+            Neighborhood = o.Neighborhood?.Name,
+            City = o.City,
             Complement = o.Complement,
+            Reference = o.Reference,
             EstimatedDeliveryTimeInMinutes = o.EstimatedDeliveryTimeInMinutes,
-            PaymentWay = o.Payment?.PaymentWay,
+            Payment = o.Payment == null ? null : new PaymentResponseJson
+            {
+                PaymentWay = o.Payment.PaymentWay,
+                Status = o.Payment.Status,
+                Total = o.Payment.Total,
+                AmountPaid = o.Payment.AmountPaid,
+                Change = o.Payment.Change,
+            },
+            PreparingStartedAt = o.PreparingStartedAt,
+            OnTheWayAt = o.OnTheWayAt,
+            ReadyAt = o.ReadyAt,
+            CanceledAt = o.CanceledAt,
             Items = o.Items.Select(i => new OrderItemResponseJson()
             {
                 Id = i.Id,

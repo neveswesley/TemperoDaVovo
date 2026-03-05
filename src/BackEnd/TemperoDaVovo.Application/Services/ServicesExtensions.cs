@@ -11,6 +11,7 @@ using TemperoDaVovo.Application.UseCases.City.Queries.GetById;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Queries.GetAll;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
+using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
 using TemperoDaVovo.Application.UseCases.Order.Commands.ExistingPhone;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Finalize;
@@ -102,5 +103,6 @@ public static class ServicesExtensions
         services.AddScoped<IGetAllCitiesByRestaurantId , GetAllCitiesByRestaurantId >();
         services.AddScoped<IFinalizeOrderUseCase , FinalizeOrderUseCase >();
         services.AddScoped<IGetOrderByClientUseCase , GetOrderByClientUseCase >();
+        services.AddScoped<ICancelOrderUseCase , CancelOrderUseCase >();
     }
 }

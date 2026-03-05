@@ -54,11 +54,11 @@ namespace TemperoDaVovo.API.Controllers
         
         [HttpGet("current")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetCurrent([FromQuery] Guid restaurantId, [FromQuery] string clientSessionId)
         {
             var result = await _getCurrentOrderUseCase.Execute(restaurantId, clientSessionId);
-            if (result == null) return NotFound();
+            if (result == null) return NoContent();
             return Ok(result);
         }
         

@@ -59,7 +59,7 @@ public class Order : BaseEntity
         CustomerName = customerName;
         CustomerPhone = customerPhone;
         CreatedAt = DateTime.UtcNow;
-        Status = OrderStatus.PendingConfirmation;
+        Status = OrderStatus.Draft;
     }
 
     public void AddItem(OrderItem item)
@@ -147,24 +147,19 @@ public class Order : BaseEntity
 
         if (canceledBy == Enums.CanceledBy.Customer && !IsCustomerReason(reason))
             throw new DomainException(["Motivo inválido para cliente."]);
-        
+
         if (canceledBy == Enums.CanceledBy.Restaurant && !IsRestaurantReason(reason))
             throw new DomainException(["Motivo inválido para restaurante."]);
-        
+
         if (Status == OrderStatus.Canceled)
             throw new DomainException(["Pedido já está cancelado."]);
 
         if (reason == Enums.CancellationReasonType.DelayedOrder)
-        {
-            if (Status == OrderStatus.PendingConfirmation)
-                throw new DomainException(["Pedido ainda não iniciou preparo."]);
-
             if (!IsOrderReallyDelayed())
                 throw new DomainException(["Tempo estimado de entrega ainda não foi ultrapassado."]);
-        }
-        
+
         CancellationDescription = description;
-        CancellationReasonType =  reason;
+        CancellationReasonType = reason;
         CanceledBy = canceledBy;
         CanceledAt = DateTime.UtcNow;
         Status = OrderStatus.Canceled;
@@ -172,33 +167,33 @@ public class Order : BaseEntity
 
     private bool IsCustomerReason(CancellationReasonType reason)
     {
-        return reason is Enums.CancellationReasonType.WrongAddress 
-            or Enums.CancellationReasonType.ChangedMind 
-            or Enums.CancellationReasonType.OrderMistake 
-            or Enums.CancellationReasonType.DelayTooLong 
-            or Enums.CancellationReasonType.PaymentIssue 
-            or Enums.CancellationReasonType.HighDeliveryFee 
+        return reason is Enums.CancellationReasonType.WrongAddress
+            or Enums.CancellationReasonType.ChangedMind
+            or Enums.CancellationReasonType.OrderMistake
+            or Enums.CancellationReasonType.DelayTooLong
+            or Enums.CancellationReasonType.PaymentIssue
+            or Enums.CancellationReasonType.HighDeliveryFee
             or Enums.CancellationReasonType.DelayedOrder;
     }
 
     private bool CanBeCanceled()
     {
-        return Status != OrderStatus.Ready 
-            && Status != OrderStatus.Canceled 
-            && Status != OrderStatus.OnTheWay;
+        return Status != OrderStatus.Ready
+               && Status != OrderStatus.Canceled
+               && Status != OrderStatus.OnTheWay;
     }
 
     private bool IsRestaurantReason(CancellationReasonType reason)
     {
-        return reason is Enums.CancellationReasonType.OutOfStock 
-            or Enums.CancellationReasonType.IngredientUnavailable 
-            or Enums.CancellationReasonType.MenuError 
-            or Enums.CancellationReasonType.StoreClosing 
-            or Enums.CancellationReasonType.OutOfDeliveryArea 
-            or Enums.CancellationReasonType.NoCourierAvailable 
-            or Enums.CancellationReasonType.SystemError 
-            or Enums.CancellationReasonType.FraudSuspicion 
-            or Enums.CancellationReasonType.DuplicateOrder 
+        return reason is Enums.CancellationReasonType.OutOfStock
+            or Enums.CancellationReasonType.IngredientUnavailable
+            or Enums.CancellationReasonType.MenuError
+            or Enums.CancellationReasonType.StoreClosing
+            or Enums.CancellationReasonType.OutOfDeliveryArea
+            or Enums.CancellationReasonType.NoCourierAvailable
+            or Enums.CancellationReasonType.SystemError
+            or Enums.CancellationReasonType.FraudSuspicion
+            or Enums.CancellationReasonType.DuplicateOrder
             or Enums.CancellationReasonType.PaymentNotApproved;
     }
 
@@ -206,9 +201,9 @@ public class Order : BaseEntity
     {
         if (PreparingStartedAt is null)
             return false;
-        
+
         var estimatedTimeDelivery = PreparingStartedAt.Value.AddMinutes(EstimatedDeliveryTimeInMinutes + 10);
-       
+
         return DateTime.UtcNow > estimatedTimeDelivery;
     }
 }

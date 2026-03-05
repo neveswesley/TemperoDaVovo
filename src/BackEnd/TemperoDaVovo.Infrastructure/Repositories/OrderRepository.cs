@@ -57,13 +57,14 @@ public class OrderRepository : IOrderWriteOnlyRepository, IOrderReadOnlyReposito
 
     public async Task<Order?> GetOpenBySession(Guid restaurantId, string sessionId)
     {
-        return await _context.Orders
+        return await _context.Orders.
+            Include(o=>o.Neighborhood)
             .Include(o => o.Items)
             .ThenInclude(i => i.SideDishes)
             .FirstOrDefaultAsync(o =>
                 o.RestaurantId == restaurantId &&
                 o.ClientSessionId == sessionId &&
-                o.Status == OrderStatus.PendingConfirmation);
+                o.Status == OrderStatus.Draft);
     }
 
     public async Task<OrderItem?> GetOrderItemById(Guid orderItemId)
@@ -108,13 +109,26 @@ public class OrderRepository : IOrderWriteOnlyRepository, IOrderReadOnlyReposito
         return null;
     }
 
-    public async Task<List<Order>> GetOrdersByClienteId(string sessionId)
+    public async Task<List<Order>> GetOrdersByClientId(string sessionId)
     {
         return await _context.Orders
+            .Include(o=>o.Neighborhood)
             .Include(o => o.Payment)
             .Include(o => o.Items)
             .ThenInclude(i => i.SideDishes)
             .Where(o => o.ClientSessionId == sessionId)
+            .OrderByDescending(o => o.CreatedAt)
+            .ToListAsync();
+    }
+
+    public async Task<List<Order>> GetOrdersByRestaurantId(Guid restaurantId)
+    {
+        return await _context.Orders
+            .Include(o=>o.Neighborhood)
+            .Include(o => o.Payment)
+            .Include(o => o.Items)
+            .ThenInclude(i => i.SideDishes)
+            .Where(o => o.RestaurantId == restaurantId)
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
     }

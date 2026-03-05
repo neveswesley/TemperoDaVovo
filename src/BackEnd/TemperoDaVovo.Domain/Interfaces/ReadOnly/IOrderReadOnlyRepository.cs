@@ -10,7 +10,8 @@ public interface IOrderReadOnlyRepository
     Task<OrderItem?> GetByIdWithSideDishesAsync(Guid orderItemId, CancellationToken ct = default);
     Task<Order?> GetOrderById(Guid orderId);
     Task<string?> ExistingPhone(string phone);
-    Task<List<Order>> GetOrdersByClienteId(string sessionId);
+    Task<List<Order>> GetOrdersByClientId(string sessionId);
+    Task<List<Order>> GetOrdersByRestaurantId(Guid restaurantId);
     Task<bool> ExistingClient(string sessionId);
     
 }

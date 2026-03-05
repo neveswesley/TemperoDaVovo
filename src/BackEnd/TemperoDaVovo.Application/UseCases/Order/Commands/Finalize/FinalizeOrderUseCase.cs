@@ -51,7 +51,6 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
         
         order.SetDeliveryFee(request.DeliveryFee);
         order.SetEstimatedDeliveryTimeInMinutes(estimatedTime);
-        
 
         if (request.DeliveryMode == DeliveryMode.Delivery)
         {
@@ -81,7 +80,7 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
             order.SetPayment(payment.Id);
         }
         
-        order.UpdateStatus(OrderStatus.Preparing);
+        order.UpdateStatus(OrderStatus.PendingConfirmation);
 
         await _orderWriteOnlyRepository.Update(order);
         await _paymentWriteOnlyRepository.CreateAsync(payment);
