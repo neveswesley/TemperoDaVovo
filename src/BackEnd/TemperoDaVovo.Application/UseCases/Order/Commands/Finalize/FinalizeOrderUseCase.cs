@@ -44,22 +44,25 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
             throw new NotFoundException(["Restaurante não encontrado."]);
 
         var neighborhood = await _neighborhoodReadOnlyRepository.GetNeighborhoodById(request.NeighborhoodId);
-        if (neighborhood == null)
+        if (neighborhood == null && request.DeliveryMode == DeliveryMode.Delivery)
             throw new NotFoundException(["Bairro não encontdado"]);
 
-        var estimatedTime = neighborhood.BaseDeliveryTimeInMinutes + restaurant.GlobalAdditionalDeliveryMinutes;
         
-        order.SetDeliveryFee(request.DeliveryFee);
-        order.SetEstimatedDeliveryTimeInMinutes(estimatedTime);
 
         if (request.DeliveryMode == DeliveryMode.Delivery)
         {
             order.OrderAddress(request.Street, request.Number, request.Complement, request.Reference,
                 request.NeighborhoodId, request.City, request.AddressName);
+            var estimatedTime = neighborhood.BaseDeliveryTimeInMinutes + restaurant.GlobalAdditionalDeliveryMinutes;
+        
+            order.SetDeliveryFee(request.DeliveryFee);
+            order.SetEstimatedDeliveryTimeInMinutes(estimatedTime);
         }
         else if (request.DeliveryMode == DeliveryMode.Pickup)
         {
             order.DeliveryMode = DeliveryMode.Pickup;
+            order.DeliveryFee = 0;
+            order.SetEstimatedDeliveryTimeInMinutes(20);
         }
 
         var payment = new Domain.Entities.Payment(order.Id, request.PaymentWay, order.Total);

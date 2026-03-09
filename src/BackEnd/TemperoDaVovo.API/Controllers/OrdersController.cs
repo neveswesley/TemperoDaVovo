@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
@@ -9,11 +10,12 @@ using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Queries.CurrentOrder;
 using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByCliente;
+using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByRestaurant;
 using TemperoDaVovo.Communications.Requests;
 
 namespace TemperoDaVovo.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[Controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
@@ -27,8 +29,10 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IFinalizeOrderUseCase _finalizeOrderUseCase;
         private readonly IGetOrderByClientUseCase _getOrderByClientUseCase;
         private readonly ICancelOrderUseCase _cancelOrderUseCase;
+        private readonly IGetOrderByRestaurantId _getOrderByRestaurantId;
+        private readonly IChangeOrderStatusUseCase _changeOrderStatusUseCase;
 
-        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase, ICancelOrderUseCase cancelOrderUseCase)
+        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase, ICancelOrderUseCase cancelOrderUseCase, IGetOrderByRestaurantId getOrderByRestaurantId, IChangeOrderStatusUseCase changeOrderStatusUseCase)
         {
             _addItemToOrderUseCase = addItemToOrderUseCase;
             _getCurrentOrderUseCase = getCurrentOrderUseCase;
@@ -40,6 +44,8 @@ namespace TemperoDaVovo.API.Controllers
             _finalizeOrderUseCase = finalizeOrderUseCase;
             _getOrderByClientUseCase = getOrderByClientUseCase;
             _cancelOrderUseCase = cancelOrderUseCase;
+            _getOrderByRestaurantId = getOrderByRestaurantId;
+            _changeOrderStatusUseCase = changeOrderStatusUseCase;
         }
 
         [HttpPost("add-item")]
@@ -145,5 +151,25 @@ namespace TemperoDaVovo.API.Controllers
             await _cancelOrderUseCase.ExecuteAsync(request);
             return NoContent();
         }
+
+        [HttpGet("orders-by-restaurant/{restaurantId}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetOrderByRestaurant([FromRoute] Guid restaurantId)
+        {
+            var result = await _getOrderByRestaurantId.ExecuteAsync(restaurantId);
+            return Ok(result);
+        }
+        
+        [HttpPut("change-order-status/{orderId}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> ChangeOrderStatus([FromRoute] Guid orderId)
+        {
+            await _changeOrderStatusUseCase.ExecuteAsync(orderId);
+            return NoContent();
+        }
+        
     }
 }

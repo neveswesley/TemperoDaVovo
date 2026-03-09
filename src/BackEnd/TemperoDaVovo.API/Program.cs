@@ -6,7 +6,7 @@ using TemperoDaVovo.API.Middleware;
 using TemperoDaVovo.Application;
 using TemperoDaVovo.Application.Services;
 using TemperoDaVovo.Infrastructure.DataAccess;
-
+using TemperoDaVovo.Infrastructure.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +38,7 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHostedService<OrderExpirationService>();
 
 
 var app = builder.Build();

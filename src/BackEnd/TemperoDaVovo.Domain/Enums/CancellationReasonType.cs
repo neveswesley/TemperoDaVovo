@@ -24,4 +24,7 @@ public enum CancellationReasonType
     FraudSuspicion, // suspeita de fraude
     DuplicateOrder, // pedido duplicado
     PaymentNotApproved, // problema no pagamento
+    
+    //System
+    NotConfirmedByRestaurant
 }

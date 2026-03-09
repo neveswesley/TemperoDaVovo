@@ -4,5 +4,5 @@ namespace TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByCliente;
 
 public interface IGetOrderByClientUseCase
 {
-    Task<List<GetOrderByClientResponse>> Execute(string clientId);
+    Task<List<GetOrderResponse>> Execute(string clientId);
 }

@@ -3,10 +3,12 @@ using TemperoDaVovo.Domain.Enums;
 
 namespace TemperoDaVovo.Communications.Responses;
 
-public class GetOrderByClientResponse
+public class GetOrderResponse
 {
     public Guid Id { get; set; }
     public int OrderNumber { get; set; }
+    public string CustomerName { get; set; } =  string.Empty;
+    public string CustomerPhone { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public OrderStatus Status { get; set; }
     public decimal SubTotal { get; set; }

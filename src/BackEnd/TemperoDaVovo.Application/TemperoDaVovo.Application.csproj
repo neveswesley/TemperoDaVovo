@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="UseCases\City\Commands\Delete\" />
       <Folder Include="UseCases\Payment\Commands\" />
       <Folder Include="UseCases\Payment\Queries\" />
     </ItemGroup>

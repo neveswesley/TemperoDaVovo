@@ -30,12 +30,13 @@ public class GetAllCitiesByRestaurantId : IGetAllCitiesByRestaurantId
         {
             Id = c.Id,
             Name = c.Name,
-            Neighborhoods = c.Neighborhoods.Select(n=> new NeighborhoodResponseJson()
+            Neighborhoods = c.Neighborhoods.Select(n => new NeighborhoodResponseJson()
             {
                 Id = n.Id,
                 Name = n.Name,
                 DeliveryFee = n.DeliveryFee,
-                City = n.City.Name
+                City = n.City.Name,
+                EstimatedDeliveryTimeInMinutes = n.BaseDeliveryTimeInMinutes
             }).ToList()
         }).ToList();
     }

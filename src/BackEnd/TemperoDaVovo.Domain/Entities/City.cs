@@ -20,5 +20,10 @@ public class City
         Name = name;
         RestaurantId = restaurantId;
     }
+
+    public void UpdateName(string name)
+    {
+        Name = name;
+    }
     
 }

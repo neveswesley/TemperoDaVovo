@@ -82,7 +82,8 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<Guid>("CityId")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("DeliveryFee")
+                    b.Property<decimal?>("DeliveryFee")
+                        .IsRequired()
                         .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
 

@@ -13,7 +13,7 @@ public class GetOrderByClientUseCase : IGetOrderByClientUseCase
         _orderReadOnlyRepository = orderReadOnlyRepository;
     }
 
-    public async Task<List<GetOrderByClientResponse>> Execute(string clientId)
+    public async Task<List<GetOrderResponse>> Execute(string clientId)
     {
         
         var client = await _orderReadOnlyRepository.ExistingClient(clientId);
@@ -24,7 +24,7 @@ public class GetOrderByClientUseCase : IGetOrderByClientUseCase
         if (orders is null)
             throw new NotFoundException(["Nenhum pedido encontrado."]);
 
-        return orders.Select(o => new GetOrderByClientResponse
+        return orders.Select(o => new GetOrderResponse
         {
             Id = o.Id,
             OrderNumber = o.OrderNumber,

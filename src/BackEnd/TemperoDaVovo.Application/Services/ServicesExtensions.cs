@@ -6,12 +6,15 @@ using TemperoDaVovo.Application.UseCases.Category.Commands.Reorder;
 using TemperoDaVovo.Application.UseCases.Category.Commands.UpdateProduct;
 using TemperoDaVovo.Application.UseCases.Category.Queries.GetCategoriesWithProducts;
 using TemperoDaVovo.Application.UseCases.City.Commands.Create;
+using TemperoDaVovo.Application.UseCases.City.Commands.Update;
 using TemperoDaVovo.Application.UseCases.City.Queries.GetAll;
 using TemperoDaVovo.Application.UseCases.City.Queries.GetById;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Queries.GetAll;
+using TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
+using TemperoDaVovo.Application.UseCases.Order.Commands.ChangeOrderStatus;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
 using TemperoDaVovo.Application.UseCases.Order.Commands.ExistingPhone;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Finalize;
@@ -20,6 +23,7 @@ using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Queries.CurrentOrder;
 using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByCliente;
+using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByRestaurant;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Duplicate;
@@ -104,5 +108,8 @@ public static class ServicesExtensions
         services.AddScoped<IFinalizeOrderUseCase , FinalizeOrderUseCase >();
         services.AddScoped<IGetOrderByClientUseCase , GetOrderByClientUseCase >();
         services.AddScoped<ICancelOrderUseCase , CancelOrderUseCase >();
+        services.AddScoped<IGetOrderByRestaurantId , GetOrderByRestaurantId >();
+        services.AddScoped<IChangeOrderStatusUseCase , ChangeOrderStatusUseCase >();
+        services.AddScoped<IUpdateCityUseCase , UpdateCityUseCase >();
     }
 }

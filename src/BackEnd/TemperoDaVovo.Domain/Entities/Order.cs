@@ -206,4 +206,19 @@ public class Order : BaseEntity
 
         return DateTime.UtcNow > estimatedTimeDelivery;
     }
+
+    public void SetPreparingStartedAt(DateTime? preparingStartedAt)
+    {
+        PreparingStartedAt = preparingStartedAt;
+    }
+    
+    public void SetOnTheWayAt(DateTime? onTheWayAt)
+    {
+        OnTheWayAt = onTheWayAt;
+    }
+
+    public void ChangeOrderStatus(OrderStatus status)
+    {
+        Status = status;
+    }
 }

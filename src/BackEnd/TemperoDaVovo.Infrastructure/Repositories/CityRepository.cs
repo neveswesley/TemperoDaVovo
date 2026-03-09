@@ -23,7 +23,10 @@ public class CityRepository : ICityReadOnlyRepository, ICityWriteOnlyRepository
 
     public async Task<List<City>> GetAll(Guid restaurantId)
     {
-        return await _dbContext.Cities.Include(c => c.Neighborhoods).ToListAsync();
+        return await _dbContext.Cities
+            .Include(c => c.Neighborhoods)
+            .Where(c => c.RestaurantId == restaurantId)
+            .ToListAsync();
     }
 
     public async Task<bool> CityExistingByRestaurantId(string cityName, Guid restaurantId)
@@ -43,8 +46,9 @@ public class CityRepository : ICityReadOnlyRepository, ICityWriteOnlyRepository
         throw new NotImplementedException();
     }
 
-    public Task<Guid> UpdateAsync(City city)
+    public async Task<Guid> UpdateAsync(City city)
     {
-        throw new NotImplementedException();
+        _dbContext.Cities.Update(city);
+        return await Task.FromResult(city.Id);
     }
 }

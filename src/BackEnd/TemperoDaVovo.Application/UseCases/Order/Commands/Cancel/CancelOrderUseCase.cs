@@ -25,20 +25,12 @@ public class CancelOrderUseCase : ICancelOrderUseCase
 
     public async Task<Guid> ExecuteAsync(CancelOrderRequestJson request)
     {
-        // pega o pedido
         var order = await _orderReadOnlyRepository.GetOrderById(request.OrderId);
         if (order is null)
             throw new NotFoundException(["Pedido não encontrado."]);
-        
-        
-        // verifica se o lado que tá cancelando, pode cancelar esse pedido
-        if (_currentUser.IsAuthenticated)
+
+        if (request.CanceledBy == CanceledBy.Restaurant)
         {
-            var restaurantId = _currentUser.RestaurantId;
-
-            if (order.RestaurantId != restaurantId)
-                throw new UnauthorizedException(["Você não pode cancelar esse pedido."]);
-
             order.Cancel(request.Reason, CanceledBy.Restaurant, request.Description);
         }
         else
@@ -53,6 +45,5 @@ public class CancelOrderUseCase : ICancelOrderUseCase
         await _unitOfWork.CommitAsync();
 
         return order.Id;
-
     }
 }
