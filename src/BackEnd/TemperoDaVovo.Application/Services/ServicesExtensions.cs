@@ -28,6 +28,7 @@ using TemperoDaVovo.Application.UseCases.Order.Queries.CurrentOrder;
 using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByClient;
 using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByCliente;
 using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByRestaurant;
+using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderHistory;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Duplicate;
@@ -118,5 +119,6 @@ public static class ServicesExtensions
         services.AddScoped<IDeleteCityUseCase , DeleteCityUseCase >();
         services.AddScoped<IUpdateNeighborhoodUseCase , UpdateNeighborhoodUseCase >();
         services.AddScoped<IDeleteNeighborhoodUseCase , DeleteNeighborhoodUseCase >();
+        services.AddScoped<IGetOrderHistoryUseCase , GetOrderHistoryUseCase >();
     }
 }

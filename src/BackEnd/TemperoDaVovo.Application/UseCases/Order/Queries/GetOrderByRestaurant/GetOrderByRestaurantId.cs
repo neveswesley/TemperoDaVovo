@@ -22,10 +22,7 @@ public class GetOrderByRestaurantId : IGetOrderByRestaurantId
         if (restaurant == null)
             throw new NotFoundException(["Restaurante não encontado."]);
 
-        var orders = await _orderReadOnlyRepository.GetOrdersByRestaurantId(restaurantId);
-        
-        if (orders == null)
-            throw new NotFoundException(["Nenhum pedido encontrado."]);
+        var orders = await _orderReadOnlyRepository.GetActiveOrdersByRestaurantId(restaurantId);
 
         return orders.Select(o => new GetOrderResponse
         {

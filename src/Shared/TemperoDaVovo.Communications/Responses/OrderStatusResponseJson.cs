@@ -1,6 +1,9 @@
-﻿namespace TemperoDaVovo.Communications.Responses;
+﻿using TemperoDaVovo.Domain.Enums;
+
+namespace TemperoDaVovo.Communications.Responses;
 
 public class OrderStatusResponseJson
 {
-    public string StatusName { get; set; } =  string.Empty;
+    public OrderStatus Value { get; set; }
+    public string Label { get; set; } = string.Empty;
 }

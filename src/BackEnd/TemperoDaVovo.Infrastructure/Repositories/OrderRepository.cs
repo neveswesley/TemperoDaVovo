@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TemperoDaVovo.Communications.Responses;
+using TemperoDaVovo.Domain.Common;
 using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Enums;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
@@ -120,15 +122,54 @@ public class OrderRepository : IOrderWriteOnlyRepository, IOrderReadOnlyReposito
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
     }
-
-    public async Task<List<Order>> GetOrdersByRestaurantId(Guid restaurantId)
+    
+    public async Task<PaginatedResponse<Order>> GetOrderHistoryByRestaurantId(
+        Guid restaurantId,
+        int page,
+        int pageSize)
     {
-        return await _context.Orders
-            .Include(o=>o.Neighborhood)
+        var query = _context.Orders
+            .AsNoTracking()
+            .AsSplitQuery()
+            .Include(o => o.Neighborhood)
             .Include(o => o.Payment)
             .Include(o => o.Items)
             .ThenInclude(i => i.SideDishes)
             .Where(o => o.RestaurantId == restaurantId)
+            .OrderByDescending(o => o.CreatedAt);
+
+        var totalItems = await query.CountAsync();
+
+        var orders = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PaginatedResponse<Order>
+        {
+            Page = page,
+            PageSize = pageSize,
+            TotalItems = totalItems,
+            TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize),
+            Data = orders
+        };
+    }
+
+    public async Task<List<Order>> GetActiveOrdersByRestaurantId(Guid restaurantId)
+    {
+        return await _context.Orders
+            .AsNoTracking()
+            .AsSplitQuery()
+            .Include(o => o.Neighborhood)
+            .Include(o => o.Payment)
+            .Include(o => o.Items)
+            .ThenInclude(i => i.SideDishes)
+            .Where(o =>
+                o.RestaurantId == restaurantId &&
+                (o.Status == OrderStatus.PendingConfirmation ||
+                 o.Status == OrderStatus.Preparing ||
+                 o.Status == OrderStatus.Ready ||
+                 o.Status == OrderStatus.OnTheWay))
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
     }

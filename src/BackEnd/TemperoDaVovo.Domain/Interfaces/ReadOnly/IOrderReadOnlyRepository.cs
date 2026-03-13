@@ -1,4 +1,5 @@
 ﻿using TemperoDaVovo.Domain.Entities;
+using TemperoDaVovo.Domain.Common;
 
 namespace TemperoDaVovo.Domain.Interfaces.ReadOnly;
 
@@ -11,7 +12,11 @@ public interface IOrderReadOnlyRepository
     Task<Order?> GetOrderById(Guid orderId);
     Task<string?> ExistingPhone(string phone);
     Task<List<Order>> GetOrdersByClientId(string sessionId);
-    Task<List<Order>> GetOrdersByRestaurantId(Guid restaurantId);
+    Task<List<Order>> GetActiveOrdersByRestaurantId(Guid restaurantId);
+    Task<PaginatedResponse<Order>> GetOrderHistoryByRestaurantId(
+        Guid restaurantId,
+        int page,
+        int pageSize);
     Task<bool> ExistingClient(string sessionId);
     
 }
