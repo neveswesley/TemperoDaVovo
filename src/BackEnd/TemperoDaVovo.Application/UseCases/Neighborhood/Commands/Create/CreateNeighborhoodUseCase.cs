@@ -23,7 +23,7 @@ public class CreateNeighborhoodUseCase : ICreateNeighborhoodUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Execute(CreateNeighborhoodRequestJson request)
+    public async Task<Guid> ExecuteAsync(CreateNeighborhoodRequestJson request)
     {
         await Validate(request);
         

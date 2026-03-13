@@ -26,7 +26,7 @@ public class UpdateCityUseCase : IUpdateCityUseCase
             throw new NotFoundException(["Cidade não encontrada."]);
         
         city.UpdateName(request.Name);
-        await _cityWriteOnlyRepository.UpdateAsync(city);
+        _cityWriteOnlyRepository.UpdateAsync(city);
         await _unitOfWork.CommitAsync();
         
         return city.Id;

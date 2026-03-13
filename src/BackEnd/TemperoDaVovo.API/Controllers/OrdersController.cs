@@ -148,7 +148,7 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CancelOrder([FromRoute] Guid orderId, [FromBody] CancelOrderRequestJson request)
         {
-            await _cancelOrderUseCase.ExecuteAsync(request);
+            await _cancelOrderUseCase.ExecuteAsync(orderId, request);
             return NoContent();
         }
 

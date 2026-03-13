@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
@@ -24,8 +25,8 @@ public class CityRepository : ICityReadOnlyRepository, ICityWriteOnlyRepository
     public async Task<List<City>> GetAll(Guid restaurantId)
     {
         return await _dbContext.Cities
-            .Include(c => c.Neighborhoods)
-            .Where(c => c.RestaurantId == restaurantId)
+            .Include(c => c.Neighborhoods.Where(n => n.IsActive))
+            .Where(c => c.RestaurantId == restaurantId && c.IsActive)
             .ToListAsync();
     }
 
@@ -41,14 +42,13 @@ public class CityRepository : ICityReadOnlyRepository, ICityWriteOnlyRepository
         return city.Id;
     }
 
-    public Task DeleteAsync(City city)
+    public void DeleteAsync(City city)
     {
-        throw new NotImplementedException();
+        _dbContext.Cities.Remove(city);
     }
 
-    public async Task<Guid> UpdateAsync(City city)
+    public void UpdateAsync(City city)
     {
         _dbContext.Cities.Update(city);
-        return await Task.FromResult(city.Id);
     }
 }

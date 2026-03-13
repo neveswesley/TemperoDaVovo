@@ -56,6 +56,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -86,6 +89,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .IsRequired()
                         .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -174,6 +180,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("PaymentId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("PendingConfirmationAt")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("PreparingStartedAt")

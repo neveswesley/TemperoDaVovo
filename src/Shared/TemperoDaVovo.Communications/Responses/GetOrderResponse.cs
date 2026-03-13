@@ -24,6 +24,7 @@ public class GetOrderResponse
     public int EstimatedDeliveryTimeInMinutes { get; set; }
     public PaymentResponseJson? Payment { get; set; }
     public DateTime? PreparingStartedAt { get; set; }
+    public DateTime? PendingConfirmationAt { get; set; }
     public DateTime? OnTheWayAt { get; set; }
     public DateTime? ReadyAt { get; set; }
     public DateTime? CanceledAt { get; set; }

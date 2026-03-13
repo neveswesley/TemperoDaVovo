@@ -28,7 +28,7 @@ public class GetAllNeighborhoodByRestaurantId : IGetAllNeighborhoodByRestaurantI
             Name = n.Name,
             City = n.City.Name,
             DeliveryFee = n.DeliveryFee,
-            EstimatedDeliveryTimeInMinutes = n.BaseDeliveryTimeInMinutes
+            BaseDeliveryTimeInMinutes = n.BaseDeliveryTimeInMinutes
         }).ToList();
     }
 }

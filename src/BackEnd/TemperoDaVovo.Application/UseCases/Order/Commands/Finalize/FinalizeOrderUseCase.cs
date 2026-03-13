@@ -63,7 +63,9 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
             order.DeliveryMode = DeliveryMode.Pickup;
             order.DeliveryFee = 0;
             order.SetEstimatedDeliveryTimeInMinutes(20);
+            
         }
+        order.SetPendingConfirmation();
 
         var payment = new Domain.Entities.Payment(order.Id, request.PaymentWay, order.Total);
 

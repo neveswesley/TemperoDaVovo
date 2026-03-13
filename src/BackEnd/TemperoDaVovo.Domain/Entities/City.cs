@@ -3,7 +3,8 @@
 public class City
 {
     public Guid Id { get; private set; }
-    public string Name { get; private set; } = string.Empty;
+    public string Name { get; private set; }
+    public bool IsActive { get; private set; }
 
     //bairros
     public ICollection<Neighborhood> Neighborhoods { get; private set; } = new List<Neighborhood>();
@@ -24,6 +25,11 @@ public class City
     public void UpdateName(string name)
     {
         Name = name;
+    }
+    
+    public void Deactivate()
+    {
+        IsActive = false;
     }
     
 }

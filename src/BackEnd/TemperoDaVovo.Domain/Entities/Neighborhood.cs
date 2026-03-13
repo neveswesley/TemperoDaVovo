@@ -6,6 +6,7 @@ public class Neighborhood
     public string Name { get; private set; }
     public int BaseDeliveryTimeInMinutes { get; private set; }
     public decimal? DeliveryFee { get; private set; }
+    public bool IsActive { get; private set; }
 
     // cidade
     public Guid CityId { get; set; }
@@ -22,6 +23,7 @@ public class Neighborhood
         DeliveryFee = deliveryFee;
         CityId = cityId;
         BaseDeliveryTimeInMinutes = baseDeliveryTimeInMinutes;
+        IsActive = true;
     }
 
     public void UpdateFee(decimal newFee)
@@ -38,5 +40,17 @@ public class Neighborhood
             throw new ArgumentException("O nome da cidade não pode ser vazio.");
 
         Name = newName;
+    }
+
+    public void UpdateBaseDeliveryTimeInMinutes(int newBaseDeliveryTimeInMinutes)
+    {
+        if (newBaseDeliveryTimeInMinutes < 0)
+            throw new ArgumentException("Taxa de entrega deve ser maior que 0");
+        BaseDeliveryTimeInMinutes = newBaseDeliveryTimeInMinutes;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
     }
 }

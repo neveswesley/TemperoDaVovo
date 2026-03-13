@@ -1,8 +1,9 @@
-﻿using TemperoDaVovo.Communications.Responses;
+﻿using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByCliente;
+using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
 
-namespace TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByCliente;
+namespace TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByClient;
 
 public class GetOrderByClientUseCase : IGetOrderByClientUseCase
 {
@@ -41,6 +42,7 @@ public class GetOrderByClientUseCase : IGetOrderByClientUseCase
             Complement = o.Complement,
             Reference = o.Reference,
             EstimatedDeliveryTimeInMinutes = o.EstimatedDeliveryTimeInMinutes,
+            PendingConfirmationAt = o.PendingConfirmationAt,
             Payment = o.Payment == null ? null : new PaymentResponseJson
             {
                 PaymentWay = o.Payment.PaymentWay,

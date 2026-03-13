@@ -21,16 +21,29 @@ public class NeighborhoodRepository : INeighborhoodWriteOnlyRepository, INeighbo
         return neighborhood;
     }
 
-    public async Task<bool> ExistingNameByCity(string name, Guid  cityId)
+    public void UpdateAsync(Neighborhood neighborhood)
+    {
+        _dbContext.Neighborhoods.Update(neighborhood);
+    }
+
+    public void DeleteAsync(Neighborhood neighborhood)
+    {
+        _dbContext.Neighborhoods.Remove(neighborhood);
+    }
+
+
+    public async Task<bool> ExistingNameByCity(string name, Guid cityId)
     {
         var cityName = name.ToLower();
-        return await _dbContext.Neighborhoods.Where(n=>n.CityId == cityId).AnyAsync(n=>n.Name.ToLower() == cityName);
+        return await _dbContext.Neighborhoods.Where(n => n.CityId == cityId && n.IsActive)
+            .AnyAsync(n => n.Name.ToLower() == cityName);
     }
 
     public async Task<List<Neighborhood>> GetNeighborhoodByRestaurantId(Guid restaurantId)
     {
-        return await _dbContext.Neighborhoods.Include(n=>n.City).Where(n=>n.City.RestaurantId == restaurantId).ToListAsync();
-        
+        return await _dbContext.Neighborhoods.
+            Include(n => n.City)
+            .Where(n => n.City.RestaurantId == restaurantId && n.IsActive == true).OrderBy(n=>n.Name).ToListAsync();
     }
 
     public async Task<Neighborhood> GetNeighborhoodById(Guid? neighborhoodId)

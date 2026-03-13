@@ -5,6 +5,6 @@ namespace TemperoDaVovo.Domain.Interfaces.WriteOnly;
 public interface ICityWriteOnlyRepository
 {
     Task<Guid> CreateAsync(City city);
-    Task DeleteAsync(City city);
-    Task<Guid> UpdateAsync(City city);
+    void DeleteAsync(City city);
+    void UpdateAsync(City city);
 }

@@ -23,9 +23,9 @@ public class CancelOrderUseCase : ICancelOrderUseCase
         _currentUser = currentUser;
     }
 
-    public async Task<Guid> ExecuteAsync(CancelOrderRequestJson request)
+    public async Task<Guid> ExecuteAsync(Guid orderId, CancelOrderRequestJson request)
     {
-        var order = await _orderReadOnlyRepository.GetOrderById(request.OrderId);
+        var order = await _orderReadOnlyRepository.GetOrderById(orderId);
         if (order is null)
             throw new NotFoundException(["Pedido não encontrado."]);
 

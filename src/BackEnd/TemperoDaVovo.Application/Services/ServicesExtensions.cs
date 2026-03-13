@@ -6,10 +6,13 @@ using TemperoDaVovo.Application.UseCases.Category.Commands.Reorder;
 using TemperoDaVovo.Application.UseCases.Category.Commands.UpdateProduct;
 using TemperoDaVovo.Application.UseCases.Category.Queries.GetCategoriesWithProducts;
 using TemperoDaVovo.Application.UseCases.City.Commands.Create;
+using TemperoDaVovo.Application.UseCases.City.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.City.Commands.Update;
 using TemperoDaVovo.Application.UseCases.City.Queries.GetAll;
 using TemperoDaVovo.Application.UseCases.City.Queries.GetById;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Create;
+using TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Delete;
+using TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Update;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Queries.GetAll;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
@@ -22,6 +25,7 @@ using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveAll;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Queries.CurrentOrder;
+using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByClient;
 using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByCliente;
 using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderByRestaurant;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
@@ -111,5 +115,8 @@ public static class ServicesExtensions
         services.AddScoped<IGetOrderByRestaurantId , GetOrderByRestaurantId >();
         services.AddScoped<IChangeOrderStatusUseCase , ChangeOrderStatusUseCase >();
         services.AddScoped<IUpdateCityUseCase , UpdateCityUseCase >();
+        services.AddScoped<IDeleteCityUseCase , DeleteCityUseCase >();
+        services.AddScoped<IUpdateNeighborhoodUseCase , UpdateNeighborhoodUseCase >();
+        services.AddScoped<IDeleteNeighborhoodUseCase , DeleteNeighborhoodUseCase >();
     }
 }

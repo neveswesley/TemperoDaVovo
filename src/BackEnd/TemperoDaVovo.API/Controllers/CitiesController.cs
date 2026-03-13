@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.City.Commands.Create;
+using TemperoDaVovo.Application.UseCases.City.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.City.Commands.Update;
 using TemperoDaVovo.Application.UseCases.City.Queries.GetAll;
 using TemperoDaVovo.Application.UseCases.City.Queries.GetById;
@@ -17,13 +17,15 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IGetCityByIdUseCase _getCityByIdUseCase;
         private readonly IGetAllCitiesByRestaurantId _getAllCitiesByIdUseCase;
         private readonly IUpdateCityUseCase _updateCityUseCase;
+        private readonly IDeleteCityUseCase _deleteCityUseCase;
 
-        public CitiesController(ICreateCityUseCase createCityUseCase, IGetCityByIdUseCase getCityByIdUseCase, IGetAllCitiesByRestaurantId getAllCitiesByIdUseCase, IUpdateCityUseCase updateCityUseCase)
+        public CitiesController(ICreateCityUseCase createCityUseCase, IGetCityByIdUseCase getCityByIdUseCase, IGetAllCitiesByRestaurantId getAllCitiesByIdUseCase, IUpdateCityUseCase updateCityUseCase, IDeleteCityUseCase deleteCityUseCase)
         {
             _createCityUseCase = createCityUseCase;
             _getCityByIdUseCase = getCityByIdUseCase;
             _getAllCitiesByIdUseCase = getAllCitiesByIdUseCase;
             _updateCityUseCase = updateCityUseCase;
+            _deleteCityUseCase = deleteCityUseCase;
         }
 
         [HttpPost]
@@ -56,7 +58,7 @@ namespace TemperoDaVovo.API.Controllers
             return Ok(result);
         }
         
-        [HttpPut("update-city/{cityId}")]
+        [HttpPut("{cityId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -64,6 +66,16 @@ namespace TemperoDaVovo.API.Controllers
         {
             var result = await _updateCityUseCase.ExecuteAsync(cityId, request);
             return Ok(result);
+        }
+        
+        [HttpPut("delete/{cityId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromRoute] Guid cityId)
+        {
+            await _deleteCityUseCase.ExecuteAsync(cityId);
+            return NoContent();
         }
         
     }

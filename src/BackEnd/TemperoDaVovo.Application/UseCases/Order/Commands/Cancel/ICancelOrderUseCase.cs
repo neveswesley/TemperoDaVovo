@@ -4,5 +4,5 @@ namespace TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
 
 public interface ICancelOrderUseCase
 {
-    Task<Guid> ExecuteAsync(CancelOrderRequestJson request);
+    Task<Guid> ExecuteAsync(Guid orderId, CancelOrderRequestJson request);
 }

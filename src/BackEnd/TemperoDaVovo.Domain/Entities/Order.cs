@@ -19,6 +19,7 @@ public class Order : BaseEntity
     public CancellationReasonType? CancellationReasonType { get; private set; }
     public string? CancellationDescription { get; private set; }
     public DateTime? CanceledAt { get; private set; }
+    public DateTime? PendingConfirmationAt { get; private set; }
     public DateTime? PreparingStartedAt { get; private set; }
     public DateTime? OnTheWayAt { get; private set; }
     public DateTime? ReadyAt { get; private set; }
@@ -220,5 +221,11 @@ public class Order : BaseEntity
     public void ChangeOrderStatus(OrderStatus status)
     {
         Status = status;
+    }
+    
+    public void SetPendingConfirmation()
+    {
+        Status = OrderStatus.PendingConfirmation;
+        PendingConfirmationAt = DateTime.UtcNow;
     }
 }

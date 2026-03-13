@@ -46,6 +46,7 @@ public class GetOrderByRestaurantId : IGetOrderByRestaurantId
             Complement = o.Complement,
             Reference = o.Reference,
             EstimatedDeliveryTimeInMinutes = o.EstimatedDeliveryTimeInMinutes,
+            PendingConfirmationAt = o.PendingConfirmationAt,
             Payment = o.Payment == null ? null : new PaymentResponseJson
             {
                 PaymentWay = o.Payment.PaymentWay,

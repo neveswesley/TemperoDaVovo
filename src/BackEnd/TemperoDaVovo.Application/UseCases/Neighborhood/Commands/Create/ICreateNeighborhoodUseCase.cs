@@ -5,5 +5,5 @@ namespace TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Create;
 
 public interface ICreateNeighborhoodUseCase
 {
-    Task<Guid> Execute(CreateNeighborhoodRequestJson request);
+    Task<Guid> ExecuteAsync(CreateNeighborhoodRequestJson request);
 }
