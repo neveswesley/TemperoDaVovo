@@ -21,6 +21,7 @@ using TemperoDaVovo.Application.UseCases.Order.Commands.ChangeOrderStatus;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
 using TemperoDaVovo.Application.UseCases.Order.Commands.ExistingPhone;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Finalize;
+using TemperoDaVovo.Application.UseCases.Order.Commands.MarkAsDelivered;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveAll;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
@@ -38,6 +39,10 @@ using TemperoDaVovo.Application.UseCases.Product.Commands.UpdateImage;
 using TemperoDaVovo.Application.UseCases.Product.Queries.GetAll;
 using TemperoDaVovo.Application.UseCases.Product.Queries.GetById;
 using TemperoDaVovo.Application.UseCases.Restaurant.Create;
+using TemperoDaVovo.Application.UseCases.Restaurant.Queries.Get;
+using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Get;
+using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.OpeningHours;
+using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Update;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.CreateSideDish;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteGroup;
 using TemperoDaVovo.Application.UseCases.SideDish.Commands.DeleteSideDish;
@@ -54,8 +59,12 @@ using TemperoDaVovo.Application.UseCases.SideDishGroup.Commands;
 using TemperoDaVovo.Application.UseCases.SideDishGroup.Commands.CreateSideDish;
 using TemperoDaVovo.Application.UseCases.SideDishGroup.Commands.CreateSideDishGroup;
 using TemperoDaVovo.Application.UseCases.SideDishGroup.Queries.GetAllSideDishGroups;
+using TemperoDaVovo.Application.UseCases.User.Commands.UpdatePassword;
 using TemperoDaVovo.Application.UseCases.User.Create;
+using TemperoDaVovo.Application.UseCases.User.Get;
 using TemperoDaVovo.Application.UseCases.User.Login;
+using TemperoDaVovo.Application.UseCases.User.Queries.Get;
+using TemperoDaVovo.Domain.Services;
 
 namespace TemperoDaVovo.Application.Services;
 
@@ -120,5 +129,12 @@ public static class ServicesExtensions
         services.AddScoped<IUpdateNeighborhoodUseCase , UpdateNeighborhoodUseCase >();
         services.AddScoped<IDeleteNeighborhoodUseCase , DeleteNeighborhoodUseCase >();
         services.AddScoped<IGetOrderHistoryUseCase , GetOrderHistoryUseCase >();
+        services.AddScoped<IMarkAsDeliveredUseCase , MarkAsDeliveredUseCase >();
+        services.AddScoped<IOpeningHoursUseCase , OpeningHoursUseCase >();
+        services.AddScoped<IRestaurantScheduleService , RestaurantScheduleService >();
+        services.AddScoped<IGetOpeningHoursUseCase , GetOpeningHoursUseCase >();
+        services.AddScoped<IGetUserUseCase , GetUserUseCase >();
+        services.AddScoped<IUpdatePasswordUseCase , UpdatePasswordUseCase >();
+        services.AddScoped<IGetRestaurantByIdUseCase , GetRestaurantByIdUseCase >();
     }
 }

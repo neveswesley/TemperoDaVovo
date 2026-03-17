@@ -5,8 +5,8 @@ D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\T
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\TemperoDaVovo.Exceptions.AssemblyInfoInputs.cache
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\TemperoDaVovo.Exceptions.AssemblyInfo.cs
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\TemperoDaVovo.Exceptions.csproj.CoreCompileInputs.cache
+D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\TemperoDaVovo.Exceptions.sourcelink.json
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\TemperoDaVovo.Exceptions.dll
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\refint\TemperoDaVovo.Exceptions.dll
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\TemperoDaVovo.Exceptions.pdb
 D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\ref\TemperoDaVovo.Exceptions.dll
-D:\Projetos\TemperoDaVovo\src\Shared\TemperoDaVovo.Exceptions\obj\Debug\net8.0\TemperoDaVovo.Exceptions.sourcelink.json

@@ -425,15 +425,13 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("GlobalAdditionalDeliveryMinutes")
@@ -441,6 +439,9 @@ namespace TemperoDaVovo.Infrastructure.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastNameUpdateAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -452,12 +453,42 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("RestaurantCategory")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Restaurant", (string)null);
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.RestaurantOpeningHour", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CloseTime")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("OpenTime")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("RestaurantOpeningHours", (string)null);
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDish", b =>
@@ -666,6 +697,76 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Navigation("SideDishGroup");
                 });
 
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Restaurant", b =>
+                {
+                    b.OwnsOne("TemperoDaVovo.Domain.Entities.Address", "Address", b1 =>
+                        {
+                            b1.Property<Guid>("RestaurantId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("City");
+
+                            b1.Property<string>("Complement")
+                                .HasMaxLength(150)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Complement");
+
+                            b1.Property<string>("Neighborhood")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Neighborhood");
+
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Number");
+
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("State");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Street");
+
+                            b1.Property<string>("ZipCode")
+                                .IsRequired()
+                                .HasMaxLength(8)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Cep");
+
+                            b1.HasKey("RestaurantId");
+
+                            b1.ToTable("Addresses");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RestaurantId");
+                        });
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("TemperoDaVovo.Domain.Entities.RestaurantOpeningHour", b =>
+                {
+                    b.HasOne("TemperoDaVovo.Domain.Entities.Restaurant", "Restaurant")
+                        .WithMany("OpeningHours")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDish", b =>
                 {
                     b.HasOne("TemperoDaVovo.Domain.Entities.SideDishGroup", "SideDishGroup")
@@ -705,6 +806,8 @@ namespace TemperoDaVovo.Infrastructure.Migrations
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.Restaurant", b =>
                 {
                     b.Navigation("Neighborhoods");
+
+                    b.Navigation("OpeningHours");
                 });
 
             modelBuilder.Entity("TemperoDaVovo.Domain.Entities.SideDishGroup", b =>

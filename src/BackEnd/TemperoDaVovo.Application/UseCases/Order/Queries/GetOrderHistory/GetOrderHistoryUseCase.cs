@@ -36,6 +36,7 @@ public class GetOrderHistoryUseCase : IGetOrderHistoryUseCase
                 CustomerName = o.CustomerName,
                 CustomerPhone = o.CustomerPhone,
                 Status = o.Status,
+                DeliveryMode = o.DeliveryMode,
                 Payment = o.Payment == null
                     ? null
                     : new PaymentResponseJson
@@ -45,7 +46,21 @@ public class GetOrderHistoryUseCase : IGetOrderHistoryUseCase
                         Total = o.Payment.Total,
                         AmountPaid = o.Payment.AmountPaid,
                         Change = o.Payment.Change,
-                    }
+                    },
+                Items = o.Items.Select(i => new OrderItemResponseJson
+                {
+                    ProductName = i.ProductName,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice,
+                    Total = i.TotalPrice,
+                    Observation = i.Observation,
+                    SideDishes = i.SideDishes.Select(s => new OrderSideDishResponseJson
+                    {
+                        Name = s.Name,
+                        Quantity = s.Quantity,
+                        UnitPrice = s.UnitPrice,
+                    }).ToList()
+                }).ToList()
             }).ToList()
         };
     }

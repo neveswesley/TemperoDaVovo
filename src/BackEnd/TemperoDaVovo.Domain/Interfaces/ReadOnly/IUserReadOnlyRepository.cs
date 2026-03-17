@@ -8,4 +8,5 @@ public interface IUserReadOnlyRepository
     
     Task<bool> RestaurantHasAnyUser(Guid restaurantId);
     Task<User> GetByEmail(string email);
+    Task<User?> GetByIdAsync(Guid id);
 }

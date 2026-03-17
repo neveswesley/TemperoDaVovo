@@ -1,5 +1,6 @@
 ﻿using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
+using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
@@ -23,15 +24,20 @@ public class CreateRestaurantUseCase : ICreateRestaurantUseCase
     public async Task<RestaurantResponseJson> Execute(CreateRestaurantRequestJson request)
     {
         await Validate(request);
-        var restaurant = new Domain.Entities.Restaurant(request.Name, request.Address, request.Phone);
+
+        var address = new Address(request.Address.ZipCode, request.Address.State, request.Address.City,
+            request.Address.Neighborhood, request.Address.Street, request.Address.Number, request.Address.Complement);
+
+        var restaurant = new Domain.Entities.Restaurant(request.Name, request.Phone, address);
 
         await _restaurantWriteOnlyRepository.AddAsync(restaurant);
+        
         await _unitOfWork.CommitAsync();
 
         return new RestaurantResponseJson
         {
             Id = restaurant.Id,
-            Name = restaurant.Name,
+            Name = restaurant.Name
         };
     }
 

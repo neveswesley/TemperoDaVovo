@@ -1,5 +1,9 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TemperoDaVovo.Application.UseCases.User.Commands.UpdatePassword;
 using TemperoDaVovo.Application.UseCases.User.Create;
+using TemperoDaVovo.Application.UseCases.User.Get;
 using TemperoDaVovo.Application.UseCases.User.Login;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
@@ -13,11 +17,15 @@ namespace TemperoDaVovo.API.Controllers
         
         private readonly ICreateUserUseCase _createUserUseCase;
         private readonly ILoginUseCase _loginUseCase;
+        private readonly IGetUserUseCase _getUserUseCase;
+        private readonly IUpdatePasswordUseCase _updatePasswordUseCase;
 
-        public UsersController(ICreateUserUseCase createUserUseCase, ILoginUseCase loginUseCase)
+        public UsersController(ICreateUserUseCase createUserUseCase, ILoginUseCase loginUseCase, IGetUserUseCase getUserUseCase, IUpdatePasswordUseCase updatePasswordUseCase)
         {
             _createUserUseCase = createUserUseCase;
             _loginUseCase = loginUseCase;
+            _getUserUseCase = getUserUseCase;
+            _updatePasswordUseCase = updatePasswordUseCase;
         }
 
         [HttpPost]
@@ -34,6 +42,22 @@ namespace TemperoDaVovo.API.Controllers
         {
             var login = await _loginUseCase.Execute(loginUserRequestJson);
             return Ok(login);
+        }
+        
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<IActionResult> GetMe()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await _getUserUseCase.ExecuteAsync(userId);
+            return Ok(result);
+        }
+
+        [HttpPut("update-password/{userId}")]
+        public async Task<IActionResult> UpdatePassword(Guid userId, UpdatePasswordRequest request)
+        {
+            await _updatePasswordUseCase.Execute(userId, request);
+            return NoContent();
         }
     }
 }

@@ -11,5 +11,6 @@ public class OrderHistoryResponseJson
     public string CustomerPhone { get; set; } = string.Empty;
     public OrderStatus Status { get; set; }
     public PaymentResponseJson? Payment { get; set; }
+    public DeliveryMode DeliveryMode { get; set; }
     public ICollection<OrderItemResponseJson> Items { get; set; } = new List<OrderItemResponseJson>();
 }

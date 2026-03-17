@@ -228,4 +228,9 @@ public class Order : BaseEntity
         Status = OrderStatus.PendingConfirmation;
         PendingConfirmationAt = DateTime.UtcNow;
     }
+
+    public void MarkAsDelivered()
+    {
+        Status = OrderStatus.Ready;
+    }
 }

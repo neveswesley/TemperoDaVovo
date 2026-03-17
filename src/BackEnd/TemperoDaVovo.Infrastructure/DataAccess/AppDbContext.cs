@@ -24,6 +24,8 @@ public class AppDbContext : DbContext
     public DbSet<Neighborhood> Neighborhoods { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<Payment> Payments { get; set; }
+    public DbSet<RestaurantOpeningHour> RestaurantOpeningHours { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

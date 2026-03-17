@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Application.Services;
 using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
@@ -50,5 +51,6 @@ public static class ServiceExtensions
         services.AddScoped<ICityWriteOnlyRepository, CityRepository>();
         services.AddScoped<IPaymentWriteOnlyRepository, PaymentRepository>();
         services.AddScoped<ICurrentUser, CurrentUser>();
+        services.AddScoped<IJwtService, JwtService>();
     }
 }

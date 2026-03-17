@@ -266,3 +266,11 @@ D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\rjsmraz
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\obj\Debug\net8.0\swae.build.ex.cache
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Projetos\TemperoDaVovo\src\BackEnd\TemperoDaVovo.API\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

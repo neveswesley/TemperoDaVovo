@@ -5,6 +5,7 @@ using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
 using TemperoDaVovo.Application.UseCases.Order.Commands.ExistingPhone;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Finalize;
+using TemperoDaVovo.Application.UseCases.Order.Commands.MarkAsDelivered;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveAll;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
@@ -33,8 +34,9 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IGetOrderByRestaurantId _getOrderByRestaurantId;
         private readonly IChangeOrderStatusUseCase _changeOrderStatusUseCase;
         private readonly IGetOrderHistoryUseCase _getOrderHistoryUseCase;
+        private readonly IMarkAsDeliveredUseCase _markAsDeliveredUseCase;
 
-        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase, ICancelOrderUseCase cancelOrderUseCase, IGetOrderByRestaurantId getOrderByRestaurantId, IChangeOrderStatusUseCase changeOrderStatusUseCase, IGetOrderHistoryUseCase getOrderHistoryUseCase)
+        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase, ICancelOrderUseCase cancelOrderUseCase, IGetOrderByRestaurantId getOrderByRestaurantId, IChangeOrderStatusUseCase changeOrderStatusUseCase, IGetOrderHistoryUseCase getOrderHistoryUseCase, IMarkAsDeliveredUseCase markAsDeliveredUseCase)
         {
             _addItemToOrderUseCase = addItemToOrderUseCase;
             _getCurrentOrderUseCase = getCurrentOrderUseCase;
@@ -49,6 +51,7 @@ namespace TemperoDaVovo.API.Controllers
             _getOrderByRestaurantId = getOrderByRestaurantId;
             _changeOrderStatusUseCase = changeOrderStatusUseCase;
             _getOrderHistoryUseCase = getOrderHistoryUseCase;
+            _markAsDeliveredUseCase = markAsDeliveredUseCase;
         }
 
         [HttpPost("add-item")]
@@ -181,6 +184,16 @@ namespace TemperoDaVovo.API.Controllers
         {
             var result = await _getOrderHistoryUseCase.ExecuteAsync(restaurantId, page, pageSize);
             return Ok(result);
+        }
+        
+        [HttpPut("mark-as-delivered/{orderId}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> MarkAsDelivered([FromRoute] Guid orderId)
+        {
+            await _markAsDeliveredUseCase.ExecuteAsync(orderId);
+            return NoContent();
         }
         
     }

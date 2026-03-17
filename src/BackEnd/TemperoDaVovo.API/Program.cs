@@ -1,6 +1,9 @@
+using System.Text;
 using System.Globalization;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using TemperoDaVovo.API.Filters;
 using TemperoDaVovo.API.Middleware;
 using TemperoDaVovo.Application;
@@ -8,13 +11,9 @@ using TemperoDaVovo.Application.Services;
 using TemperoDaVovo.Infrastructure.DataAccess;
 using TemperoDaVovo.Infrastructure.Services;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigurePersistenceApp(builder.Configuration);
@@ -27,23 +26,40 @@ builder.Services.AddCors(options =>
         policy => policy
             .WithOrigins("http://localhost:4200")
             .AllowAnyHeader()
-            .AllowAnyMethod());
+            .AllowAnyMethod()
+            .AllowCredentials());
 });
 
 builder.Services.AddControllers()
     .AddJsonOptions(opt =>
     {
-        opt.JsonSerializerOptions.PropertyNamingPolicy =
-            JsonNamingPolicy.CamelCase;
+        opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
+
+var jwtKey = builder.Configuration["Jwt:Key"]!;
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+    };
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHostedService<OrderExpirationService>();
 
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -56,22 +72,16 @@ Directory.CreateDirectory(uploadsPath);
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(uploadsPath),
-    RequestPath = "/uploads"
+    RequestPath  = "/uploads"
 });
 
-
 app.UseCors("AllowAngular");
-
 app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
+app.UseAuthentication(); // ← antes do UseAuthorization
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.MapFallbackToFile("index.html");
 
 app.Run();

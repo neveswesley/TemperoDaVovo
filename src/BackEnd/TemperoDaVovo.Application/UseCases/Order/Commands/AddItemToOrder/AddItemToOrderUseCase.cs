@@ -3,6 +3,7 @@ using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
+using TemperoDaVovo.Domain.Services;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
 
 namespace TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
@@ -13,21 +14,33 @@ public class AddItemToOrderUseCase : IAddItemToOrderUseCase
     private readonly IOrderReadOnlyRepository _orderReadOnlyRepository;
     private readonly ISideDishReadOnlyRepository _sideDishReadOnlyRepository;
     private readonly IProductReadOnlyRepository _productReadOnlyRepository;
+    private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
+    private readonly IRestaurantScheduleService _restaurantScheduleService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddItemToOrderUseCase(IOrderWriteOnlyRepository orderWriteOnlyRepository,
-        IOrderReadOnlyRepository orderReadOnlyRepository, ISideDishReadOnlyRepository sideDishReadOnlyRepository,
-        IProductReadOnlyRepository productReadOnlyRepository, IUnitOfWork unitOfWork)
+    public AddItemToOrderUseCase(IOrderWriteOnlyRepository orderWriteOnlyRepository, IOrderReadOnlyRepository orderReadOnlyRepository, ISideDishReadOnlyRepository sideDishReadOnlyRepository, IProductReadOnlyRepository productReadOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IRestaurantScheduleService restaurantScheduleService, IUnitOfWork unitOfWork)
     {
         _orderWriteOnlyRepository = orderWriteOnlyRepository;
         _orderReadOnlyRepository = orderReadOnlyRepository;
         _sideDishReadOnlyRepository = sideDishReadOnlyRepository;
         _productReadOnlyRepository = productReadOnlyRepository;
+        _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
+        _restaurantScheduleService = restaurantScheduleService;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<OrderResponseJson> Execute(AddItemToOrderRequestJson request)
     {
+        var restaurant = await _restaurantReadOnlyRepository.GetByIdWithOpeningHours(request.RestaurantId);
+
+        if (restaurant == null)
+            throw new NotFoundException(["Restaurante não encontrado."]);
+
+        var isOpenNow = _restaurantScheduleService.IsOpenNow(restaurant.OpeningHours, DateTime.Now);
+
+        if (!isOpenNow)
+            throw new BusinessException(["O restaurante está fechado no momento."]);
+        
         var order = await _orderReadOnlyRepository
             .GetOpenBySession(request.RestaurantId, request.ClientSessionId);
 

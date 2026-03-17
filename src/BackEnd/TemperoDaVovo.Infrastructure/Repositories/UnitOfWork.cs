@@ -15,6 +15,15 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task CommitAsync()
     {
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
     }
 }

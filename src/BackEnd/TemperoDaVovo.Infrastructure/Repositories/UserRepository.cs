@@ -21,6 +21,11 @@ public class UserRepository : IUserWriteOnlyRepository, IUserReadOnlyRepository
         return user.Id;
     }
 
+    public void Update(User user)
+    {
+        _context.Users.Update(user);
+    }
+
     public async Task<bool> EmailExists(string email)
     {
        return await _context.Users.AnyAsync(x=>x.Email.Equals(email));
@@ -35,5 +40,12 @@ public class UserRepository : IUserWriteOnlyRepository, IUserReadOnlyRepository
     public async Task<User> GetByEmail(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.Email.Equals(email));
+    }
+
+    public async Task<User?> GetByIdAsync(Guid id)
+    {
+        return await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 }
