@@ -1,11 +1,12 @@
-﻿using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Application.UseCases.Restaurant.Create;
+using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
 
-namespace TemperoDaVovo.Application.UseCases.Restaurant.Create;
+namespace TemperoDaVovo.Application.UseCases.Restaurant.Commands.Create;
 
 public class CreateRestaurantUseCase : ICreateRestaurantUseCase
 {
@@ -28,7 +29,9 @@ public class CreateRestaurantUseCase : ICreateRestaurantUseCase
         var address = new Address(request.Address.ZipCode, request.Address.State, request.Address.City,
             request.Address.Neighborhood, request.Address.Street, request.Address.Number, request.Address.Complement);
 
-        var restaurant = new Domain.Entities.Restaurant(request.Name, request.Phone, address);
+        var restaurant = new Domain.Entities.Restaurant(request.Name, request.Phone, address, request.Description, request.RestaurantCategory);
+        
+        restaurant.SetPaymentWay(request.PaymentWays);
 
         await _restaurantWriteOnlyRepository.AddAsync(restaurant);
         

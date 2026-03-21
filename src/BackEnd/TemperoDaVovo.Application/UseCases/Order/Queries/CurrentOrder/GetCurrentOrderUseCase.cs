@@ -53,6 +53,7 @@ public class GetCurrentOrderUseCase : IGetCurrentOrderUseCase
                 {
                     SideDishId = sd.OriginalSideDishId ?? Guid.Empty,
                     Name = sd.Name,
+                    GroupName = sd.GroupName,
                     UnitPrice = sd.UnitPrice,
                     Quantity = sd.Quantity
                 }).ToList()

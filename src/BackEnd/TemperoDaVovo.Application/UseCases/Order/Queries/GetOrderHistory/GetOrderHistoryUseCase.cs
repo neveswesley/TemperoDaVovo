@@ -57,6 +57,7 @@ public class GetOrderHistoryUseCase : IGetOrderHistoryUseCase
                     SideDishes = i.SideDishes.Select(s => new OrderSideDishResponseJson
                     {
                         Name = s.Name,
+                        GroupName = s.GroupName,
                         Quantity = s.Quantity,
                         UnitPrice = s.UnitPrice,
                     }).ToList()

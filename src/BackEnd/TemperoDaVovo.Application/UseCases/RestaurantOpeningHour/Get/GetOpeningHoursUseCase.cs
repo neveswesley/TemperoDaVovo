@@ -24,8 +24,8 @@ public class GetOpeningHoursUseCase : IGetOpeningHoursUseCase
         return restaurant.OpeningHours.Select(x => new OpeningHourResponse
         {
             DayOfWeek = x.DayOfWeek,
-            OpenTime = x.OpenTime.ToString(@"hh\:mm\:ss"),
-            CloseTime = x.CloseTime.ToString(@"hh\:mm\:ss"),
+            OpenTime = x.OpenTime.ToString(@"HH\:mm\:ss"),
+            CloseTime = x.CloseTime.ToString(@"HH\:mm\:ss"),
         }).ToList();
     }
 }

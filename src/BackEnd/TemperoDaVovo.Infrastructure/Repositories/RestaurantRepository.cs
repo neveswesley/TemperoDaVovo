@@ -50,7 +50,7 @@ public class RestaurantRepository : IRestaurantReadOnlyRepository, IRestaurantWr
         return _context.Restaurants.AnyAsync(r => r.Id == restaurantId);
     }
 
-    public async Task<Restaurant> GetRestaurantById(Guid restaurantId)
+    public async Task<Restaurant?> GetRestaurantById(Guid restaurantId)
     {
         return await _context.Restaurants.FirstOrDefaultAsync(r => r.Id == restaurantId);
     }

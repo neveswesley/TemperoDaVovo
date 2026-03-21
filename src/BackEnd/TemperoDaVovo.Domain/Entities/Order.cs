@@ -15,6 +15,10 @@ public class Order : BaseEntity
 
     //Status
     public OrderStatus Status { get; private set; }
+    public CancellationRequestStatus CancellationRequestStatus { get; private set; }
+    public DateTime? CancellationRequestedAt { get; private set; }
+    public string? CancellationRequestReason { get; private set; }
+    public string? CancellationRejectionReason { get; private set; }
     public CanceledBy? CanceledBy { get; private set; }
     public CancellationReasonType? CancellationReasonType { get; private set; }
     public string? CancellationDescription { get; private set; }
@@ -232,5 +236,52 @@ public class Order : BaseEntity
     public void MarkAsDelivered()
     {
         Status = OrderStatus.Ready;
+        ReadyAt = DateTime.UtcNow;
+    }
+    
+    public void Abandon()
+    {
+        if (Status != OrderStatus.Draft)
+            throw new DomainException(["Apenas pedidos em rascunho podem ser abandonados."]);
+ 
+        Status = OrderStatus.Abandoned;
+    }
+    
+    public void RequestCancellation(string reason)
+    {
+        if (Status != OrderStatus.PendingConfirmation && Status != OrderStatus.Preparing)
+            throw new DomainException(["Este pedido não pode ter cancelamento solicitado."]);
+
+        if (CancellationRequestStatus == CancellationRequestStatus.Pending)
+            throw new DomainException(["Já existe uma solicitação de cancelamento pendente."]);
+
+        if (string.IsNullOrWhiteSpace(reason))
+            throw new DomainException(["O motivo da solicitação é obrigatório."]);
+
+        CancellationRequestStatus = CancellationRequestStatus.Pending;
+        CancellationRequestedAt = DateTime.UtcNow;
+        CancellationRequestReason = reason;
+        CancellationRejectionReason = null;
+    }
+    
+    public void ApproveCancellationRequest(CancellationReasonType reason, string? description = null)
+    {
+        if (CancellationRequestStatus != CancellationRequestStatus.Pending)
+            throw new DomainException(["Não existe solicitação de cancelamento pendente."]);
+
+        Cancel(reason, Enums.CanceledBy.Restaurant, description ?? CancellationRequestReason);
+        CancellationRequestStatus = CancellationRequestStatus.Approved;
+    }
+    
+    public void RejectCancellationRequest(string rejectionReason)
+    {
+        if (CancellationRequestStatus != CancellationRequestStatus.Pending)
+            throw new DomainException(["Não existe solicitação de cancelamento pendente."]);
+
+        if (string.IsNullOrWhiteSpace(rejectionReason))
+            throw new DomainException(["O motivo da recusa é obrigatório."]);
+
+        CancellationRequestStatus = CancellationRequestStatus.Rejected;
+        CancellationRejectionReason = rejectionReason;
     }
 }

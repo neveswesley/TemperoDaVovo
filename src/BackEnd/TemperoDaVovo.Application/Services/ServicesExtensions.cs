@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TemperoDaVovo.Application.Interfaces;
 using TemperoDaVovo.Application.UseCases.Category.Commands;
 using TemperoDaVovo.Application.UseCases.Category.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Category.Commands.Reorder;
@@ -14,6 +13,7 @@ using TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Update;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Queries.GetAll;
+using TemperoDaVovo.Application.UseCases.Order.Commands.AbandonOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
@@ -38,6 +38,9 @@ using TemperoDaVovo.Application.UseCases.Product.Commands.Update;
 using TemperoDaVovo.Application.UseCases.Product.Commands.UpdateImage;
 using TemperoDaVovo.Application.UseCases.Product.Queries.GetAll;
 using TemperoDaVovo.Application.UseCases.Product.Queries.GetById;
+using TemperoDaVovo.Application.UseCases.Restaurant.Commands.Create;
+using TemperoDaVovo.Application.UseCases.Restaurant.Commands.Update;
+using TemperoDaVovo.Application.UseCases.Restaurant.Commands.UpdatePaymentWay;
 using TemperoDaVovo.Application.UseCases.Restaurant.Create;
 using TemperoDaVovo.Application.UseCases.Restaurant.Queries.Get;
 using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Get;
@@ -136,5 +139,8 @@ public static class ServicesExtensions
         services.AddScoped<IGetUserUseCase , GetUserUseCase >();
         services.AddScoped<IUpdatePasswordUseCase , UpdatePasswordUseCase >();
         services.AddScoped<IGetRestaurantByIdUseCase , GetRestaurantByIdUseCase >();
+        services.AddScoped<IUpdateRestaurantUseCase , UpdateRestaurantUseCase >();
+        services.AddScoped<IUpdatePaymentWayUseCase , UpdatePaymentWayUseCase >();
+        services.AddScoped<IAbandonOrderUseCase, AbandonOrderUseCase>();
     }
 }

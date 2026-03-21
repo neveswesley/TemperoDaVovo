@@ -27,8 +27,10 @@ public class ExceptionMiddleware
                 message = ex.ErrorMessages
             });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine($"[EXCEPTION] {ex.GetType().Name}: {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsJsonAsync(new
             {

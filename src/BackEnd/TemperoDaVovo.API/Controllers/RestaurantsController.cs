@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using TemperoDaVovo.Application.UseCases.Restaurant.Commands.Update;
+using TemperoDaVovo.Application.UseCases.Restaurant.Commands.UpdatePaymentWay;
 using TemperoDaVovo.Application.UseCases.Restaurant.Create;
 using TemperoDaVovo.Application.UseCases.Restaurant.Queries.Get;
 using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Get;
@@ -12,18 +14,21 @@ namespace TemperoDaVovo.API.Controllers
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
-        
         private readonly ICreateRestaurantUseCase _createRestaurantUseCase;
         private readonly IOpeningHoursUseCase _openingHoursUseCase;
         private readonly IGetOpeningHoursUseCase _getOpeningHoursUseCase;
         private readonly IGetRestaurantByIdUseCase _getRestaurantByIdUseCase;
+        private readonly IUpdateRestaurantUseCase _updateRestaurantUseCase;
+        private readonly IUpdatePaymentWayUseCase _updatePaymentWayUseCase;
 
-        public RestaurantsController(ICreateRestaurantUseCase createRestaurantUseCase, IOpeningHoursUseCase openingHoursUseCase, IGetOpeningHoursUseCase getOpeningHoursUseCase, IGetRestaurantByIdUseCase getRestaurantByIdUseCase)
+        public RestaurantsController(ICreateRestaurantUseCase createRestaurantUseCase, IOpeningHoursUseCase openingHoursUseCase, IGetOpeningHoursUseCase getOpeningHoursUseCase, IGetRestaurantByIdUseCase getRestaurantByIdUseCase, IUpdateRestaurantUseCase updateRestaurantUseCase, IUpdatePaymentWayUseCase updatePaymentWayUseCase)
         {
             _createRestaurantUseCase = createRestaurantUseCase;
             _openingHoursUseCase = openingHoursUseCase;
             _getOpeningHoursUseCase = getOpeningHoursUseCase;
             _getRestaurantByIdUseCase = getRestaurantByIdUseCase;
+            _updateRestaurantUseCase = updateRestaurantUseCase;
+            _updatePaymentWayUseCase = updatePaymentWayUseCase;
         }
 
         [HttpPost]
@@ -64,6 +69,26 @@ namespace TemperoDaVovo.API.Controllers
         {
             var result = await _getRestaurantByIdUseCase.ExecuteAsync(restaurantId);
             return Ok(result);
+        }
+        
+        [HttpPut("{restaurantId}")]
+        [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update([FromRoute] Guid restaurantId, UpdateRestaurantRequest request)
+        {
+            await _updateRestaurantUseCase.ExecuteAsync(restaurantId, request);
+            return NoContent();
+        }
+        
+        [HttpPut("update-payment-way/{restaurantId}")]
+        [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdatePaymentWay([FromRoute] Guid restaurantId, SetPaymentWayRequest request)
+        {
+            await _updatePaymentWayUseCase.ExecuteAsync(restaurantId, request);
+            return NoContent();
         }
         
     }

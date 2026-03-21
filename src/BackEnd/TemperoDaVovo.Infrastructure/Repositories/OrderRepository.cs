@@ -135,7 +135,9 @@ public class OrderRepository : IOrderWriteOnlyRepository, IOrderReadOnlyReposito
             .Include(o => o.Payment)
             .Include(o => o.Items)
             .ThenInclude(i => i.SideDishes)
-            .Where(o => o.RestaurantId == restaurantId)
+            .Where(o => o.RestaurantId == restaurantId
+                        && o.Status != OrderStatus.Draft
+                        && o.Status != OrderStatus.Abandoned)
             .OrderByDescending(o => o.CreatedAt);
 
         var totalItems = await query.CountAsync();

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TemperoDaVovo.Application.UseCases.Order.Commands.AbandonOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
@@ -35,8 +36,9 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IChangeOrderStatusUseCase _changeOrderStatusUseCase;
         private readonly IGetOrderHistoryUseCase _getOrderHistoryUseCase;
         private readonly IMarkAsDeliveredUseCase _markAsDeliveredUseCase;
+        private readonly IAbandonOrderUseCase _abandonOrderUseCase;
 
-        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase, ICancelOrderUseCase cancelOrderUseCase, IGetOrderByRestaurantId getOrderByRestaurantId, IChangeOrderStatusUseCase changeOrderStatusUseCase, IGetOrderHistoryUseCase getOrderHistoryUseCase, IMarkAsDeliveredUseCase markAsDeliveredUseCase)
+        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase, ICancelOrderUseCase cancelOrderUseCase, IGetOrderByRestaurantId getOrderByRestaurantId, IChangeOrderStatusUseCase changeOrderStatusUseCase, IGetOrderHistoryUseCase getOrderHistoryUseCase, IMarkAsDeliveredUseCase markAsDeliveredUseCase, IAbandonOrderUseCase abandonOrderUseCase)
         {
             _addItemToOrderUseCase = addItemToOrderUseCase;
             _getCurrentOrderUseCase = getCurrentOrderUseCase;
@@ -52,6 +54,7 @@ namespace TemperoDaVovo.API.Controllers
             _changeOrderStatusUseCase = changeOrderStatusUseCase;
             _getOrderHistoryUseCase = getOrderHistoryUseCase;
             _markAsDeliveredUseCase = markAsDeliveredUseCase;
+            _abandonOrderUseCase = abandonOrderUseCase;
         }
 
         [HttpPost("add-item")]
@@ -193,6 +196,16 @@ namespace TemperoDaVovo.API.Controllers
         public async Task<IActionResult> MarkAsDelivered([FromRoute] Guid orderId)
         {
             await _markAsDeliveredUseCase.ExecuteAsync(orderId);
+            return NoContent();
+        }
+        
+        [HttpPatch("abandon/{orderId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AbandonOrder([FromRoute] Guid orderId)
+        {
+            await _abandonOrderUseCase.ExecuteAsync(orderId);
             return NoContent();
         }
         

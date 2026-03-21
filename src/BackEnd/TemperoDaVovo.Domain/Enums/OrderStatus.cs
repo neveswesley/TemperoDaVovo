@@ -7,5 +7,7 @@ public enum OrderStatus
     Preparing = 2,
     OnTheWay = 3,
     Ready = 4,
-    Canceled = 5
+    CancellationRequested = 5,
+    Canceled = 6,
+    Abandoned = 99
 }

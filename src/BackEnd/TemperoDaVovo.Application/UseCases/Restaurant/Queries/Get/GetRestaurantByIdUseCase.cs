@@ -19,13 +19,31 @@ public class GetRestaurantByIdUseCase : IGetRestaurantByIdUseCase
         if (restaurant == null)
             throw new NotFoundException(["Restaurant not found."]);
 
-        return new RestaurantResponse()
+        return new RestaurantResponse
         {
             Name = restaurant.Name,
             Phone = restaurant.Phone,
             Description = restaurant.Description,
-            Address = restaurant.Address,
-            RestaurantCategory = restaurant.RestaurantCategory
+            RestaurantCategory = restaurant.RestaurantCategory.HasValue
+                ? (int)restaurant.RestaurantCategory.Value
+                : null,
+            Address = restaurant.Address == null ? null : new AddressResponse
+            {
+                Street = restaurant.Address.Street,
+                Number = restaurant.Address.Number,
+                Neighborhood = restaurant.Address.Neighborhood,
+                City = restaurant.Address.City,
+                State = restaurant.Address.State,
+                ZipCode = restaurant.Address.ZipCode,
+                Complement = restaurant.Address.Complement,
+            },
+            PaymentWays = restaurant.PaymentWays,
+            OpeningHours = restaurant.OpeningHours.Select(h => new OpeningHourResponse
+            {
+                DayOfWeek = h.DayOfWeek,
+                OpenTime = h.OpenTime.ToString("HH:mm:ss"),
+                CloseTime = h.CloseTime.ToString("HH:mm:ss"),
+            }).ToList(),
         };
     }
 }

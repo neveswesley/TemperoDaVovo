@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Domain.Interfaces.ReadOnly;
+﻿using TemperoDaVovo.Application.Services;
+using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
 
@@ -10,12 +11,15 @@ public class MarkAsDeliveredUseCase : IMarkAsDeliveredUseCase
     private readonly IOrderReadOnlyRepository _orderReadOnlyRepository;
     private readonly IOrderWriteOnlyRepository _orderWriteOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IOrderNotifier _orderNotifier;
 
-    public MarkAsDeliveredUseCase(IOrderReadOnlyRepository orderReadOnlyRepository, IOrderWriteOnlyRepository orderWriteOnlyRepository, IUnitOfWork unitOfWork)
+
+    public MarkAsDeliveredUseCase(IOrderReadOnlyRepository orderReadOnlyRepository, IOrderWriteOnlyRepository orderWriteOnlyRepository, IUnitOfWork unitOfWork, IOrderNotifier orderNotifier)
     {
         _orderReadOnlyRepository = orderReadOnlyRepository;
         _orderWriteOnlyRepository = orderWriteOnlyRepository;
         _unitOfWork = unitOfWork;
+        _orderNotifier = orderNotifier;
     }
 
     public async Task<Guid> ExecuteAsync(Guid orderId)
@@ -27,6 +31,13 @@ public class MarkAsDeliveredUseCase : IMarkAsDeliveredUseCase
         order.MarkAsDelivered();
         await _orderWriteOnlyRepository.Update(order);
         await _unitOfWork.CommitAsync();
+        
+        await _orderNotifier.NotifyOrderUpdated(order.RestaurantId, new
+        {
+            orderId = order.Id,
+            orderNumber = order.OrderNumber,
+            status = order.Status,
+        });
         
         return order.Id;
         

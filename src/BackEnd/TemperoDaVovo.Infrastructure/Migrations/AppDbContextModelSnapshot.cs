@@ -131,6 +131,18 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<int?>("CancellationReasonType")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CancellationRejectionReason")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CancellationRequestReason")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("CancellationRequestStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("CancellationRequestedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("City")
                         .HasColumnType("TEXT");
 
@@ -446,6 +458,10 @@ namespace TemperoDaVovo.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PaymentWays")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")

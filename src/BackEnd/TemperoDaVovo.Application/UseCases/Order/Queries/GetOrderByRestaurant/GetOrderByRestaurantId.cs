@@ -69,6 +69,7 @@ public class GetOrderByRestaurantId : IGetOrderByRestaurantId
                 {
                     SideDishId = sd.Id,
                     Name = sd.Name,
+                    GroupName = sd.GroupName,
                     UnitPrice = sd.UnitPrice,
                     Quantity = sd.Quantity
                 }).ToList()

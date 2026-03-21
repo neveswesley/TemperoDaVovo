@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.Timeouts;
+﻿using TemperoDaVovo.Application.Services;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Domain.Enums;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
@@ -15,12 +15,10 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
     private readonly IPaymentWriteOnlyRepository _paymentWriteOnlyRepository;
     private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IOrderNotifier _orderNotifier;
 
-    public FinalizeOrderUseCase(IOrderWriteOnlyRepository orderWriteOnlyRepository,
-        IOrderReadOnlyRepository orderReadOnlyRepository,
-        INeighborhoodReadOnlyRepository neighborhoodReadOnlyRepository,
-        IPaymentWriteOnlyRepository paymentWriteOnlyRepository,
-        IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork)
+
+    public FinalizeOrderUseCase(IOrderWriteOnlyRepository orderWriteOnlyRepository, IOrderReadOnlyRepository orderReadOnlyRepository, INeighborhoodReadOnlyRepository neighborhoodReadOnlyRepository, IPaymentWriteOnlyRepository paymentWriteOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork, IOrderNotifier orderNotifier)
     {
         _orderWriteOnlyRepository = orderWriteOnlyRepository;
         _orderReadOnlyRepository = orderReadOnlyRepository;
@@ -28,6 +26,7 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
         _paymentWriteOnlyRepository = paymentWriteOnlyRepository;
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
         _unitOfWork = unitOfWork;
+        _orderNotifier = orderNotifier;
     }
 
     public async Task<Guid> ExecuteAsync(CheckoutOrderRequestJson request)
@@ -65,7 +64,6 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
             order.SetEstimatedDeliveryTimeInMinutes(20);
             
         }
-        order.SetPendingConfirmation();
 
         var payment = new Domain.Entities.Payment(order.Id, request.PaymentWay, order.Total);
 
@@ -85,11 +83,18 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
             order.SetPayment(payment.Id);
         }
         
-        order.UpdateStatus(OrderStatus.PendingConfirmation);
+        order.SetPendingConfirmation();
 
         await _orderWriteOnlyRepository.Update(order);
         await _paymentWriteOnlyRepository.CreateAsync(payment);
         await _unitOfWork.CommitAsync();
+        await _orderNotifier.NotifyOrderCreated(order.RestaurantId, new
+        {
+            orderId = order.Id,
+            orderNumber = order.OrderNumber,
+            status = order.Status,
+        });
+        
         return order.Id;
     }
 }

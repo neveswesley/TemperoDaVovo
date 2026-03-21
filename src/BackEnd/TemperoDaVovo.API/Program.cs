@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using TemperoDaVovo.API.Filters;
+using TemperoDaVovo.API.Hubs;
 using TemperoDaVovo.API.Middleware;
+using TemperoDaVovo.API.Services;
 using TemperoDaVovo.Application;
 using TemperoDaVovo.Application.Services;
 using TemperoDaVovo.Infrastructure.DataAccess;
@@ -13,12 +15,20 @@ using TemperoDaVovo.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ExceptionFilter>();
+})
+.AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
+
 builder.Services.ConfigurePersistenceApp(builder.Configuration);
 builder.Services.ConfigureApplicationApp();
-builder.Services.AddControllers(options => { options.Filters.Add<ExceptionFilter>(); });
 
 builder.Services.AddCors(options =>
 {
@@ -30,18 +40,12 @@ builder.Services.AddCors(options =>
             .AllowCredentials());
 });
 
-builder.Services.AddControllers()
-    .AddJsonOptions(opt =>
-    {
-        opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    });
-
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
@@ -53,10 +57,30 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
     };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+
+            if (!string.IsNullOrEmpty(accessToken) &&
+                path.StartsWithSegments("/hubs/orders"))
+            {
+                context.Token = accessToken;
+            }
+
+            return Task.CompletedTask;
+        }
+    };
 });
+
+builder.Services.AddScoped<IOrderNotifier, OrderNotifier>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHostedService<OrderExpirationService>();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -72,15 +96,17 @@ Directory.CreateDirectory(uploadsPath);
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(uploadsPath),
-    RequestPath  = "/uploads"
+    RequestPath = "/uploads"
 });
 
-app.UseCors("AllowAngular");
-app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication(); // ← antes do UseAuthorization
+app.UseCors("AllowAngular");
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHub<OrdersHub>("/hubs/orders").RequireCors("AllowAngular");
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 

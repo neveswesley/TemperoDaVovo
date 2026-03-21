@@ -6,7 +6,7 @@ public interface IRestaurantReadOnlyRepository
 {
     Task<bool> PhoneExists(string phone);
     Task<bool> RestaurantExists(Guid restaurantId);
-    Task<Restaurant> GetRestaurantById(Guid restaurantId);
+    Task<Restaurant?> GetRestaurantById(Guid restaurantId);
     Task<Restaurant?> GetByIdWithOpeningHours(Guid restaurantId);
     void DetectChange(Restaurant restaurant);
 }

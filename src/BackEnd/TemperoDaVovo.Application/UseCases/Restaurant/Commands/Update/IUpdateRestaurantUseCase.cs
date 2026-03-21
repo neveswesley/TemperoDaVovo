@@ -1,8 +1,9 @@
-﻿using TemperoDaVovo.Communications.Responses;
+﻿using TemperoDaVovo.Communications.Requests;
+using TemperoDaVovo.Communications.Responses;
 
 namespace TemperoDaVovo.Application.UseCases.Restaurant.Commands.Update;
 
 public interface IUpdateRestaurantUseCase
 {
-    Task<RestaurantResponse> ExecuteAsync (Guid restaurantId);
+    Task ExecuteAsync (Guid restaurantId, UpdateRestaurantRequest request);
 }

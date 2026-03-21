@@ -10,6 +10,11 @@ public class Address
     public string Number { get; private set; }
     public string? Complement { get; private set; }
 
+    protected Address()
+    {
+        
+    }
+    
     public Address(
         string zipCode,
         string state,
