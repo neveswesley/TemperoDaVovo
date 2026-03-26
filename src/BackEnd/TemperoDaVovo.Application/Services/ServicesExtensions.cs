@@ -16,12 +16,17 @@ using TemperoDaVovo.Application.UseCases.Neighborhood.Queries.GetAll;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AbandonOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
+using TemperoDaVovo.Application.UseCases.Order.Commands.ApproveCancellationRequest;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
+using TemperoDaVovo.Application.UseCases.Order.Commands.CancelByRestaurant;
+using TemperoDaVovo.Application.UseCases.Order.Commands.CancellationRequest;
+using TemperoDaVovo.Application.UseCases.Order.Commands.CancelOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.ChangeOrderStatus;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
 using TemperoDaVovo.Application.UseCases.Order.Commands.ExistingPhone;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Finalize;
 using TemperoDaVovo.Application.UseCases.Order.Commands.MarkAsDelivered;
+using TemperoDaVovo.Application.UseCases.Order.Commands.RejectCancellationRequest;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveAll;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
@@ -124,7 +129,7 @@ public static class ServicesExtensions
         services.AddScoped<IGetAllCitiesByRestaurantId , GetAllCitiesByRestaurantId >();
         services.AddScoped<IFinalizeOrderUseCase , FinalizeOrderUseCase >();
         services.AddScoped<IGetOrderByClientUseCase , GetOrderByClientUseCase >();
-        services.AddScoped<ICancelOrderUseCase , CancelOrderUseCase >();
+        services.AddScoped<ICancelOrderRequestUseCase , CancelOrderRequestUseCase >();
         services.AddScoped<IGetOrderByRestaurantId , GetOrderByRestaurantId >();
         services.AddScoped<IChangeOrderStatusUseCase , ChangeOrderStatusUseCase >();
         services.AddScoped<IUpdateCityUseCase , UpdateCityUseCase >();
@@ -142,5 +147,9 @@ public static class ServicesExtensions
         services.AddScoped<IUpdateRestaurantUseCase , UpdateRestaurantUseCase >();
         services.AddScoped<IUpdatePaymentWayUseCase , UpdatePaymentWayUseCase >();
         services.AddScoped<IAbandonOrderUseCase, AbandonOrderUseCase>();
+        services.AddScoped<IApproveCancellationRequestUseCase, ApproveCancellationRequestUseCase>();
+        services.AddScoped<IRejectCancellationRequestUseCase, RejectCancellationRequestUseCase>();
+        services.AddScoped<IRejectOrderUseCase, RejectOrderUseCase>();
+        services.AddScoped<ICancelOrderUseCase, CancelOrderUseCase>();
     }
 }

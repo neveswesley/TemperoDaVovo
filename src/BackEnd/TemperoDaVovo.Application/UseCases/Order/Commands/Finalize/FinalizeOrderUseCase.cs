@@ -88,6 +88,7 @@ public class FinalizeOrderUseCase : IFinalizeOrderUseCase
         await _orderWriteOnlyRepository.Update(order);
         await _paymentWriteOnlyRepository.CreateAsync(payment);
         await _unitOfWork.CommitAsync();
+        
         await _orderNotifier.NotifyOrderCreated(order.RestaurantId, new
         {
             orderId = order.Id,

@@ -262,6 +262,7 @@ public class Order : BaseEntity
         CancellationRequestedAt = DateTime.UtcNow;
         CancellationRequestReason = reason;
         CancellationRejectionReason = null;
+        Status = OrderStatus.CancellationRequested;
     }
     
     public void ApproveCancellationRequest(CancellationReasonType reason, string? description = null)
@@ -283,5 +284,17 @@ public class Order : BaseEntity
 
         CancellationRequestStatus = CancellationRequestStatus.Rejected;
         CancellationRejectionReason = rejectionReason;
+    }
+
+    public void RejectOrder(CancellationReasonType reasonType, string? description)
+    {
+        if (Status != OrderStatus.PendingConfirmation)
+            throw new DomainException(["Este pedido não pode ser cancelado"]);
+        
+        Status = OrderStatus.Canceled;
+        CancellationReasonType = reasonType;
+        CancellationDescription = description;
+        CanceledAt =  DateTime.UtcNow;
+        CanceledBy = Enums.CanceledBy.Restaurant;
     }
 }

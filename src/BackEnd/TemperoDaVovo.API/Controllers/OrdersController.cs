@@ -3,6 +3,9 @@ using TemperoDaVovo.Application.UseCases.Order.Commands.AbandonOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
+using TemperoDaVovo.Application.UseCases.Order.Commands.CancelByRestaurant;
+using TemperoDaVovo.Application.UseCases.Order.Commands.CancellationRequest;
+using TemperoDaVovo.Application.UseCases.Order.Commands.CancelOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
 using TemperoDaVovo.Application.UseCases.Order.Commands.ExistingPhone;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Finalize;
@@ -31,14 +34,18 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IExistingPhoneUseCase _existingPhoneUseCase;
         private readonly IFinalizeOrderUseCase _finalizeOrderUseCase;
         private readonly IGetOrderByClientUseCase _getOrderByClientUseCase;
-        private readonly ICancelOrderUseCase _cancelOrderUseCase;
+        private readonly ICancelOrderRequestUseCase _cancelOrderRequestUseCase;
         private readonly IGetOrderByRestaurantId _getOrderByRestaurantId;
         private readonly IChangeOrderStatusUseCase _changeOrderStatusUseCase;
         private readonly IGetOrderHistoryUseCase _getOrderHistoryUseCase;
         private readonly IMarkAsDeliveredUseCase _markAsDeliveredUseCase;
         private readonly IAbandonOrderUseCase _abandonOrderUseCase;
+        private readonly IApproveCancellationRequestUseCase _approveCancellationRequestUseCase;
+        private readonly IRejectCancellationRequestUseCase _rejectCancellationRequestUseCase;
+        private readonly IRejectOrderUseCase _rejectOrderUseCase;
+        private readonly ICancelOrderUseCase _cancelOrderUseCase;
 
-        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase, ICancelOrderUseCase cancelOrderUseCase, IGetOrderByRestaurantId getOrderByRestaurantId, IChangeOrderStatusUseCase changeOrderStatusUseCase, IGetOrderHistoryUseCase getOrderHistoryUseCase, IMarkAsDeliveredUseCase markAsDeliveredUseCase, IAbandonOrderUseCase abandonOrderUseCase)
+        public OrdersController(IAddItemToOrderUseCase addItemToOrderUseCase, IGetCurrentOrderUseCase getCurrentOrderUseCase, IUpdateOrderItemUseCase updateOrderItemUseCase, IRemoveOrderItemUseCase removeOrderItemUseCase, IRemoveAllOrderItemUseCase removeAllOrderItemUseCase, ICompleteCheckoutUseCase completeCheckoutUseCase, IExistingPhoneUseCase existingPhoneUseCase, IFinalizeOrderUseCase finalizeOrderUseCase, IGetOrderByClientUseCase getOrderByClientUseCase, ICancelOrderRequestUseCase cancelOrderRequestUseCase, IGetOrderByRestaurantId getOrderByRestaurantId, IChangeOrderStatusUseCase changeOrderStatusUseCase, IGetOrderHistoryUseCase getOrderHistoryUseCase, IMarkAsDeliveredUseCase markAsDeliveredUseCase, IAbandonOrderUseCase abandonOrderUseCase, IApproveCancellationRequestUseCase approveCancellationRequestUseCase, IRejectCancellationRequestUseCase rejectCancellationRequestUseCase, IRejectOrderUseCase rejectOrderUseCase, ICancelOrderUseCase cancelOrderUseCase)
         {
             _addItemToOrderUseCase = addItemToOrderUseCase;
             _getCurrentOrderUseCase = getCurrentOrderUseCase;
@@ -49,12 +56,16 @@ namespace TemperoDaVovo.API.Controllers
             _existingPhoneUseCase = existingPhoneUseCase;
             _finalizeOrderUseCase = finalizeOrderUseCase;
             _getOrderByClientUseCase = getOrderByClientUseCase;
-            _cancelOrderUseCase = cancelOrderUseCase;
+            _cancelOrderRequestUseCase = cancelOrderRequestUseCase;
             _getOrderByRestaurantId = getOrderByRestaurantId;
             _changeOrderStatusUseCase = changeOrderStatusUseCase;
             _getOrderHistoryUseCase = getOrderHistoryUseCase;
             _markAsDeliveredUseCase = markAsDeliveredUseCase;
             _abandonOrderUseCase = abandonOrderUseCase;
+            _approveCancellationRequestUseCase = approveCancellationRequestUseCase;
+            _rejectCancellationRequestUseCase = rejectCancellationRequestUseCase;
+            _rejectOrderUseCase = rejectOrderUseCase;
+            _cancelOrderUseCase = cancelOrderUseCase;
         }
 
         [HttpPost("add-item")]
@@ -155,9 +166,9 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CancelOrder([FromRoute] Guid orderId, [FromBody] CancelOrderRequestJson request)
+        public async Task<IActionResult> CancelOrder([FromRoute] Guid orderId, [FromBody] CancelOrderByCustomerRequestJson byCustomerRequest)
         {
-            await _cancelOrderUseCase.ExecuteAsync(orderId, request);
+            await _cancelOrderRequestUseCase.ExecuteAsync(orderId, byCustomerRequest);
             return NoContent();
         }
 
@@ -206,6 +217,46 @@ namespace TemperoDaVovo.API.Controllers
         public async Task<IActionResult> AbandonOrder([FromRoute] Guid orderId)
         {
             await _abandonOrderUseCase.ExecuteAsync(orderId);
+            return NoContent();
+        }
+        
+        [HttpPut("{orderId}/cancel/approve/")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> ApproveCancellationRequest([FromRoute] Guid orderId, ApproveCancellationRequestJson request)
+        {
+            await _approveCancellationRequestUseCase.ExecuteAsync(orderId, request);
+            return NoContent();
+        }
+        
+        [HttpPut("{orderId}/cancel/reject/")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> RejectCancellationRequest([FromRoute] Guid orderId, RejectCancellationRequestJson request)
+        {
+            await _rejectCancellationRequestUseCase.ExecuteAsync(orderId, request);
+            return NoContent();
+        }
+        
+        [HttpPut("{orderId}/reject-order/")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> RejectOrder([FromRoute] Guid orderId, RejectOrderRequestJson request)
+        {
+            await _rejectOrderUseCase.ExecuteAsync(orderId, request);
+            return NoContent();
+        }
+        
+        [HttpPut("cancel-order-by-restaurant/{orderId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CancelOrderByRestaurant([FromRoute] Guid orderId, [FromBody] CancelOrderByRestaurantRequestJson request)
+        {
+            await _cancelOrderUseCase.ExecuteAsync(orderId, request);
             return NoContent();
         }
         

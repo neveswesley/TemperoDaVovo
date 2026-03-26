@@ -171,7 +171,8 @@ public class OrderRepository : IOrderWriteOnlyRepository, IOrderReadOnlyReposito
                 (o.Status == OrderStatus.PendingConfirmation ||
                  o.Status == OrderStatus.Preparing ||
                  o.Status == OrderStatus.Ready ||
-                 o.Status == OrderStatus.OnTheWay))
+                 o.Status == OrderStatus.Canceled ||
+                 o.Status == OrderStatus.OnTheWay || o.Status == OrderStatus.CancellationRequested))
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
     }
