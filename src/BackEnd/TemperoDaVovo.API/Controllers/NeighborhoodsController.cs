@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.Neighborhood.Commands.Create;
@@ -13,7 +14,6 @@ namespace TemperoDaVovo.API.Controllers
     [ApiController]
     public class NeighborhoodsController : ControllerBase
     {
-        
         private readonly ICreateNeighborhoodUseCase _createNeighborhoodUseCase;
         private readonly IGetAllNeighborhoodByRestaurantId _getAllNeighborhoodByRestaurantId;
         private readonly IDeleteNeighborhoodUseCase _deleteNeighborhoodUseCase;
@@ -27,6 +27,7 @@ namespace TemperoDaVovo.API.Controllers
             _updateNeighborhoodUseCase = updateNeighborhoodUseCase;
         }
 
+        [Authorize(Roles = "Restaurant")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -46,6 +47,7 @@ namespace TemperoDaVovo.API.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("{neighborhoodId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -56,11 +58,12 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("delete/{neighborhoodId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Delete([FromRoute] Guid neighborhoodId)
+        public async Task<IActionResult> Deactivate([FromRoute] Guid neighborhoodId)
         {
             await _deleteNeighborhoodUseCase.ExecuteAsync(neighborhoodId);
             return NoContent();

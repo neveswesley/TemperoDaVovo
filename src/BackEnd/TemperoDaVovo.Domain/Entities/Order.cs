@@ -15,6 +15,7 @@ public class Order : BaseEntity
 
     //Status
     public OrderStatus Status { get; private set; }
+    public OrderStatus? StatusBeforeCancellationRequest { get; private set; }
     public CancellationRequestStatus CancellationRequestStatus { get; private set; }
     public DateTime? CancellationRequestedAt { get; private set; }
     public string? CancellationRequestReason { get; private set; }
@@ -258,6 +259,7 @@ public class Order : BaseEntity
         if (string.IsNullOrWhiteSpace(reason))
             throw new DomainException(["O motivo da solicitação é obrigatório."]);
 
+        StatusBeforeCancellationRequest = Status; // ← salva antes de mudar
         CancellationRequestStatus = CancellationRequestStatus.Pending;
         CancellationRequestedAt = DateTime.UtcNow;
         CancellationRequestReason = reason;
@@ -274,16 +276,15 @@ public class Order : BaseEntity
         CancellationRequestStatus = CancellationRequestStatus.Approved;
     }
     
-    public void RejectCancellationRequest(string rejectionReason)
+    public void RejectCancellationRequest(string? rejectionReason)
     {
         if (CancellationRequestStatus != CancellationRequestStatus.Pending)
             throw new DomainException(["Não existe solicitação de cancelamento pendente."]);
 
-        if (string.IsNullOrWhiteSpace(rejectionReason))
-            throw new DomainException(["O motivo da recusa é obrigatório."]);
-
         CancellationRequestStatus = CancellationRequestStatus.Rejected;
         CancellationRejectionReason = rejectionReason;
+        Status = StatusBeforeCancellationRequest ?? OrderStatus.Preparing; // ← restaura
+        StatusBeforeCancellationRequest = null;
     }
 
     public void RejectOrder(CancellationReasonType reasonType, string? description)

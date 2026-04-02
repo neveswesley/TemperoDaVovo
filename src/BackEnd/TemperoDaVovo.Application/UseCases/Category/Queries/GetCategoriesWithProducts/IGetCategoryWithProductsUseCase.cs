@@ -4,5 +4,5 @@ namespace TemperoDaVovo.Application.UseCases.Category.Queries.GetCategoriesWithP
 
 public interface IGetCategoryWithProductsUseCase
 {
-    Task<List<CategoryWithProductsResponseJson>> Execute(Guid restaurantId);
+    Task<List<CategoryWithProductsResponseJson>> ExecuteAsync(Guid restaurantId);
 }

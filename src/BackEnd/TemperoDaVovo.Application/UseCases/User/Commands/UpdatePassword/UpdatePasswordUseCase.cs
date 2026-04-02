@@ -25,7 +25,7 @@ public class UpdatePasswordUseCase : IUpdatePasswordUseCase
         _passwordHasher = passwordHasher;
     }
 
-    public async Task Execute(Guid userId, UpdatePasswordRequest request)
+    public async Task ExecuteAsync(Guid userId, UpdatePasswordRequest request)
     {
         Validate(request);
 

@@ -22,7 +22,7 @@ public class UpdateOrderItemUseCase : IUpdateOrderItemUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Execute(Guid orderItemId, UpdateOrderItemRequest request, CancellationToken ct = default)
+    public async Task<Guid> ExecuteAsync(Guid orderItemId, UpdateOrderItemRequest request, CancellationToken ct = default)
     {
         await Validate(request);
         

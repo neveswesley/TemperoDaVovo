@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.City.Commands.Create;
 using TemperoDaVovo.Application.UseCases.City.Commands.Delete;
@@ -28,6 +29,7 @@ namespace TemperoDaVovo.API.Controllers
             _deleteCityUseCase = deleteCityUseCase;
         }
 
+        [Authorize(Roles = "Restaurant")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,6 +60,7 @@ namespace TemperoDaVovo.API.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("{cityId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -68,11 +71,12 @@ namespace TemperoDaVovo.API.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("delete/{cityId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete([FromRoute] Guid cityId)
+        public async Task<IActionResult> Deactivate([FromRoute] Guid cityId)
         {
             await _deleteCityUseCase.ExecuteAsync(cityId);
             return NoContent();

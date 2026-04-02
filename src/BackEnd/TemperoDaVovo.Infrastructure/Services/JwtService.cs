@@ -21,15 +21,16 @@ public class JwtService : IJwtService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-            new Claim("RestaurantId", restaurantId.ToString()),
+            new Claim("restaurantId", restaurantId.ToString()),
+            new Claim(ClaimTypes.Role, "Restaurant")
         };
 
         var key   = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            claims:   claims,
-            expires:  DateTime.UtcNow.AddHours(8),
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(8),
             signingCredentials: creds
         );
 

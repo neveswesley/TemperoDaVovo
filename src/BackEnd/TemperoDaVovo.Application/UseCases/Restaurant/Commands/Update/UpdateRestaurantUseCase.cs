@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
@@ -10,11 +11,13 @@ public class UpdateRestaurantUseCase : IUpdateRestaurantUseCase
 {
     private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public UpdateRestaurantUseCase(IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork)
+    public UpdateRestaurantUseCase(IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
     public async Task ExecuteAsync (Guid restaurantId, UpdateRestaurantRequest request)
@@ -22,6 +25,8 @@ public class UpdateRestaurantUseCase : IUpdateRestaurantUseCase
         var restaurant = await _restaurantReadOnlyRepository.GetRestaurantById(restaurantId);
         if (restaurant == null)
             throw new NotFoundException(["Restaurant not found."]);
+        
+        _authorizationService.ValidateRestaurantOwnership(restaurantId);
 
         var address = new Address(request.Address.ZipCode,
             request.Address.State,

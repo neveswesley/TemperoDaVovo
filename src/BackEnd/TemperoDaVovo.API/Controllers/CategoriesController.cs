@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.Category.Commands;
+using TemperoDaVovo.Application.UseCases.Category.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Category.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Category.Commands.Reorder;
+using TemperoDaVovo.Application.UseCases.Category.Commands.Update;
 using TemperoDaVovo.Application.UseCases.Category.Commands.UpdateProduct;
 using TemperoDaVovo.Application.UseCases.Category.Queries.GetCategoriesWithProducts;
 using TemperoDaVovo.Communications.Requests;
@@ -28,11 +31,12 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IDeleteCategoryUseCase _deleteCategoryUseCase;
         private readonly IReorderCategoriesUseCase _reorderCategoriesUseCase;
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPost]
         [ProducesResponseType(typeof(CreateCategoryResponseJson), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Post([FromBody] CreateCategoryRequestJson request, [FromHeader(Name = "X-Restaurant-Id")] Guid restaurantId)
+        public async Task<IActionResult> Post([FromBody] CreateCategoryRequestJson request)
         {
-            var response = await _createCategoryUseCase.Execute(request, restaurantId);
+            var response = await _createCategoryUseCase.ExecuteAsync(request);
             return Created(string.Empty, response);
         }
 
@@ -40,25 +44,29 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(typeof(CategoryWithProductsResponseJson), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(Guid restaurantId)
         {
-            var response = await _getCategoryWithProductsUseCase.Execute(restaurantId);
+            var response = await _getCategoryWithProductsUseCase.ExecuteAsync(restaurantId);
             return Ok(response);
         }
 
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("with-products/{categoryId}")]
         [ProducesResponseType(typeof(UpdateCategoryResponseJson), StatusCodes.Status200OK)]
         public async Task<IActionResult> Put([FromBody] UpdateCategoryRequestJson request, [FromRoute] Guid categoryId)
         {
-            var response = await _updateCategoryUseCase.Execute(request, categoryId);
+            var response = await _updateCategoryUseCase.ExecuteAsync(request, categoryId);
             return Ok(response);
         }
+        
 
+        [Authorize(Roles = "Restaurant")]
         [HttpPatch("{categoryId}")]
         public async Task<IActionResult> Delete(Guid categoryId)
         {
-            await _deleteCategoryUseCase.Execute(categoryId);
+            await _deleteCategoryUseCase.ExecuteAsync(categoryId);
             return NoContent();
         }
 
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("reorder-category")]
         [ProducesResponseType(typeof(ReorderCategoriesResponseJson), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ReorderCategoriesResponseJson), StatusCodes.Status204NoContent)]

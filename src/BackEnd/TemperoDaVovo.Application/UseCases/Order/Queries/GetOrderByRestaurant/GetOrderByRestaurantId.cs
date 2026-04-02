@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Communications.Responses;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
 
@@ -9,11 +10,13 @@ public class GetOrderByRestaurantId : IGetOrderByRestaurantId
 
     private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
     private readonly IOrderReadOnlyRepository _orderReadOnlyRepository;
+    private readonly IAuthorizationService _authorizationService;
 
-    public GetOrderByRestaurantId(IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IOrderReadOnlyRepository orderReadOnlyRepository)
+    public GetOrderByRestaurantId(IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IOrderReadOnlyRepository orderReadOnlyRepository, IAuthorizationService authorizationService)
     {
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
         _orderReadOnlyRepository = orderReadOnlyRepository;
+        _authorizationService = authorizationService;
     }
 
     public async Task<List<GetOrderResponse>> ExecuteAsync(Guid restaurantId)
@@ -21,7 +24,9 @@ public class GetOrderByRestaurantId : IGetOrderByRestaurantId
         var restaurant = await _restaurantReadOnlyRepository.GetRestaurantById(restaurantId);
         if (restaurant == null)
             throw new NotFoundException(["Restaurante não encontado."]);
-
+      
+        _authorizationService.ValidateRestaurantOwnership(restaurantId);
+        
         var orders = await _orderReadOnlyRepository.GetActiveOrdersByRestaurantId(restaurantId);
 
         return orders.Select(o => new GetOrderResponse

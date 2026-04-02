@@ -52,5 +52,8 @@ public static class ServiceExtensions
         services.AddScoped<IPaymentWriteOnlyRepository, PaymentRepository>();
         services.AddScoped<ICurrentUser, CurrentUser>();
         services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IVerificationCodeReadOnlyRepository, VerificationCodeRepository>();
+        services.AddScoped<IVerificationCodeWriteOnlyRepository, VerificationCodeRepository>();
     }
 }

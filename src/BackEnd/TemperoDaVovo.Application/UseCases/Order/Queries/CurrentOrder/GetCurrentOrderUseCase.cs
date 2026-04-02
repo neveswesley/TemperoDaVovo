@@ -12,7 +12,7 @@ public class GetCurrentOrderUseCase : IGetCurrentOrderUseCase
         _orderRepository = orderRepository;
     }
 
-    public async Task<OrderDetailResponseJson?> Execute(Guid restaurantId, string clientSessionId)
+    public async Task<OrderDetailResponseJson?> ExecuteAsync(Guid restaurantId, string clientSessionId)
     {
         var order = await _orderRepository.GetOpenBySession(restaurantId, clientSessionId);
         if (order == null) return null;

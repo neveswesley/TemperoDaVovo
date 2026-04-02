@@ -5,5 +5,5 @@ namespace TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
 
 public interface IAddItemToOrderUseCase
 {
-    Task<OrderResponseJson> Execute(AddItemToOrderRequestJson request);
+    Task<OrderResponseJson> ExecuteAsync(AddItemToOrderRequestJson request);
 }

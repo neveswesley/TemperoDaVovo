@@ -1,4 +1,4 @@
-﻿namespace TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
+﻿namespace TemperoDaVovo.Application.UseCases.Order.Commands.ChangeOrderStatus;
 
 public interface IChangeOrderStatusUseCase
 {

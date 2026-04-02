@@ -1,8 +1,8 @@
 ﻿using TemperoDaVovo.Communications.Requests;
 
-namespace TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.OpeningHours;
+namespace TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Update;
 
 public interface IOpeningHoursUseCase
 {
-    Task Execute(Guid restaurantId, UpdateRestaurantOpeningHoursRequest request);
+    Task ExecuteAsync(Guid restaurantId, UpdateRestaurantOpeningHoursRequest request);
 }

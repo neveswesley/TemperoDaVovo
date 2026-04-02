@@ -1,5 +1,5 @@
-﻿using TemperoDaVovo.Application.Services;
-using TemperoDaVovo.Application.UseCases.Order.Commands.CancellationRequest;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Application.Services;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Domain.Enums;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
@@ -15,13 +15,15 @@ public class ApproveCancellationRequestUseCase : IApproveCancellationRequestUseC
     private readonly IOrderWriteOnlyRepository _orderWriteOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOrderNotifier _orderNotifier;
+    private readonly IAuthorizationService _authorizationService;
 
-    public ApproveCancellationRequestUseCase(IOrderReadOnlyRepository orderReadOnlyRepository, IOrderWriteOnlyRepository orderWriteOnlyRepository, IUnitOfWork unitOfWork, IOrderNotifier orderNotifier)
+    public ApproveCancellationRequestUseCase(IOrderReadOnlyRepository orderReadOnlyRepository, IOrderWriteOnlyRepository orderWriteOnlyRepository, IUnitOfWork unitOfWork, IOrderNotifier orderNotifier, IAuthorizationService authorizationService)
     {
         _orderReadOnlyRepository = orderReadOnlyRepository;
         _orderWriteOnlyRepository = orderWriteOnlyRepository;
         _unitOfWork = unitOfWork;
         _orderNotifier = orderNotifier;
+        _authorizationService = authorizationService;
     }
 
     public async Task ExecuteAsync(Guid orderId, ApproveCancellationRequestJson request)
@@ -29,6 +31,8 @@ public class ApproveCancellationRequestUseCase : IApproveCancellationRequestUseC
         var order = await _orderReadOnlyRepository.GetOrderById(orderId);
         if (order == null)
             throw new NotFoundException(["Pedido não encontrado."]);
+        
+        _authorizationService.ValidateRestaurantOwnership(order.RestaurantId);
         
         order.ApproveCancellationRequest(request.CancellationReasonType, request.CancellationReason);
         await _orderWriteOnlyRepository.Update(order);
@@ -38,6 +42,13 @@ public class ApproveCancellationRequestUseCase : IApproveCancellationRequestUseC
         {
             orderId = order.Id,
             orderNumber = order.OrderNumber,
+            status = order.Status,
+            cancellationRequestStatus = order.CancellationRequestStatus
+        });
+        
+        await _orderNotifier.NotifyCustomerOrderUpdated(order.ClientSessionId, new
+        {
+            id = order.Id,
             status = order.Status,
             cancellationRequestStatus = order.CancellationRequestStatus
         });

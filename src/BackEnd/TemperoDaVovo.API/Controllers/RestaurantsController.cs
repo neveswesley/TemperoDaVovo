@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TemperoDaVovo.Application.UseCases.Restaurant.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Restaurant.Commands.Update;
 using TemperoDaVovo.Application.UseCases.Restaurant.Commands.UpdatePaymentWay;
 using TemperoDaVovo.Application.UseCases.Restaurant.Create;
 using TemperoDaVovo.Application.UseCases.Restaurant.Queries.Get;
 using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Get;
 using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.OpeningHours;
+using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Update;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 
@@ -37,17 +40,18 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] CreateRestaurantRequestJson request)
         {
-            var result = await _createRestaurantUseCase.Execute(request);
+            var result = await _createRestaurantUseCase.ExecuteAsync(request);
             return Created(string.Empty, result);
         }
 
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("opening-hours/{restaurantId}")]
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateOpeningHours([FromRoute] Guid restaurantId, [FromBody] UpdateRestaurantOpeningHoursRequest request)
         {
-            await _openingHoursUseCase.Execute(restaurantId, request);
+            await _openingHoursUseCase.ExecuteAsync(restaurantId, request);
             return NoContent();
         }
         
@@ -71,6 +75,7 @@ namespace TemperoDaVovo.API.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("{restaurantId}")]
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status404NotFound)]
@@ -81,6 +86,7 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("update-payment-way/{restaurantId}")]
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status404NotFound)]
@@ -90,6 +96,5 @@ namespace TemperoDaVovo.API.Controllers
             await _updatePaymentWayUseCase.ExecuteAsync(restaurantId, request);
             return NoContent();
         }
-        
     }
 }

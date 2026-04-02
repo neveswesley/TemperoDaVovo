@@ -1,4 +1,5 @@
 ﻿using TemperoDaVovo.Application.Services;
+using TemperoDaVovo.Application.UseCases.User.Commands.Login;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces;
@@ -24,7 +25,7 @@ public class LoginUseCase : ILoginUseCase
         _jwtService             = jwtService;
     }
 
-    public async Task<LoginUserResponseJson> Execute(LoginUserRequestJson request)
+    public async Task<LoginUserResponseJson> ExecuteAsync(LoginUserRequestJson request)
     {
         Validate(request);
 

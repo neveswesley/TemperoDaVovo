@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
@@ -13,14 +14,16 @@ public class CreateNeighborhoodUseCase : ICreateNeighborhoodUseCase
     private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
     private readonly ICityReadOnlyRepository _cityReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public CreateNeighborhoodUseCase(INeighborhoodWriteOnlyRepository neighborhoodWriteOnlyRepository, INeighborhoodReadOnlyRepository neighborhoodReadOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, ICityReadOnlyRepository cityReadOnlyRepository, IUnitOfWork unitOfWork)
+    public CreateNeighborhoodUseCase(INeighborhoodWriteOnlyRepository neighborhoodWriteOnlyRepository, INeighborhoodReadOnlyRepository neighborhoodReadOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, ICityReadOnlyRepository cityReadOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _neighborhoodWriteOnlyRepository = neighborhoodWriteOnlyRepository;
         _neighborhoodReadOnlyRepository = neighborhoodReadOnlyRepository;
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
         _cityReadOnlyRepository = cityReadOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
     public async Task<Guid> ExecuteAsync(CreateNeighborhoodRequestJson request)
@@ -30,6 +33,9 @@ public class CreateNeighborhoodUseCase : ICreateNeighborhoodUseCase
         var city = await _cityReadOnlyRepository.GetByIdAsync(request.CityId);
         if (city is null)
             throw new NotFoundException(["Cidade não encontrada."]);
+        
+        _authorizationService.ValidateRestaurantOwnership(city.RestaurantId);
+
 
         var neighborhood = new Domain.Entities.Neighborhood(request.Name, request.DeliveryFee, request.CityId, request.BaseDeliveryTimeInMinutes);
         

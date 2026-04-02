@@ -1,11 +1,12 @@
 ﻿using System.Text.RegularExpressions;
+using TemperoDaVovo.Application.Interfaces;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
 
-namespace TemperoDaVovo.Application.UseCases.Category.Commands;
+namespace TemperoDaVovo.Application.UseCases.Category.Commands.Create;
 
 public class CreateCategoryUseCase : ICreateCategoryUseCase
 {
@@ -13,29 +14,38 @@ public class CreateCategoryUseCase : ICreateCategoryUseCase
     private readonly ICategoryReadOnlyRepository _categoryReadOnlyRepository;
     private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public CreateCategoryUseCase(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, ICategoryReadOnlyRepository categoryReadOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork)
+    public CreateCategoryUseCase(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, ICategoryReadOnlyRepository categoryReadOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _categoryWriteOnlyRepository = categoryWriteOnlyRepository;
         _categoryReadOnlyRepository = categoryReadOnlyRepository;
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
-    public async Task<CreateCategoryResponseJson> Execute(CreateCategoryRequestJson request, Guid restaurantId)
+    public async Task<CreateCategoryResponseJson> ExecuteAsync(CreateCategoryRequestJson request)
     {
+        
+        var restaurant = await _restaurantReadOnlyRepository.GetRestaurantById(request.RestaurantId);
+        if (restaurant == null)
+            throw new NotFoundException(["Restaurant not found."]);
+        
+        _authorizationService.ValidateRestaurantOwnership(request.RestaurantId);
+        
         if (string.IsNullOrEmpty(request.Name))
             throw new ErrorOnValidationException(["Categoria inválida."]);
 
         var baseName = request.Name.Trim();
         
-        var existingNames = await _categoryReadOnlyRepository.GetExistingCategoryNames(restaurantId, baseName);
+        var existingNames = await _categoryReadOnlyRepository.GetExistingCategoryNames(request.RestaurantId, baseName);
 
         var finalName = GenerateCategoryName(baseName, existingNames);
         
         var category = new Domain.Entities.Category()
         {
-            RestaurantId = restaurantId,
+            RestaurantId = request.RestaurantId,
             Name = finalName,
         };
 

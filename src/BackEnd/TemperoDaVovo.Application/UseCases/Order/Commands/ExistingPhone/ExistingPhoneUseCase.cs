@@ -11,7 +11,7 @@ public class ExistingPhoneUseCase : IExistingPhoneUseCase
         _orderReadOnlyRepository = orderReadOnlyRepository;
     }
 
-    public async Task<string?> Execute(string phone)
+    public async Task<string?> ExecuteAsync(string phone)
     {
         return await _orderReadOnlyRepository.ExistingPhone(phone);
     }

@@ -1,5 +1,5 @@
-﻿using TemperoDaVovo.Application.Services;
-using TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Application.Services;
 using TemperoDaVovo.Domain.Enums;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
@@ -13,14 +13,15 @@ public class ChangeOrderStatusUseCase : IChangeOrderStatusUseCase
     private readonly IOrderWriteOnlyRepository _orderWriteOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOrderNotifier _orderNotifier;
+    private readonly IAuthorizationService _authorizationService;
 
-
-    public ChangeOrderStatusUseCase(IOrderReadOnlyRepository orderReadOnlyRepository, IOrderWriteOnlyRepository orderWriteOnlyRepository, IUnitOfWork unitOfWork, IOrderNotifier orderNotifier)
+    public ChangeOrderStatusUseCase(IOrderReadOnlyRepository orderReadOnlyRepository, IOrderWriteOnlyRepository orderWriteOnlyRepository, IUnitOfWork unitOfWork, IOrderNotifier orderNotifier, IAuthorizationService authorizationService)
     {
         _orderReadOnlyRepository = orderReadOnlyRepository;
         _orderWriteOnlyRepository = orderWriteOnlyRepository;
         _unitOfWork = unitOfWork;
         _orderNotifier = orderNotifier;
+        _authorizationService = authorizationService;
     }
 
     public async Task<Guid> ExecuteAsync(Guid orderId)
@@ -28,6 +29,8 @@ public class ChangeOrderStatusUseCase : IChangeOrderStatusUseCase
         var order = await _orderReadOnlyRepository.GetOrderById(orderId);
         if (order == null)
             throw new NotFoundException(["Pedido não encontrado."]);
+        
+        _authorizationService.ValidateRestaurantOwnership(order.RestaurantId);
 
         if (order.Status == OrderStatus.PendingConfirmation)
         {
@@ -43,12 +46,19 @@ public class ChangeOrderStatusUseCase : IChangeOrderStatusUseCase
 
         await _orderWriteOnlyRepository.Update(order);
         await _unitOfWork.CommitAsync();
-        
+
         await _orderNotifier.NotifyOrderUpdated(order.RestaurantId, new
         {
-            orderId = order.Id,
+            id = order.Id,
             orderNumber = order.OrderNumber,
             status = order.Status,
+        });
+
+        await _orderNotifier.NotifyCustomerOrderUpdated(order.ClientSessionId, new
+        {
+            id = order.Id,
+            status = order.Status,
+            cancellationRequestStatus = order.CancellationRequestStatus
         });
 
         return order.Id;

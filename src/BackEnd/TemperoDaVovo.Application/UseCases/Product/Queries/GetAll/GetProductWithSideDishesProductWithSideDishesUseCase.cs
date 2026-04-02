@@ -12,7 +12,7 @@ public class GetProductWithSideDishesProductWithSideDishesUseCase : IGetProductW
         _productReadOnlyRepository = productReadOnlyRepository;
     }
 
-    public async Task<List<GetProductWithSideDishesResponseJson>> Execute(Guid restaurantId, string? search)
+    public async Task<List<GetProductWithSideDishesResponseJson>> ExecuteAsync(Guid restaurantId, string? search)
     {
         var products = await _productReadOnlyRepository.GetAllProductByRestaurantWithSideDish(restaurantId, search);
 

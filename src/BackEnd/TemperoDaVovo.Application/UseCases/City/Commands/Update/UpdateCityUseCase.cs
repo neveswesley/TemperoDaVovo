@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
@@ -11,12 +12,14 @@ public class UpdateCityUseCase : IUpdateCityUseCase
     private readonly ICityReadOnlyRepository _cityReadOnlyRepository;
     private readonly ICityWriteOnlyRepository _cityWriteOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public UpdateCityUseCase(ICityReadOnlyRepository cityReadOnlyRepository, ICityWriteOnlyRepository cityWriteOnlyRepository, IUnitOfWork unitOfWork)
+    public UpdateCityUseCase(ICityReadOnlyRepository cityReadOnlyRepository, ICityWriteOnlyRepository cityWriteOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _cityReadOnlyRepository = cityReadOnlyRepository;
         _cityWriteOnlyRepository = cityWriteOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
     public async Task<Guid> ExecuteAsync(Guid cityId, UpdateCityRequestJson request)
@@ -24,6 +27,8 @@ public class UpdateCityUseCase : IUpdateCityUseCase
         var city = await _cityReadOnlyRepository.GetByIdAsync(cityId);
         if (city == null)
             throw new NotFoundException(["Cidade não encontrada."]);
+        
+        _authorizationService.ValidateRestaurantOwnership(city.RestaurantId);
         
         city.UpdateName(request.Name);
         _cityWriteOnlyRepository.UpdateAsync(city);

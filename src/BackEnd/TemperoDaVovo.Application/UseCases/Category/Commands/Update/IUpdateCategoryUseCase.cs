@@ -1,9 +1,9 @@
 ﻿using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 
-namespace TemperoDaVovo.Application.UseCases.Category.Commands.UpdateProduct;
+namespace TemperoDaVovo.Application.UseCases.Category.Commands.Update;
 
 public interface IUpdateCategoryUseCase
 {
- Task<UpdateCategoryResponseJson> Execute(UpdateCategoryRequestJson request, Guid categodyId);   
+ Task<UpdateCategoryResponseJson> ExecuteAsync(UpdateCategoryRequestJson request, Guid categodyId);   
 }

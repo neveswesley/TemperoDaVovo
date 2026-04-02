@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
@@ -11,12 +12,14 @@ public class UpdatePaymentWayUseCase : IUpdatePaymentWayUseCase
     private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
     private readonly IRestaurantWriteOnlyRepository _restaurantWriteOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public UpdatePaymentWayUseCase(IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IRestaurantWriteOnlyRepository restaurantWriteOnlyRepository, IUnitOfWork unitOfWork)
+    public UpdatePaymentWayUseCase(IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IRestaurantWriteOnlyRepository restaurantWriteOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
         _restaurantWriteOnlyRepository = restaurantWriteOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
     public async Task ExecuteAsync(Guid restaurantId, SetPaymentWayRequest request)
@@ -24,6 +27,8 @@ public class UpdatePaymentWayUseCase : IUpdatePaymentWayUseCase
         var restaurant = await _restaurantReadOnlyRepository.GetRestaurantById(restaurantId);
         if (restaurant == null)
             throw new NotFoundException(["Restaurant not found."]);
+        
+        _authorizationService.ValidateRestaurantOwnership(restaurantId);
         
         restaurant.SetPaymentWay(request.PaymentWays);
         

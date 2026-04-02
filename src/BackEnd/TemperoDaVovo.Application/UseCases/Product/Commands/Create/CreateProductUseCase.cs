@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Microsoft.AspNetCore.Http;
+using TemperoDaVovo.Application.Interfaces;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
@@ -13,15 +14,17 @@ public class CreateProductUseCase : ICreateProductUseCase
     private readonly IProductWriteOnlyRepository _productWriteOnlyRepository;
     private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public CreateProductUseCase(IProductWriteOnlyRepository productWriteOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork)
+    public CreateProductUseCase(IProductWriteOnlyRepository productWriteOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _productWriteOnlyRepository = productWriteOnlyRepository;
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
-    public async Task<CreateProductResponseJson> Execute(CreateProductRequestJson request, IFormFile file)
+    public async Task<CreateProductResponseJson> ExecuteAsync(CreateProductRequestJson request, IFormFile file)
     {
         
         if (file != null)
@@ -42,9 +45,11 @@ public class CreateProductUseCase : ICreateProductUseCase
         }
 
         var restaurant = await _restaurantReadOnlyRepository.RestaurantExists(request.RestaurantId);
-
         if (restaurant == null)
             throw new BusinessException([ "Restaurante não encontrado" ]);
+        
+        _authorizationService.ValidateRestaurantOwnership(request.RestaurantId);
+
         
         var product = new Domain.Entities.Product
         {

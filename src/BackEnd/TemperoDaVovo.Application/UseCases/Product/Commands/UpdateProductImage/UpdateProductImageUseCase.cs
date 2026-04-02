@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Application.UseCases.Product.Commands.UpdateProductImage;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
@@ -10,20 +12,25 @@ public class UpdateProductImageUseCase : IUpdateProductImageUseCase
     private readonly IProductReadOnlyRepository _productReadOnlyRepository;
     private readonly IProductWriteOnlyRepository _productWriteOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public UpdateProductImageUseCase(IProductReadOnlyRepository productReadOnlyRepository, IProductWriteOnlyRepository productWriteOnlyRepository, IUnitOfWork unitOfWork)
+    public UpdateProductImageUseCase(IProductReadOnlyRepository productReadOnlyRepository, IProductWriteOnlyRepository productWriteOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _productReadOnlyRepository = productReadOnlyRepository;
         _productWriteOnlyRepository = productWriteOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
-    public async Task Execute(Guid productId, IFormFile file)
+    public async Task ExecuteAsync(Guid productId, IFormFile file)
     {
         var product = await _productReadOnlyRepository.GetProductByIdWithCategory(productId);
 
         if (product == null)
             throw new BusinessException(["Produto não encontrado"]);
+        
+        _authorizationService.ValidateRestaurantOwnership(product.RestaurantId);
+
 
         if (file == null || file.Length == 0)
             throw new BusinessException(["Arquivo inválido"]);

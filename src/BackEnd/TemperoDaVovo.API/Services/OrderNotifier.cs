@@ -26,4 +26,11 @@ public class OrderNotifier : IOrderNotifier
             .Group($"restaurant-{restaurantId}")
             .SendAsync("OrderUpdated", payload);
     }
+
+    public async Task NotifyCustomerOrderUpdated(string clientSessionId, object payload)
+    {
+        await _hubContext.Clients
+            .Group($"customer-{clientSessionId}")
+            .SendAsync("OrderUpdated", payload);
+    }
 }

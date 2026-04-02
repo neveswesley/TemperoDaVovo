@@ -1,7 +1,6 @@
 ﻿using TemperoDaVovo.Communications.Requests;
-using TemperoDaVovo.Domain.Enums;
 
-namespace TemperoDaVovo.Application.UseCases.Order.Commands.CancellationRequest;
+namespace TemperoDaVovo.Application.UseCases.Order.Commands.RejectCancellationRequest;
 
 public interface IRejectCancellationRequestUseCase
 {

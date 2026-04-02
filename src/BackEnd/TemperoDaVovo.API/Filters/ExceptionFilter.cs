@@ -31,6 +31,10 @@ namespace TemperoDaVovo.API.Filters
                 case DomainException businessEx:
                     HandleDomainException(context, businessEx);
                     break;
+                
+                case ForbiddenException forbiddenEx:
+                    HandleForbiddenException(context, forbiddenEx);
+                    break;
 
                 case TemperoDaVovoException projectEx:
                     HandleProjectException(context, projectEx);
@@ -76,6 +80,15 @@ namespace TemperoDaVovo.API.Filters
         {
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             context.Result = new BadRequestObjectResult(new ResponseErrorJson(ex.Message));
+        }
+        
+        private void HandleForbiddenException(ExceptionContext context, ForbiddenException ex)
+        {
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            context.Result = new ObjectResult(new ResponseErrorJson(ex.ErrorMessages))
+            {
+                StatusCode = StatusCodes.Status403Forbidden
+            };
         }
 
         private void HandleUnknownException(ExceptionContext context)

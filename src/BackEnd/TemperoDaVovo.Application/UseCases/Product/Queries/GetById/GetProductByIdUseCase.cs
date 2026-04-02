@@ -12,7 +12,7 @@ public class GetProductByIdUseCase : IGetProductByIdUseCase
         _productReadOnlyRepository = productReadOnlyRepository;
     }
 
-    public async Task<GetProductWithSideDishesResponseJson> Execute(Guid productId)
+    public async Task<GetProductWithSideDishesResponseJson> ExecuteAsync(Guid productId)
     {
         var product = await _productReadOnlyRepository.GetProductByIdWithCategory(productId);
 

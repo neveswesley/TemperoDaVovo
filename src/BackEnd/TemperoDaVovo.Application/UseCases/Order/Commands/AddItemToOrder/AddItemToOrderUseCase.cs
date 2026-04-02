@@ -29,7 +29,7 @@ public class AddItemToOrderUseCase : IAddItemToOrderUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<OrderResponseJson> Execute(AddItemToOrderRequestJson request)
+    public async Task<OrderResponseJson> ExecuteAsync(AddItemToOrderRequestJson request)
     {
         var restaurant = await _restaurantReadOnlyRepository.GetByIdWithOpeningHours(request.RestaurantId);
 

@@ -22,7 +22,7 @@ public class CreateRestaurantUseCase : ICreateRestaurantUseCase
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
     }
 
-    public async Task<RestaurantResponseJson> Execute(CreateRestaurantRequestJson request)
+    public async Task<RestaurantResponseJson> ExecuteAsync(CreateRestaurantRequestJson request)
     {
         await Validate(request);
 

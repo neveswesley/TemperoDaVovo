@@ -16,7 +16,7 @@ public class CompleteCheckoutUseCase : ICompleteCheckoutUseCase
         _orderReadOnlyRepository = orderReadOnlyRepository;
     }
 
-    public async Task Execute(CompleteCheckoutRequestJson request)
+    public async Task ExecuteAsync(CompleteCheckoutRequestJson request)
     {
         var order = await _orderReadOnlyRepository.GetOrderById(request.OrderId);
         if (order is null)

@@ -1,9 +1,9 @@
 ﻿using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 
-namespace TemperoDaVovo.Application.UseCases.User.Login;
+namespace TemperoDaVovo.Application.UseCases.User.Commands.Login;
 
 public interface ILoginUseCase
 {
-    Task<LoginUserResponseJson> Execute(LoginUserRequestJson request);
+    Task<LoginUserResponseJson> ExecuteAsync(LoginUserRequestJson request);
 }

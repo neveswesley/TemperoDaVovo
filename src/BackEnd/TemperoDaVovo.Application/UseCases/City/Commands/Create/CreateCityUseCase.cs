@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
@@ -11,14 +12,17 @@ public class CreateCityUseCase : ICreateCityUseCase
     private readonly ICityWriteOnlyRepository _cityWriteOnlyRepository;
     private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public CreateCityUseCase(ICityReadOnlyRepository cityReadOnlyRepository, ICityWriteOnlyRepository cityWriteOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork)
+    public CreateCityUseCase(ICityReadOnlyRepository cityReadOnlyRepository, ICityWriteOnlyRepository cityWriteOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _cityReadOnlyRepository = cityReadOnlyRepository;
         _cityWriteOnlyRepository = cityWriteOnlyRepository;
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
+
 
     public async Task<Guid> ExecuteAsync(CreateCityRequestJson request)
     {
@@ -27,6 +31,8 @@ public class CreateCityUseCase : ICreateCityUseCase
         var restaurant = await _restaurantReadOnlyRepository.GetRestaurantById(request.RestaurantId);
         if (restaurant == null)
             throw new NotFoundException(["Restaurante não encontrado."]);
+        
+        _authorizationService.ValidateRestaurantOwnership(restaurant.Id);
 
         var city = new Domain.Entities.City(request.Name, request.RestaurantId);
         

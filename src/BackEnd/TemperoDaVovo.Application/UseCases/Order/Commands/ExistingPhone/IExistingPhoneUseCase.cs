@@ -2,6 +2,6 @@
 
 public interface IExistingPhoneUseCase
 {
-    Task<string?> Execute(string phone);
+    Task<string?> ExecuteAsync(string phone);
 
 }

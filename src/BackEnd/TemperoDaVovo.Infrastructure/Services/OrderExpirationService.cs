@@ -27,11 +27,27 @@ public class OrderExpirationService : BackgroundService
             var expiredOrders = await context.Orders
                 .Where(o => o.Status == OrderStatus.PendingConfirmation &&
                             o.CreatedAt <= expirationTime)
-                .ToListAsync();
+                .ToListAsync(stoppingToken);
 
             foreach (var order in expiredOrders)
             {
-                order.Cancel(CancellationReasonType.NotConfirmedByRestaurant, CanceledBy.System, "O restaurante não confirmou o pedido a tempo.");
+                order.Cancel(
+                    CancellationReasonType.NotConfirmedByRestaurant,
+                    CanceledBy.System,
+                    "O restaurante não confirmou o pedido a tempo.");
+            }
+
+            var autoCompleteTime = DateTime.UtcNow.AddHours(-3);
+
+            var ordersToComplete = await context.Orders
+                .Where(o => o.Status == OrderStatus.OnTheWay &&
+                            o.OnTheWayAt != null &&
+                            o.OnTheWayAt <= autoCompleteTime)
+                .ToListAsync(stoppingToken);
+
+            foreach (var order in ordersToComplete)
+            {
+                order.MarkAsDelivered();
             }
 
             await context.SaveChangesAsync(stoppingToken);

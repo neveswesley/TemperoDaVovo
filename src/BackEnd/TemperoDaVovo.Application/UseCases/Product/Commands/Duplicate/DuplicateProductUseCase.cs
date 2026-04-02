@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
@@ -13,14 +14,16 @@ public class DuplicateProductUseCase : IDuplicateProductUseCase
     private readonly ISideDishReadOnlyRepository _sideDishReadOnlyRepository;
     private readonly ISideDishWriteOnlyRepository _sideDishWriteOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public DuplicateProductUseCase(IProductReadOnlyRepository productReadOnlyRepository, IProductWriteOnlyRepository productWriteOnlyRepository, ISideDishReadOnlyRepository sideDishReadOnlyRepository, ISideDishWriteOnlyRepository sideDishWriteOnlyRepository, IUnitOfWork unitOfWork)
+    public DuplicateProductUseCase(IProductReadOnlyRepository productReadOnlyRepository, IProductWriteOnlyRepository productWriteOnlyRepository, ISideDishReadOnlyRepository sideDishReadOnlyRepository, ISideDishWriteOnlyRepository sideDishWriteOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _productReadOnlyRepository = productReadOnlyRepository;
         _productWriteOnlyRepository = productWriteOnlyRepository;
         _sideDishReadOnlyRepository = sideDishReadOnlyRepository;
         _sideDishWriteOnlyRepository = sideDishWriteOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
     public async Task<DuplicateProductResponseJson> ExecuteAsync(DuplicateProductRequestJson request)
@@ -29,6 +32,9 @@ public class DuplicateProductUseCase : IDuplicateProductUseCase
 
         if (originalProduct == null)
             throw new NotFoundException(["Produto não encontrado"]);
+        
+        _authorizationService.ValidateRestaurantOwnership(originalProduct.RestaurantId);
+
 
         var newProductName = string.IsNullOrWhiteSpace(request.NewProductName)
             ? $"{originalProduct.Name} - Cópia"

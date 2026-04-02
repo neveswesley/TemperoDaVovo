@@ -19,7 +19,7 @@ public class RemoveOrderItemUseCase : IRemoveOrderItemUseCase
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Execute(Guid orderItemId)
+    public async Task ExecuteAsync(Guid orderItemId)
     {
         var orderItem = await _orderReadOnlyRepository.GetOrderItemById(orderItemId);
         if (orderItem == null)

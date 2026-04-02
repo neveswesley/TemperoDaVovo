@@ -9,6 +9,8 @@ public class User : BaseEntity
     public string Email { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
     public Role Role { get; set; } = Role.Restaurant;
+    public bool IsEmailConfirmed { get; set; } = false;
+
     
     public void UpdatePassword(string currentPassword, string newPassword, IPasswordHasher passwordHasher)
     {

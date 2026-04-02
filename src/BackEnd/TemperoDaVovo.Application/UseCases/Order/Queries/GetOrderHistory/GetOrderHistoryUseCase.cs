@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Communications.Responses;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Common;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
@@ -9,10 +10,12 @@ namespace TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderHistory;
 public class GetOrderHistoryUseCase : IGetOrderHistoryUseCase
 {
     private readonly IOrderReadOnlyRepository _orderReadOnlyRepository;
+    private readonly IAuthorizationService _authorizationService;
 
-    public GetOrderHistoryUseCase(IOrderReadOnlyRepository orderReadOnlyRepository)
+    public GetOrderHistoryUseCase(IOrderReadOnlyRepository orderReadOnlyRepository, IAuthorizationService authorizationService)
     {
         _orderReadOnlyRepository = orderReadOnlyRepository;
+        _authorizationService = authorizationService;
     }
 
     public async Task<PaginatedResponse<OrderHistoryResponseJson>> ExecuteAsync(
@@ -20,6 +23,9 @@ public class GetOrderHistoryUseCase : IGetOrderHistoryUseCase
         int page,
         int pageSize)
     {
+        
+        _authorizationService.ValidateRestaurantOwnership(restaurantId);
+        
         var result = await _orderReadOnlyRepository.GetOrderHistoryByRestaurantId(restaurantId, page, pageSize);
 
         return new PaginatedResponse<OrderHistoryResponseJson>

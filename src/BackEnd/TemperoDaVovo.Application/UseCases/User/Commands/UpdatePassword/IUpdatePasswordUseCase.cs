@@ -4,5 +4,5 @@ namespace TemperoDaVovo.Application.UseCases.User.Commands.UpdatePassword;
 
 public interface IUpdatePasswordUseCase
 {
-    Task Execute(Guid userId, UpdatePasswordRequest request);
+    Task ExecuteAsync(Guid userId, UpdatePasswordRequest request);
 }

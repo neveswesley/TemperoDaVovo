@@ -6,5 +6,5 @@ namespace TemperoDaVovo.Application.UseCases.Product.Commands.Create;
 
 public interface ICreateProductUseCase
 {
-    Task<CreateProductResponseJson> Execute(CreateProductRequestJson request, IFormFile file);
+    Task<CreateProductResponseJson> ExecuteAsync(CreateProductRequestJson request, IFormFile file);
 }

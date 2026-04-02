@@ -1,12 +1,13 @@
-﻿using TemperoDaVovo.Application.Services;
+﻿using TemperoDaVovo.Application.UseCases.User.Create;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
+using TemperoDaVovo.Domain.Entities;
 using TemperoDaVovo.Domain.Interfaces;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 using TemperoDaVovo.Exceptions.ExceptionsBase;
 
-namespace TemperoDaVovo.Application.UseCases.User.Create;
+namespace TemperoDaVovo.Application.UseCases.User.Commands.Create;
 
 public class CreateUserUseCase : ICreateUserUseCase
 {
@@ -14,16 +15,20 @@ public class CreateUserUseCase : ICreateUserUseCase
     private readonly IUserReadOnlyRepository _userReadOnlyRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IVerificationCodeWriteOnlyRepository _verificationCodeWriteOnlyRepository;
+    private readonly IEmailService _emailService;
 
-    public CreateUserUseCase(IUserWriteOnlyRepository userWriteOnlyRepository, IUserReadOnlyRepository userReadOnlyRepository, IPasswordHasher passwordHasher, IUnitOfWork unitOfWork)
+    public CreateUserUseCase(IUserWriteOnlyRepository userWriteOnlyRepository, IUserReadOnlyRepository userReadOnlyRepository, IPasswordHasher passwordHasher, IUnitOfWork unitOfWork, IVerificationCodeWriteOnlyRepository verificationCodeWriteOnlyRepository, IEmailService emailService)
     {
         _userWriteOnlyRepository = userWriteOnlyRepository;
         _userReadOnlyRepository = userReadOnlyRepository;
         _passwordHasher = passwordHasher;
         _unitOfWork = unitOfWork;
+        _verificationCodeWriteOnlyRepository = verificationCodeWriteOnlyRepository;
+        _emailService = emailService;
     }
 
-    public async Task<CreateUserResponseJson> Execute(CreateUserRequestJson request)
+    public async Task<CreateUserResponseJson> ExecuteAsync(CreateUserRequestJson request)
     {
         await Validate(request);
         
@@ -38,6 +43,19 @@ public class CreateUserUseCase : ICreateUserUseCase
 
         await _userWriteOnlyRepository.RegisterUser(user);
         await _unitOfWork.CommitAsync();
+        
+        var code = new Random().Next(100000, 999999).ToString();
+
+        await _verificationCodeWriteOnlyRepository.AddAsync(new VerificationCode
+        {
+            UserId = user.Id,
+            Code = code,
+            Type = VerificationCodeType.EmailConfirmation,
+            ExpiresAt = DateTime.UtcNow.AddMinutes(10)
+        });
+
+        await _unitOfWork.CommitAsync();
+        await _emailService.SendVerificationCodeAsync(user.Email, code, VerificationCodeType.EmailConfirmation);
 
         return new CreateUserResponseJson()
         {

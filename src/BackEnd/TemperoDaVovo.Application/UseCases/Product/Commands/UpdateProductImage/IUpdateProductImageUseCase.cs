@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace TemperoDaVovo.Application.UseCases.Product.Commands.UpdateImage;
+namespace TemperoDaVovo.Application.UseCases.Product.Commands.UpdateProductImage;
 
 public interface IUpdateProductImageUseCase
 {
-    Task Execute(Guid productId, IFormFile file);
+    Task ExecuteAsync(Guid productId, IFormFile file);
 }

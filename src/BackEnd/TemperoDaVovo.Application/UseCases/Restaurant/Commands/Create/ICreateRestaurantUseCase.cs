@@ -1,9 +1,9 @@
 ﻿using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 
-namespace TemperoDaVovo.Application.UseCases.Restaurant.Create;
+namespace TemperoDaVovo.Application.UseCases.Restaurant.Commands.Create;
 
 public interface ICreateRestaurantUseCase
 {
-    Task<RestaurantResponseJson> Execute(CreateRestaurantRequestJson request);
+    Task<RestaurantResponseJson> ExecuteAsync(CreateRestaurantRequestJson request);
 }

@@ -26,6 +26,7 @@ public class AppDbContext : DbContext
     public DbSet<Payment> Payments { get; set; }
     public DbSet<RestaurantOpeningHour> RestaurantOpeningHours { get; set; }
     public DbSet<Address> Addresses { get; set; }
+    public DbSet<VerificationCode> VerificationCodes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

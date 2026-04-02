@@ -13,7 +13,7 @@ public class GetCategoryWithProductsUseCase : IGetCategoryWithProductsUseCase
         _repository = repository;
     }
 
-    public async Task<List<CategoryWithProductsResponseJson>> Execute(Guid restaurantId)
+    public async Task<List<CategoryWithProductsResponseJson>> ExecuteAsync(Guid restaurantId)
     {
         var categories = await _repository.GetCategoriesWithProducts(restaurantId);
 

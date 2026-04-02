@@ -1,9 +1,9 @@
 ﻿using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 
-namespace TemperoDaVovo.Application.UseCases.Category.Commands;
+namespace TemperoDaVovo.Application.UseCases.Category.Commands.Create;
 
 public interface ICreateCategoryUseCase
 {
-    Task<CreateCategoryResponseJson> Execute(CreateCategoryRequestJson request, Guid restaurantId);
+    Task<CreateCategoryResponseJson> ExecuteAsync(CreateCategoryRequestJson request);
 }

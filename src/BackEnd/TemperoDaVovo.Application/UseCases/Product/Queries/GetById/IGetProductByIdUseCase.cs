@@ -4,5 +4,5 @@ namespace TemperoDaVovo.Application.UseCases.Product.Queries.GetById;
 
 public interface IGetProductByIdUseCase
 {
-    Task<GetProductWithSideDishesResponseJson> Execute(Guid productId);
+    Task<GetProductWithSideDishesResponseJson> ExecuteAsync(Guid productId);
 }

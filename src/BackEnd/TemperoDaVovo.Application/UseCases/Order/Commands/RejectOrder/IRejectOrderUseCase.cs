@@ -1,6 +1,6 @@
 ﻿using TemperoDaVovo.Communications.Requests;
 
-namespace TemperoDaVovo.Application.UseCases.Order.Commands.CancelByRestaurant;
+namespace TemperoDaVovo.Application.UseCases.Order.Commands.RejectOrder;
 
 public interface IRejectOrderUseCase
 {

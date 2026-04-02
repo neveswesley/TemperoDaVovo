@@ -1,15 +1,18 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AbandonOrder;
-using TemperoDaVovo.Application.UseCases.Order.Commands.AcceptOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.AddItemToOrder;
+using TemperoDaVovo.Application.UseCases.Order.Commands.ApproveCancellationRequest;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Cancel;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CancelByRestaurant;
-using TemperoDaVovo.Application.UseCases.Order.Commands.CancellationRequest;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CancelOrder;
+using TemperoDaVovo.Application.UseCases.Order.Commands.ChangeOrderStatus;
 using TemperoDaVovo.Application.UseCases.Order.Commands.CompleteCheckout;
 using TemperoDaVovo.Application.UseCases.Order.Commands.ExistingPhone;
 using TemperoDaVovo.Application.UseCases.Order.Commands.Finalize;
 using TemperoDaVovo.Application.UseCases.Order.Commands.MarkAsDelivered;
+using TemperoDaVovo.Application.UseCases.Order.Commands.RejectCancellationRequest;
+using TemperoDaVovo.Application.UseCases.Order.Commands.RejectOrder;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveAll;
 using TemperoDaVovo.Application.UseCases.Order.Commands.RemoveOrderItem;
 using TemperoDaVovo.Application.UseCases.Order.Commands.UpdateOrderItem;
@@ -74,7 +77,7 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddItem(AddItemToOrderRequestJson request)
         {
-            var result = await _addItemToOrderUseCase.Execute(request);
+            var result = await _addItemToOrderUseCase.ExecuteAsync(request);
             return Ok(result);
         }
         
@@ -83,7 +86,7 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetCurrent([FromQuery] Guid restaurantId, [FromQuery] string clientSessionId)
         {
-            var result = await _getCurrentOrderUseCase.Execute(restaurantId, clientSessionId);
+            var result = await _getCurrentOrderUseCase.ExecuteAsync(restaurantId, clientSessionId);
             if (result == null) return NoContent();
             return Ok(result);
         }
@@ -97,7 +100,7 @@ namespace TemperoDaVovo.API.Controllers
             [FromBody] UpdateOrderItemRequest request,
             CancellationToken ct)
         {
-            await _updateOrderItemUseCase.Execute(orderItemId, request, ct);
+            await _updateOrderItemUseCase.ExecuteAsync(orderItemId, request, ct);
             return NoContent();
         }
 
@@ -107,7 +110,7 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteOrderItem([FromRoute] Guid orderItemId)
         {
-            await _removeOrderItemUseCase.Execute(orderItemId);
+            await _removeOrderItemUseCase.ExecuteAsync(orderItemId);
             return NoContent();
         }
 
@@ -117,7 +120,7 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RemoveAllOrderItem([FromRoute] Guid orderId)
         {
-            await _removeAllOrderItemUseCase.Execute(orderId);
+            await _removeAllOrderItemUseCase.ExecuteAsync(orderId);
             return NoContent();
         }
 
@@ -129,7 +132,7 @@ namespace TemperoDaVovo.API.Controllers
             [FromRoute] Guid orderId,
             [FromBody] CompleteCheckoutRequestJson request)
         {
-            await _completeCheckoutUseCase.Execute(request);
+            await _completeCheckoutUseCase.ExecuteAsync(request);
             return NoContent();
         }
         
@@ -138,7 +141,7 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> ExistingPhone([FromRoute] string phone)
         {
-            var name = await _existingPhoneUseCase.Execute(phone);
+            var name = await _existingPhoneUseCase.ExecuteAsync(phone);
             if (name is null) return NoContent();
             return Ok(new { name });
         }
@@ -156,7 +159,7 @@ namespace TemperoDaVovo.API.Controllers
         [HttpGet("orders/{clientSessionId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCurrent([FromRoute] string clientSessionId)
+        public async Task<IActionResult> GetOrder([FromRoute] string clientSessionId)
         {
             var result = await _getOrderByClientUseCase.Execute(clientSessionId);
             return Ok(result);
@@ -172,6 +175,7 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Restaurant")]
         [HttpGet("orders-by-restaurant/{restaurantId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -181,6 +185,7 @@ namespace TemperoDaVovo.API.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("change-order-status/{orderId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -191,6 +196,7 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpGet("history/{restaurantId}")]
         public async Task<IActionResult> GetHistory([FromRoute] Guid restaurantId,
             [FromQuery] int page = 1,
@@ -200,6 +206,7 @@ namespace TemperoDaVovo.API.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("mark-as-delivered/{orderId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -210,6 +217,7 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPatch("abandon/{orderId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -220,6 +228,7 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("{orderId}/cancel/approve/")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -230,6 +239,7 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("{orderId}/cancel/reject/")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -240,6 +250,7 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("{orderId}/reject-order/")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -250,15 +261,16 @@ namespace TemperoDaVovo.API.Controllers
             return NoContent();
         }
         
+        [Authorize(Roles = "Restaurant")]
         [HttpPut("cancel-order-by-restaurant/{orderId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CancelOrderByRestaurant([FromRoute] Guid orderId, [FromBody] CancelOrderByRestaurantRequestJson request)
         {
+            
             await _cancelOrderUseCase.ExecuteAsync(orderId, request);
             return NoContent();
         }
-        
     }
 }

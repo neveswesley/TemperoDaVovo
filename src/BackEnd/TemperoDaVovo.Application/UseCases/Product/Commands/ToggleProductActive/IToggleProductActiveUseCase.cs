@@ -4,5 +4,5 @@ namespace TemperoDaVovo.Application.UseCases.Product.Commands.ToggleProductActiv
 
 public interface IToggleProductActiveUseCase
 {
-    Task<ToggleProductActiveResponseJson> Execute(Guid productId, bool isActive);
+    Task<ToggleProductActiveResponseJson> ExecuteAsync(Guid productId, bool isActive);
 }

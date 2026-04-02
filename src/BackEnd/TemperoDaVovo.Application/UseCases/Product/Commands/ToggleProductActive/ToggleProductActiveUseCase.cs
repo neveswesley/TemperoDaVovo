@@ -1,4 +1,5 @@
-﻿using TemperoDaVovo.Communications.Responses;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
 
@@ -9,24 +10,25 @@ public class ToggleProductActiveUseCase : IToggleProductActiveUseCase
     private readonly IProductWriteOnlyRepository _productWriteOnlyRepository;
     private readonly IProductReadOnlyRepository _productReadOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuthorizationService _authorizationService;
 
-    public ToggleProductActiveUseCase(IProductWriteOnlyRepository productWriteOnlyRepository,
-        IProductReadOnlyRepository productReadOnlyRepository, IUnitOfWork unitOfWork)
+    public ToggleProductActiveUseCase(IProductWriteOnlyRepository productWriteOnlyRepository, IProductReadOnlyRepository productReadOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
     {
         _productWriteOnlyRepository = productWriteOnlyRepository;
         _productReadOnlyRepository = productReadOnlyRepository;
         _unitOfWork = unitOfWork;
+        _authorizationService = authorizationService;
     }
 
-
-    public async Task<ToggleProductActiveResponseJson> Execute(Guid productId, bool isPaused)
+    public async Task<ToggleProductActiveResponseJson> ExecuteAsync(Guid productId, bool isPaused)
     {
         var product = await _productReadOnlyRepository.GetProductByIdWithCategory(productId);
 
         if (product == null)
-        {
             throw new KeyNotFoundException($"Produto com ID {productId} não encontrado.");
-        }
+        
+        _authorizationService.ValidateRestaurantOwnership(product.RestaurantId);
+
         
         product.IsPaused = isPaused;
     

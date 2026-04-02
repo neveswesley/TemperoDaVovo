@@ -16,4 +16,16 @@ public class OrdersHub : Hub
     {
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"restaurant-{restaurantId}");
     }
+    
+    public async Task JoinCustomerGroup(string clientSessionId)
+    {
+        Console.WriteLine($"[SignalR] ConnectionId {Context.ConnectionId} entrou no grupo customer-{clientSessionId}");
+        await Groups.AddToGroupAsync(Context.ConnectionId, $"customer-{clientSessionId}");
+    }
+
+    public async Task LeaveCustomerGroup(string clientSessionId)
+    {
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"customer-{clientSessionId}");
+    }
+    
 }

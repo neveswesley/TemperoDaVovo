@@ -1,7 +1,9 @@
-﻿using TemperoDaVovo.Communications.Requests;
+﻿using TemperoDaVovo.Application.Interfaces;
+using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
+using TemperoDaVovo.Exceptions.ExceptionsBase;
 
 namespace TemperoDaVovo.Application.UseCases.Category.Commands.Reorder;
 
@@ -9,16 +11,26 @@ public class ReorderCategoriesUseCase : IReorderCategoriesUseCase
 {
     private readonly ICategoryReadOnlyRepository _categoryReadOnlyRepository;
     private readonly ICategoryWriteOnlyRepository _categoryWriteOnlyRepository;
+    private readonly IRestaurantReadOnlyRepository _restaurantReadOnlyRepository;
+    private readonly IAuthorizationService _authorizationService;
 
-    public ReorderCategoriesUseCase(ICategoryReadOnlyRepository categoryReadOnlyRepository,
-        ICategoryWriteOnlyRepository categoryWriteOnlyRepository)
+    public ReorderCategoriesUseCase(ICategoryReadOnlyRepository categoryReadOnlyRepository, ICategoryWriteOnlyRepository categoryWriteOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IAuthorizationService authorizationService)
     {
         _categoryReadOnlyRepository = categoryReadOnlyRepository;
         _categoryWriteOnlyRepository = categoryWriteOnlyRepository;
+        _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
+        _authorizationService = authorizationService;
     }
 
     public async Task<ReorderCategoriesResponseJson> ExecuteAsync(ReorderCategoriesRequest request)
     {
+
+        var restaurant = await _restaurantReadOnlyRepository.GetRestaurantById(request.RestaurantId);
+        if (restaurant == null)
+            throw new NotFoundException(["Restaurant not found."]);
+ 
+        _authorizationService.ValidateRestaurantOwnership(request.RestaurantId);
+        
         if (request.CategoryIds == null || !request.CategoryIds.Any())
         {
             return new ReorderCategoriesResponseJson

@@ -2,5 +2,5 @@
 
 public interface IRemoveOrderItemUseCase
 {
-    Task Execute(Guid orderItemId);
+    Task ExecuteAsync(Guid orderItemId);
 }
