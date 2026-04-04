@@ -13,6 +13,9 @@ public static class DatabaseSeeder
         // ─────────────────────────────────────────────
         // RESTAURANTE
         // ─────────────────────────────────────────────
+
+        var restaurantId = Guid.Parse("089364D2-0D9F-48E9-9535-F31CF78A3D5F");
+        
         var restaurant = new Restaurant(
             name: "Tempero da Vovó",
             phone: "24999999999",
@@ -20,7 +23,11 @@ public static class DatabaseSeeder
             description: "Comida caseira com sabor de infância",
             restaurantCategory: RestaurantCategory.Brazilian
         );
-
+        
+        typeof(Restaurant)
+            .GetProperty("Id")!
+            .SetValue(restaurant, restaurantId);
+        
         // formas de pagamento
         restaurant.SetPaymentWay(new List<PaymentWay>
         {

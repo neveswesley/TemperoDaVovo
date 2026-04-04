@@ -82,10 +82,17 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    try
+    {
+        db.Database.Migrate();
+        // DatabaseSeeder.Seed(db);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("ERRO AO MIGRAR/SEED: " + ex.Message);
+    }
     
-    db.Database.Migrate();
-    
-    DatabaseSeeder.Seed(db);
 }
 
 app.UseSwagger();
