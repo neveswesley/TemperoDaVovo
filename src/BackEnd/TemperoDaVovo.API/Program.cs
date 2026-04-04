@@ -35,10 +35,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
         policy => policy
-            .WithOrigins("http://localhost:4200")
+            .AllowAnyOrigin()
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials());
+            .AllowAnyMethod());
 });
 
 var jwtKey = builder.Configuration["Jwt:Key"]!;
@@ -81,7 +80,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IOrderNotifier, OrderNotifier>();
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddHostedService<OrderExpirationService>();
+// builder.Services.AddHostedService<OrderExpirationService>();
 builder.Services.AddSignalR();
 var dbPath = Path.Combine(AppContext.BaseDirectory, "restaurant.db");
 builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Data Source={dbPath}";
@@ -94,11 +93,8 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
 Directory.CreateDirectory(uploadsPath);
@@ -109,15 +105,16 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/uploads"
 });
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("AllowAngular");
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapHub<OrdersHub>("/hubs/orders").RequireCors("AllowAngular");
 app.MapControllers();
-app.MapFallbackToFile("index.html");
 
-app.Run();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Run($"http://0.0.0.0:{port}");
