@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TemperoDaVovo.Exceptions")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+254b2fa6942cb787e710ba0754efc4aef2bc6579")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c5259334c60a96d54c55c426c47008d24a2d985c")]
 [assembly: System.Reflection.AssemblyProductAttribute("TemperoDaVovo.Exceptions")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TemperoDaVovo.Exceptions")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -10,9 +10,11 @@ public class AppDbContextFactory
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
-        optionsBuilder.UseSqlite(
-            "Data Source=../TemperoDaVovo.Api/Data/restaurant.db"
-        );
+        var connectionString =
+            Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+            ?? "Host=localhost;Port=5432;Database=temp;Username=postgres;Password=postgres";
+
+        optionsBuilder.UseNpgsql(connectionString);
 
         return new AppDbContext(optionsBuilder.Options);
     }
