@@ -69,6 +69,12 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseNpgsql(connection);
+});
+
 builder.Services.AddScoped<IOrderNotifier, OrderNotifier>();
 
 builder.Services.AddHttpContextAccessor();
@@ -92,7 +98,6 @@ using (var scope = app.Services.CreateScope())
     {
         Console.WriteLine("ERRO AO MIGRAR/SEED: " + ex.Message);
     }
-    
 }
 
 app.UseSwagger();
