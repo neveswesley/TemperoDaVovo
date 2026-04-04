@@ -6,7 +6,16 @@ public class Category : BaseEntity
     public Guid RestaurantId { get; set; }
     public int DisplayOrder { get; set; }
     public ICollection<Product> Products { get; set; } = new List<Product>();
-    
+
+    public Category(string name, Guid restaurantId)
+    {
+        Name = name;
+        RestaurantId = restaurantId;
+    }
+
+    public Category()
+    {
+    }
 
     public void UpdateName(string newName)
     {

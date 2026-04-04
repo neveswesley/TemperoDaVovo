@@ -12,6 +12,7 @@ public class City
     //restaurante
     public Guid RestaurantId { get; private set; }
     public Restaurant Restaurant { get; private set; } = null!;
+    protected City(){}
 
     public City(string name, Guid restaurantId)
     {

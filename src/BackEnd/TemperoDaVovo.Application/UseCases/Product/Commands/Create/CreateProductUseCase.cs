@@ -16,7 +16,9 @@ public class CreateProductUseCase : ICreateProductUseCase
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAuthorizationService _authorizationService;
 
-    public CreateProductUseCase(IProductWriteOnlyRepository productWriteOnlyRepository, IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork, IAuthorizationService authorizationService)
+    public CreateProductUseCase(IProductWriteOnlyRepository productWriteOnlyRepository,
+        IRestaurantReadOnlyRepository restaurantReadOnlyRepository, IUnitOfWork unitOfWork,
+        IAuthorizationService authorizationService)
     {
         _productWriteOnlyRepository = productWriteOnlyRepository;
         _restaurantReadOnlyRepository = restaurantReadOnlyRepository;
@@ -26,10 +28,10 @@ public class CreateProductUseCase : ICreateProductUseCase
 
     public async Task<CreateProductResponseJson> ExecuteAsync(CreateProductRequestJson request, IFormFile file)
     {
-        
         if (file != null)
         {
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+            var uploadsFolder = Path.Combine(AppContext.BaseDirectory, "uploads");
+
             if (!Directory.Exists(uploadsFolder))
             {
                 Directory.CreateDirectory(uploadsFolder);
@@ -46,11 +48,11 @@ public class CreateProductUseCase : ICreateProductUseCase
 
         var restaurant = await _restaurantReadOnlyRepository.RestaurantExists(request.RestaurantId);
         if (restaurant == null)
-            throw new BusinessException([ "Restaurante não encontrado" ]);
-        
+            throw new BusinessException(["Restaurante não encontrado"]);
+
         _authorizationService.ValidateRestaurantOwnership(request.RestaurantId);
 
-        
+
         var product = new Domain.Entities.Product
         {
             RestaurantId = request.RestaurantId,
@@ -61,7 +63,7 @@ public class CreateProductUseCase : ICreateProductUseCase
             ImageUrl = request.ImageUrl,
             IsPaused = false
         };
-        
+
         await _productWriteOnlyRepository.CreateProduct(product);
         await _unitOfWork.CommitAsync();
 

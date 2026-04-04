@@ -23,7 +23,7 @@ public static class ServiceExtensions
     private static void AddConnectionString(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite(
+            options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection")));
     }
 

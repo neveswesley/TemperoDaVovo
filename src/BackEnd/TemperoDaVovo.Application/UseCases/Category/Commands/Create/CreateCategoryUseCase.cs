@@ -43,7 +43,7 @@ public class CreateCategoryUseCase : ICreateCategoryUseCase
 
         var finalName = GenerateCategoryName(baseName, existingNames);
         
-        var category = new Domain.Entities.Category()
+        var category = new Domain.Entities.Category
         {
             RestaurantId = request.RestaurantId,
             Name = finalName,
