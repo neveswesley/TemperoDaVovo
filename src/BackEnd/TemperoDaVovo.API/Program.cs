@@ -80,8 +80,6 @@ builder.Services.AddScoped<IOrderNotifier, OrderNotifier>();
 builder.Services.AddHttpContextAccessor();
 // builder.Services.AddHostedService<OrderExpirationService>();
 builder.Services.AddSignalR();
-var dbPath = Path.Combine(AppContext.BaseDirectory, "restaurant.db");
-builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Data Source={dbPath}";
 
 var app = builder.Build();
 
