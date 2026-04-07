@@ -192,5 +192,27 @@ public static class DatabaseSeeder
 
         db.Products.AddRange(p1, p2, p3, p4, p5);
         db.SaveChanges();
+        
+        // ─────────────────────────────────────────────
+        // HORÁRIO DE FUNCIONAMENTO
+        // ─────────────────────────────────────────────
+        
+        var openingHours = new List<RestaurantOpeningHour>
+        {
+            new RestaurantOpeningHour(restaurantId, DayOfWeek.Sunday,    DateTime.Today.Add(TimeSpan.Parse("00:00:00")), DateTime.Today.Add(TimeSpan.Parse("23:59:00"))),
+            new RestaurantOpeningHour(restaurantId, DayOfWeek.Monday,    DateTime.Today.Add(TimeSpan.Parse("00:00:00")), DateTime.Today.Add(TimeSpan.Parse("23:59:00"))),
+            new RestaurantOpeningHour(restaurantId, DayOfWeek.Tuesday,   DateTime.Today.Add(TimeSpan.Parse("00:00:00")), DateTime.Today.Add(TimeSpan.Parse("23:59:00"))),
+            new RestaurantOpeningHour(restaurantId, DayOfWeek.Wednesday, DateTime.Today.Add(TimeSpan.Parse("00:00:00")), DateTime.Today.Add(TimeSpan.Parse("23:59:00"))),
+            new RestaurantOpeningHour(restaurantId, DayOfWeek.Thursday,  DateTime.Today.Add(TimeSpan.Parse("00:00:00")), DateTime.Today.Add(TimeSpan.Parse("23:59:00"))),
+            new RestaurantOpeningHour(restaurantId, DayOfWeek.Friday,    DateTime.Today.Add(TimeSpan.Parse("00:00:00")), DateTime.Today.Add(TimeSpan.Parse("23:59:00"))),
+            new RestaurantOpeningHour(restaurantId, DayOfWeek.Saturday,  DateTime.Today.Add(TimeSpan.Parse("00:00:00")), DateTime.Today.Add(TimeSpan.Parse("23:59:00"))),
+        };
+
+        foreach (var hour in openingHours)
+            restaurant.OpeningHours.Add(hour);
+
+        db.Restaurants.Update(restaurant);
+        db.SaveChanges();
+        
     }
 }

@@ -15,12 +15,6 @@ public class RestaurantOpeningHourConfiguration : IEntityTypeConfiguration<Resta
         builder.Property(x => x.DayOfWeek)
             .IsRequired();
 
-        builder.Property(x => x.OpenTime)
-            .IsRequired().IsConcurrencyToken();
-
-        builder.Property(x => x.CloseTime)
-            .IsRequired().IsConcurrencyToken();
-
         builder.HasOne(x => x.Restaurant)
             .WithMany(r => r.OpeningHours)
             .HasForeignKey(x => x.RestaurantId)
