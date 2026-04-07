@@ -114,9 +114,6 @@ public static class DatabaseSeeder
         db.Categories.AddRange(marmitexGrande, monteSeuMarmitex);
         db.SaveChanges();
 
-        db.Categories.AddRange(marmitexGrande, monteSeuMarmitex);
-        db.SaveChanges();
-
         // ─────────────────────────────────────────────
         // PRODUTOS
         // ─────────────────────────────────────────────
