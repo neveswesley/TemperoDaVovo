@@ -30,13 +30,13 @@ public class OpeningHoursUseCase : IOpeningHoursUseCase
             throw new NotFoundException(["Restaurante não encontrado."]);
         
         _authorizationService.ValidateRestaurantOwnership(restaurantId);
-
-        var newHours = request.OpeningHours.
-            Select(x => new Domain.Entities.RestaurantOpeningHour(
+        
+        var newHours = request.OpeningHours
+            .Select(x => new Domain.Entities.RestaurantOpeningHour(
                 restaurantId,
                 x.DayOfWeek,
-                DateTime.Today.Add(TimeSpan.Parse(x.OpenTime)),
-                DateTime.Today.Add(TimeSpan.Parse(x.CloseTime))
+                DateTime.UtcNow.Date.Add(TimeSpan.Parse(x.OpenTime)),
+                DateTime.UtcNow.Date.Add(TimeSpan.Parse(x.CloseTime))
             )).ToList();
 
         OpeningHoursValidator.Validate(newHours);
