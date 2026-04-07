@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TemperoDaVovo.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+43056d8f004c3a86d6749d429841ed9250dec5b6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6b7aa894506156ee5a3d109a5bd161af88e7796")]
 [assembly: System.Reflection.AssemblyProductAttribute("TemperoDaVovo.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TemperoDaVovo.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
