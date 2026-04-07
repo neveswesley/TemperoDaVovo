@@ -21,6 +21,7 @@ public class City
         
         Name = name;
         RestaurantId = restaurantId;
+        IsActive = true;
     }
 
     public void UpdateName(string name)
