@@ -33,11 +33,8 @@ public class Product : BaseEntity
         Name = newName;
     }
 
-    public void UpdateDescription(string newDescription)
+    public void UpdateDescription(string? newDescription)
     {
-        if (string.IsNullOrWhiteSpace(newDescription))
-            throw new BusinessException([ "A descrição não pode ser vazia." ]);
-        
-        Description = newDescription;
+        Description = newDescription?.Trim() ?? string.Empty;
     }
 }

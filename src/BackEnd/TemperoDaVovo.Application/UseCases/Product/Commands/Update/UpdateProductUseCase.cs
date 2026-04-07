@@ -32,7 +32,7 @@ public class UpdateProductUseCase : IUpdateProductUseCase
 
 
         product.UpdateName(request.Name);
-        if (request.Description != null) product.UpdateDescription(request.Description);
+        product.UpdateDescription(request.Description ?? string.Empty);
         product.UpdatePrice(request.Price);
 
         if (request.CategoryId.HasValue)
