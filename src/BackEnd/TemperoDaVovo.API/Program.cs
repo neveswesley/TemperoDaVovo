@@ -94,7 +94,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Console.WriteLine("ERRO AO MIGRAR/SEED: " + ex.Message);
+        Console.WriteLine("ERRO AO MIGRAR/SEED: " + ex.ToString());
     }
 }
 
