@@ -30,11 +30,17 @@ public class ExceptionMiddleware
         catch (Exception ex)
         {
             Console.WriteLine($"[EXCEPTION] {ex.GetType().Name}: {ex.Message}");
+            Console.WriteLine($"[INNER] {ex.InnerException?.Message}");
+            Console.WriteLine($"[INNER INNER] {ex.InnerException?.InnerException?.Message}");
             Console.WriteLine(ex.StackTrace);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsJsonAsync(new
             {
-                message = "Erro interno"
+                message = ex.Message,
+                exception = ex.GetType().Name,
+                innerException = ex.InnerException?.Message,
+                innerInnerException = ex.InnerException?.InnerException?.Message,
+                stackTrace = ex.StackTrace
             });
         }
     }
