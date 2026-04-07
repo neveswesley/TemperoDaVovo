@@ -1,4 +1,4 @@
-﻿namespace TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.OpeningHours;
+﻿namespace TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Update;
 
 public static class OpeningHoursValidator
 {

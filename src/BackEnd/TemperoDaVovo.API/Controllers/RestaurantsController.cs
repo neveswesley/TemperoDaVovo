@@ -6,7 +6,6 @@ using TemperoDaVovo.Application.UseCases.Restaurant.Commands.UpdatePaymentWay;
 using TemperoDaVovo.Application.UseCases.Restaurant.Create;
 using TemperoDaVovo.Application.UseCases.Restaurant.Queries.Get;
 using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Get;
-using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.OpeningHours;
 using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.Update;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Communications.Responses;

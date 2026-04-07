@@ -1,5 +1,4 @@
 ﻿using TemperoDaVovo.Application.Interfaces;
-using TemperoDaVovo.Application.UseCases.RestaurantOpeningHour.OpeningHours;
 using TemperoDaVovo.Communications.Requests;
 using TemperoDaVovo.Domain.Interfaces.ReadOnly;
 using TemperoDaVovo.Domain.Interfaces.WriteOnly;
@@ -34,11 +33,11 @@ public class OpeningHoursUseCase : IOpeningHoursUseCase
 
         var newHours = request.OpeningHours.
             Select(x => new Domain.Entities.RestaurantOpeningHour(
-            restaurantId,
-            x.DayOfWeek,
-            DateTime.Parse(x.OpenTime),
-            DateTime.Parse(x.CloseTime)
-        )).ToList();
+                restaurantId,
+                x.DayOfWeek,
+                DateTime.Today.Add(TimeSpan.Parse(x.OpenTime)),
+                DateTime.Today.Add(TimeSpan.Parse(x.CloseTime))
+            )).ToList();
 
         OpeningHoursValidator.Validate(newHours);
         

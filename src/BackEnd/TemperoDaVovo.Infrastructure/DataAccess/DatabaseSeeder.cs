@@ -70,8 +70,9 @@ public static class DatabaseSeeder
         // ─────────────────────────────────────────────
         // CIDADE
         // ─────────────────────────────────────────────
+        
         var city = new City(
-            name: "Barra do Piraí",
+            name: "Volta Redonda",
             restaurantId: restaurant.Id
         );
 
@@ -81,6 +82,7 @@ public static class DatabaseSeeder
         // ─────────────────────────────────────────────
         // BAIRROS
         // ─────────────────────────────────────────────
+        
         var centro = new Neighborhood(
             name: "Centro",
             deliveryFee: 5,
@@ -88,14 +90,35 @@ public static class DatabaseSeeder
             baseDeliveryTimeInMinutes: 30
         );
 
-        var oficina = new Neighborhood(
-            name: "Oficina Velha",
+        var jardimAmalia = new Neighborhood(
+            name: "Jardim Amália",
+            deliveryFee: 7,
+            cityId: city.Id,
+            baseDeliveryTimeInMinutes: 40
+        );
+        
+        var aterrado = new Neighborhood(
+            name: "Aterrado",
+            deliveryFee: 8,
+            cityId: city.Id,
+            baseDeliveryTimeInMinutes: 45
+        );
+
+        var retiro = new Neighborhood(
+            name: "Retiro",
+            deliveryFee: 9,
+            cityId: city.Id,
+            baseDeliveryTimeInMinutes: 50
+        );
+
+        var vila = new Neighborhood(
+            name: "Vila Santa Cecília",
             deliveryFee: 7,
             cityId: city.Id,
             baseDeliveryTimeInMinutes: 40
         );
 
-        db.Neighborhoods.AddRange(centro, oficina);
+        db.Neighborhoods.AddRange(centro, jardimAmalia, aterrado, retiro, vila);
         db.SaveChanges();
 
         // ─────────────────────────────────────────────
