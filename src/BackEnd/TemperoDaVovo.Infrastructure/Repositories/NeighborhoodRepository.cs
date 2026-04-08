@@ -48,6 +48,8 @@ public class NeighborhoodRepository : INeighborhoodWriteOnlyRepository, INeighbo
 
     public async Task<Neighborhood> GetNeighborhoodById(Guid? neighborhoodId)
     {
-        return await _dbContext.Neighborhoods.FirstOrDefaultAsync(n => n.Id == neighborhoodId);
+        return await _dbContext.Neighborhoods
+            .Include(n => n.City)
+            .FirstOrDefaultAsync(n => n.Id == neighborhoodId);
     }
 }
