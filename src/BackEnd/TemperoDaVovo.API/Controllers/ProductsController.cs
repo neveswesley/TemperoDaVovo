@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Duplicate;
+using TemperoDaVovo.Application.UseCases.Product.Commands.RemoveImage;
 using TemperoDaVovo.Application.UseCases.Product.Commands.ToggleProductActive;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Update;
 using TemperoDaVovo.Application.UseCases.Product.Commands.UpdateProductImage;
@@ -25,8 +26,9 @@ namespace TemperoDaVovo.API.Controllers
         private readonly IGetProductByIdUseCase _getProductByIdUseCase;
         private readonly IUpdateProductImageUseCase _updateProductImageUseCase;
         private readonly IDuplicateProductUseCase _duplicateProductUseCase;
+        private readonly IRemoveProductImageUseCase _removeProductImageUseCase;
 
-        public ProductsController(ICreateProductUseCase createProductUseCase, IGetProductWithSideDishesUseCase getProductWithSideDishesUseCase, IDeleteProductUseCase deleteProductUseCase, IToggleProductActiveUseCase toggleProductActiveUseCase, IUpdateProductUseCase updateProductUseCase, IGetProductByIdUseCase getProductByIdUseCase, IUpdateProductImageUseCase updateProductImageUseCase, IDuplicateProductUseCase duplicateProductUseCase)
+        public ProductsController(ICreateProductUseCase createProductUseCase, IGetProductWithSideDishesUseCase getProductWithSideDishesUseCase, IDeleteProductUseCase deleteProductUseCase, IToggleProductActiveUseCase toggleProductActiveUseCase, IUpdateProductUseCase updateProductUseCase, IGetProductByIdUseCase getProductByIdUseCase, IUpdateProductImageUseCase updateProductImageUseCase, IDuplicateProductUseCase duplicateProductUseCase, IRemoveProductImageUseCase removeProductImageUseCase)
         {
             _createProductUseCase = createProductUseCase;
             _getProductWithSideDishesUseCase = getProductWithSideDishesUseCase;
@@ -36,6 +38,7 @@ namespace TemperoDaVovo.API.Controllers
             _getProductByIdUseCase = getProductByIdUseCase;
             _updateProductImageUseCase = updateProductImageUseCase;
             _duplicateProductUseCase = duplicateProductUseCase;
+            _removeProductImageUseCase = removeProductImageUseCase;
         }
 
         [Authorize(Roles = "Restaurant")]
@@ -101,6 +104,16 @@ namespace TemperoDaVovo.API.Controllers
                 return BadRequest("Imagem inválida");
 
             await _updateProductImageUseCase.ExecuteAsync(id, image);
+            return NoContent();
+        }
+        
+        [Authorize(Roles = "Restaurant")]
+        [HttpDelete("{id}/image")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveImage([FromRoute] Guid id)
+        {
+            await _removeProductImageUseCase.ExecuteAsync(id);
             return NoContent();
         }
 

@@ -40,6 +40,7 @@ using TemperoDaVovo.Application.UseCases.Order.Queries.GetOrderHistory;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Create;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Delete;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Duplicate;
+using TemperoDaVovo.Application.UseCases.Product.Commands.RemoveImage;
 using TemperoDaVovo.Application.UseCases.Product.Commands.ToggleProductActive;
 using TemperoDaVovo.Application.UseCases.Product.Commands.Update;
 using TemperoDaVovo.Application.UseCases.Product.Commands.UpdateImage;
@@ -159,5 +160,6 @@ public static class ServicesExtensions
         services.AddScoped<IAuthorizationService, AuthorizationService>();
         services.AddScoped<IConfirmEmailUseCase, ConfirmEmailUseCase>();
         services.AddScoped<IVerifyTwoFactorUseCase, VerifyTwoFactorUseCase>();
+        services.AddScoped<IRemoveProductImageUseCase, RemoveProductImageUseCase>();
     }
 }
