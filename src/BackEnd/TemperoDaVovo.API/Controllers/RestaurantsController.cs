@@ -90,7 +90,7 @@ namespace TemperoDaVovo.API.Controllers
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(RestaurantResponseJson), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdatePaymentWay([FromRoute] Guid restaurantId, SetPaymentWayRequest request)
+        public async Task<IActionResult> UpdatePaymentWay([FromRoute] Guid restaurantId, [FromBody] SetPaymentWayRequest request)
         {
             await _updatePaymentWayUseCase.ExecuteAsync(restaurantId, request);
             return NoContent();
