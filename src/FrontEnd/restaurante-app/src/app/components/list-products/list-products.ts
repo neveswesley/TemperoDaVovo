@@ -129,7 +129,7 @@ export class ListProducts implements OnInit, OnDestroy {
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object,
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
@@ -211,73 +211,73 @@ export class ListProducts implements OnInit, OnDestroy {
   }
   // ===== CARREGAR DADOS =====
   loadCategories() {
-  const restaurantId = localStorage.getItem('restaurantId');
+    const restaurantId = localStorage.getItem('restaurantId');
 
-  if (!restaurantId) {
-    this.error = 'Restaurant ID não encontrado';
-    this.notificationService.show('Restaurante não identificado. Faça login novamente.');
-    return;
+    if (!restaurantId) {
+      this.error = 'Restaurant ID não encontrado';
+      this.notificationService.show('Restaurante não identificado. Faça login novamente.');
+      return;
+    }
+
+    this.loading = true;
+    this.error = null;
+
+    this.categoryService.getWithProducts(restaurantId).subscribe({
+      next: (data) => {
+        const rawCategories = Array.isArray(data)
+          ? data
+          : (data as any)?.data || [];
+
+        this.categories = rawCategories.map((cat: any) => {
+          return {
+            categoryId: cat.categoryId,
+            categoryName: cat.categoryName,
+
+            products: (cat.products ?? [])
+              .filter((prod: any) => {
+                const isActive =
+                  prod.isActive !== undefined
+                    ? prod.isActive
+                    : prod.IsActive !== undefined
+                      ? prod.IsActive
+                      : false;
+
+                return Boolean(isActive);
+              })
+              .map((prod: any) => {
+                return {
+                  id: prod.id,
+                  name: prod.name,
+                  description: prod.description,
+                  price: prod.price,
+                  imageUrl: prod.imageUrl,
+                  isActive: true, // aqui sempre true, pois já filtrou
+                  complements: prod.complements ?? [],
+                  complementGroups: [],
+                };
+              }),
+          };
+        });
+
+        console.log('📦 Categorias carregadas:', this.categories);
+
+
+        this.loading = false;
+
+        this.cdr.detectChanges();
+
+        this.checkForModalOpen();
+      },
+
+      error: (err) => {
+        console.error('❌ Erro completo:', err);
+        this.error = 'Erro ao carregar cardápio';
+        this.loading = false;
+        this.notificationService.show('Não foi possível carregar o cardápio.');
+        this.cdr.detectChanges();
+      },
+    });
   }
-
-  this.loading = true;
-  this.error = null;
-
-  this.categoryService.getWithProducts(restaurantId).subscribe({
-    next: (data) => {
-      const rawCategories = Array.isArray(data)
-        ? data
-        : (data as any)?.data || [];
-
-      this.categories = rawCategories.map((cat: any) => {
-        return {
-          categoryId: cat.categoryId,
-          categoryName: cat.categoryName,
-
-          products: (cat.products ?? [])
-            .filter((prod: any) => {
-              const isActive =
-                prod.isActive !== undefined
-                  ? prod.isActive
-                  : prod.IsActive !== undefined
-                    ? prod.IsActive
-                    : false;
-
-              return Boolean(isActive);
-            })
-            .map((prod: any) => {
-              return {
-                id: prod.id,
-                name: prod.name,
-                description: prod.description,
-                price: prod.price,
-                imageUrl: prod.imageUrl,
-                isActive: true, // aqui sempre true, pois já filtrou
-                complements: prod.complements ?? [],
-                complementGroups: [],
-              };
-            }),
-        };
-      });
-
-      console.log('📦 Categorias carregadas:', this.categories);
-      
-
-      this.loading = false;
-
-      this.cdr.detectChanges();
-
-      this.checkForModalOpen();
-    },
-
-    error: (err) => {
-      console.error('❌ Erro completo:', err);
-      this.error = 'Erro ao carregar cardápio';
-      this.loading = false;
-      this.notificationService.show('Não foi possível carregar o cardápio.');
-      this.cdr.detectChanges();
-    },
-  });
-}
 
   private checkForModalOpen(): void {
     const openModal = localStorage.getItem('openAddSideDishModal');
@@ -497,18 +497,18 @@ export class ListProducts implements OnInit, OnDestroy {
 
   // ===== PRODUTOS =====
   addProduct(category: Category) {
+    const restaurantId = localStorage.getItem('restaurantId');
     this.closeMenu();
-    this.router.navigate(['/create-product'], {
+    this.router.navigate(['/restaurant', restaurantId, 'create-product'], {
       queryParams: { categoryId: category.categoryId },
     });
   }
 
   editProduct(product: Product) {
+    const restaurantId = localStorage.getItem('restaurantId');
     console.log('✏️ Editando produto:', product.id);
-    this.router.navigate(['/edit-product', product.id]);
+    this.router.navigate(['/restaurant', restaurantId, 'edit-product', product.id]);
   }
-
-  // list-products.component.ts
 
   async duplicateProduct(product: Product) {
     const confirmed = await this.confirmationService.confirm({
@@ -892,8 +892,8 @@ export class ListProducts implements OnInit, OnDestroy {
     if (!confirmed) return;
 
     this.http.delete(`${environment.apiUrl}/api/SideDishes/remove-side-dish-groups`, {
-        body: { productId: product.id, sideDishGroupIds: [group.id] },
-      })
+      body: { productId: product.id, sideDishGroupIds: [group.id] },
+    })
       .subscribe({
         next: () => {
           this.notificationService.show(`Cardápio atualizado com sucesso.`);
