@@ -206,7 +206,6 @@ namespace TemperoDaVovo.API.Controllers
             return Ok(result);
         }
         
-        [Authorize(Roles = "Restaurant")]
         [HttpPut("mark-as-delivered/{orderId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
