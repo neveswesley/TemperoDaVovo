@@ -72,7 +72,6 @@ export class PaymentComponent implements OnInit {
 
     this.http.get<{ paymentWays: any[] }>(`${environment.apiUrl}/api/restaurants/${this.restaurantId}`).subscribe({
       next: (res) => {
-        console.log('resposta da api:', res);
         const saved = (res.paymentWays ?? []).map(v => Number(v));
         this.paymentMethods.forEach(m => m.selected = saved.includes(Number(m.id)));
         this.loading = false;

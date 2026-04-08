@@ -23,7 +23,7 @@ export class EditProductComponent implements OnInit {
   originalImageUrl: string | null = null;
   imageWasRemoved = false;
   isLoading = true; // Para mostrar loading
-  
+
 
   constructor(
     private fb: FormBuilder,
@@ -34,30 +34,26 @@ export class EditProductComponent implements OnInit {
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object,
-  ) {}
-  
+  ) { }
+
 
   ngOnInit() {
     const restaurantId = localStorage.getItem('restaurantId');
-    console.log('🔵 EditProductComponent - ngOnInit iniciado');
-    
+
     this.buildForm();
 
     const id = this.route.snapshot.paramMap.get('id');
-    console.log('🆔 ID capturado da rota:', id);
-    
+
     if (!id) {
       console.error('❌ ID não encontrado na rota!');
       this.notification.show('Produto inválido');
       this.router.navigate(['/restaurant', restaurantId, 'list-products']);
       return;
     }
-    
+
     this.productId = id;
-    console.log('✅ ProductId definido:', this.productId);
 
     this.loadCategories().then(() => {
-      console.log('✅ Categorias carregadas, agora carregando produto...');
       this.loadProduct();
     }).catch(err => {
       console.error('❌ Erro ao carregar cardápio:', err);
@@ -77,77 +73,46 @@ export class EditProductComponent implements OnInit {
       price: ['0.00', Validators.required],
       categoryId: [''],
     });
-    console.log('📝 Formulário criado');
   }
 
   loadProduct() {
     const restaurantId = localStorage.getItem('restaurantId');
-    console.log('📦 Iniciando carregamento do produto:', this.productId);
-    
+
     this.productService.getById(this.productId).subscribe({
       next: (product: Product) => {
-        console.log('✅ Produto recebido do backend:', product);
-        console.log('📊 Dados do produto:', {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          category: product.category,
-          imageUrl: product.imageUrl
-        });
-
         const formattedPrice = parseFloat(product.price.toString()).toFixed(2);
-        console.log('💰 Preço formatado:', formattedPrice);
 
         let categoryId = '';
 
-        // Tratamento da categoria
         if (product.category) {
-          console.log('🏷️ Categoria recebida:', product.category);
-          console.log('🏷️ Tipo da categoria:', typeof product.category);
-          
-          // Se a categoria é um objeto com id
           if (typeof product.category === 'object' && 'id' in product.category) {
             categoryId = (product.category as any).id;
-            console.log('✅ CategoryId extraído do objeto (id):', categoryId);
           }
-          // Se a categoria é um objeto com categoryId
           else if (typeof product.category === 'object' && 'categoryId' in product.category) {
             categoryId = (product.category as any).categoryId;
-            console.log('✅ CategoryId extraído do objeto (categoryId):', categoryId);
           }
-          // Se a categoria é uma string (nome)
           else if (typeof product.category === 'string') {
             const categoryName = product.category;
-            console.log('🔍 Procurando categoria por nome:', categoryName);
             const foundCategory = this.categories.find((c) => c.categoryName === categoryName);
             categoryId = foundCategory?.categoryId ?? '';
-            console.log('✅ Categoria encontrada:', foundCategory);
           }
           // Se a categoria tem categoryName
           else if (typeof product.category === 'object') {
             const categoryName = (product.category as any).categoryName || (product.category as any).name;
-            console.log('🔍 Procurando categoria por categoryName/name:', categoryName);
             const foundCategory = this.categories.find((c) => c.categoryName === categoryName);
             categoryId = foundCategory?.categoryId ?? '';
-            console.log('✅ Categoria encontrada:', foundCategory);
           }
         } else {
           console.warn('⚠️ Produto sem categoria');
         }
-
-        console.log('🏷️ CategoryId final:', categoryId);
-        console.log('📋 Categorias disponíveis:', this.categories.map(c => ({ id: c.categoryId, name: c.categoryName })));
-
-        // Atualiza o formulário
         const formData = {
           name: product.name,
           description: product.description || '',
           price: formattedPrice,
           categoryId: categoryId,
         };
-        
-        console.log('📝 Dados que serão preenchidos no form:', formData);
-        
+
+
         this.form.patchValue(formData);
         this.selectedCategoryId = categoryId;
 
@@ -155,30 +120,21 @@ export class EditProductComponent implements OnInit {
         if (product.imageUrl) {
           this.originalImageUrl = product.imageUrl;
           this.imagePreview = this.productService.getFullImageUrl(product.imageUrl);
-          console.log('🖼️ Imagem:', {
-            original: product.imageUrl,
-            preview: this.imagePreview
-          });
-        } else {
-          console.log('📷 Produto sem imagem');
         }
 
         this.form.get('categoryId')?.updateValueAndValidity();
         this.isLoading = false;
         this.cdr.detectChanges();
-        
-        console.log('✅ Produto carregado com sucesso!');
-        console.log('📝 Valores finais do form:', this.form.value);
       },
       error: (err) => {
         console.error('❌ ERRO ao carregar cardápio:', err);
         console.error('❌ Status do erro:', err.status);
         console.error('❌ Mensagem do erro:', err.message);
         console.error('❌ Erro completo:', err);
-        
+
         this.notification.show('Erro ao carregar produto');
         this.isLoading = false;
-        
+
         // Se o produto não for encontrado, volta para a lista
         if (err.status === 404) {
           setTimeout(() => {
@@ -191,10 +147,8 @@ export class EditProductComponent implements OnInit {
 
   loadCategories(): Promise<void> {
     return new Promise((resolve, reject) => {
-      console.log('🏷️ Iniciando carregamento de categorias');
-      
+
       if (!isPlatformBrowser(this.platformId)) {
-        console.log('⚠️ Não está no browser, pulando categorias');
         resolve();
         return;
       }
@@ -203,17 +157,9 @@ export class EditProductComponent implements OnInit {
       const fallbackId = '089364D2-0D9F-48E9-9535-F31CF78A3D5F';
       const finalId = restaurantId || fallbackId;
 
-      console.log('🏪 RestaurantId:', {
-        localStorage: restaurantId,
-        usando: finalId
-      });
-
       this.productService.getCategories(finalId).subscribe({
         next: (cats) => {
           this.categories = cats;
-          console.log('✅ Categorias carregadas:', cats.length);
-          console.log('📋 Lista de categorias:', cats.map(c => ({ id: c.categoryId, name: c.categoryName })));
-
           if (cats.length === 0) {
             console.warn('⚠️ ATENÇÃO: Nenhuma categoria encontrada!');
           }
@@ -230,10 +176,6 @@ export class EditProductComponent implements OnInit {
   }
 
   submit() {
-    console.log('📤 Submit iniciado');
-    console.log('📝 Form válido?', this.form.valid);
-    console.log('📝 Form values:', this.form.value);
-    
     if (this.form.invalid) {
       console.error('❌ Formulário inválido!');
       this.notification.show('Preencha todos os campos obrigatórios');
@@ -250,16 +192,12 @@ export class EditProductComponent implements OnInit {
       payload.categoryId = this.selectedCategoryId;
     }
 
-    console.log('📤 Payload que será enviado:', payload);
-
     this.productService.update(this.productId, payload).subscribe({
       next: () => {
 
         if (this.imageWasRemoved && this.originalImageUrl) {
-          console.log('🗑️ Removendo imagem...');
           this.productService.removeImage(this.productId).subscribe({
             next: () => {
-              console.log('✅ Imagem removida');
               this.finishSuccess();
             },
             error: (err) => {
@@ -270,10 +208,8 @@ export class EditProductComponent implements OnInit {
         }
         // Se usuário SELECIONOU nova imagem
         else if (this.selectedFile) {
-          console.log('📤 Enviando nova imagem...');
           this.productService.updateImage(this.productId, this.selectedFile).subscribe({
             next: () => {
-              console.log('✅ Imagem atualizada');
               this.finishSuccess();
             },
             error: (err) => {
@@ -301,7 +237,6 @@ export class EditProductComponent implements OnInit {
   }
 
   removeImage() {
-    console.log('🗑️ Removendo preview da imagem');
     this.imagePreview = null;
     this.selectedFile = null;
     this.imageWasRemoved = true;
@@ -312,7 +247,6 @@ export class EditProductComponent implements OnInit {
     const file = event.target.files[0];
     if (!file) return;
 
-    console.log('📁 Arquivo selecionado:', file.name, file.type, file.size);
 
     this.selectedFile = file;
     this.imageWasRemoved = false;
@@ -320,7 +254,6 @@ export class EditProductComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.imagePreview = e.target.result;
-      console.log('✅ Preview da imagem carregado');
       this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);

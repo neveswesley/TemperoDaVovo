@@ -42,7 +42,6 @@ export class LoginUser {
         if (response.success) {
           localStorage.setItem('restaurantId', response.restaurantId);
           localStorage.setItem('token', response.token);
-              console.log('token salvo:', response.token);
           this.router.navigate(['/restaurant', response.restaurantId, 'orders']);
         } else {
           this.errorMessage = 'Email ou senha inválidos';

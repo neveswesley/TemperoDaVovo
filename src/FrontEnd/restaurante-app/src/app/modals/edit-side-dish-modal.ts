@@ -788,7 +788,6 @@ export class EditSideDishGroupModalComponent implements OnChanges {
   ngOnChanges(): void {
     if (!this.group) return;
 
-    console.log('🔄 ngOnChanges - Grupo recebido:', JSON.parse(JSON.stringify(this.group)));
 
     this.editedComplementsIndexes.clear();
 
@@ -803,13 +802,7 @@ export class EditSideDishGroupModalComponent implements OnChanges {
       this.group.complements = [];
     } else {
       this.group.complements.forEach((c: any, index: number) => {
-        console.log(`📋 Complemento [${index}] ANTES:`, { 
-          id: c.id, 
-          name: c.name, 
-          price: c.price, 
-          unitPrice: c.unitPrice 
-        });
-
+        
         if (c.minQuantity === undefined || c.minQuantity === null) {
           c.minQuantity = 0;
         }
@@ -822,13 +815,6 @@ export class EditSideDishGroupModalComponent implements OnChanges {
         if (c.unitPrice === undefined || c.unitPrice === null) {
           c.unitPrice = c.price || 0;
         }
-
-        console.log(`📋 Complemento [${index}] DEPOIS:`, { 
-          id: c.id, 
-          name: c.name, 
-          price: c.price, 
-          unitPrice: c.unitPrice 
-        });
       });
     }
   }
@@ -846,34 +832,18 @@ export class EditSideDishGroupModalComponent implements OnChanges {
     const input = event.target as HTMLInputElement;
     const digits = input.value.replace(/\D/g, '');
     const number = Number(digits) / 100;
-    
-    console.log('💰 onPriceInput:', {
-      index,
-      inputValue: input.value,
-      digits,
-      calculatedNumber: number,
-      complementBefore: { ...complement }
-    });
-    
+        
     // Atualiza ambas as propriedades
     complement.price = number;
     complement.unitPrice = number;
     
     input.value = this.formatPrice(number);
-    
-    console.log('💰 Complemento APÓS atualização:', {
-      name: complement.name,
-      price: complement.price,
-      unitPrice: complement.unitPrice
-    });
-    
+        
     this.markComplementAsEdited(index);
   }
 
   markComplementAsEdited(index: number): void {
-    console.log(`✏️ Marcando complemento [${index}] como editado`);
     this.editedComplementsIndexes.add(index);
-    console.log('📝 Complementos editados:', Array.from(this.editedComplementsIndexes));
   }
 
   isComplementEdited(index: number): boolean {
@@ -891,16 +861,10 @@ export class EditSideDishGroupModalComponent implements OnChanges {
       unitPrice: c.unitPrice,
     };
 
-    console.log('🚀 ENVIANDO ATUALIZAÇÃO:');
-    console.log('  - ID:', c.id);
-    console.log('  - Dados:', dataToSend);
-    console.log('  - Complemento completo:', JSON.parse(JSON.stringify(c)));
-
     this.sideDishService
       .updateSideDish(c.id, dataToSend)
       .subscribe({
         next: (response) => {
-          console.log('✅ RESPOSTA DO BACKEND:', response);
           this.notification.show('Complemento atualizado');
           this.editedComplementsIndexes.delete(index);
           setTimeout(() => this.cdr.detectChanges(), 0);
@@ -956,13 +920,6 @@ export class EditSideDishGroupModalComponent implements OnChanges {
       return;
     }
 
-    console.log('➕ Criando novo complemento:', {
-      sideDishGroupId: this.group.id,
-      name: this.newComplementName,
-      unitPrice: this.newComplementPrice,
-      quantity: this.newComplementQuantity,
-    });
-
     this.sideDishService
       .createSideDish({
         sideDishGroupId: this.group.id,
@@ -971,7 +928,6 @@ export class EditSideDishGroupModalComponent implements OnChanges {
         quantity: this.newComplementQuantity,
       })
       .subscribe((created) => {
-        console.log('✅ Complemento criado:', created);
 
         const complementToAdd = {
           ...created,
@@ -981,7 +937,6 @@ export class EditSideDishGroupModalComponent implements OnChanges {
           maxQuantity: 1,
         };
 
-        console.log('➕ Adicionando à lista:', complementToAdd);
 
         this.group.complements.push(complementToAdd);
         this.notification.show('Complemento adicionado');
@@ -999,7 +954,6 @@ export class EditSideDishGroupModalComponent implements OnChanges {
   }
 
   removeComplement(c: any) {
-    console.log('🗑️ Removendo complemento:', c.id);
     this.sideDishService.deleteSideDish(c.id).subscribe(() => {
       this.group.complements = this.group.complements.filter((x: any) => x.id !== c.id);
       this.editedComplementsIndexes.clear();

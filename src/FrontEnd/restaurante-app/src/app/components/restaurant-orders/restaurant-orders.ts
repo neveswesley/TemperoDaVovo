@@ -501,7 +501,6 @@ export class RestaurantOrdersComponent implements OnInit, OnDestroy {
   }
 
   printOrder(order: Order): void {
-    console.log('Imprimir pedido', order.orderNumber);
     window.print();
   }
 

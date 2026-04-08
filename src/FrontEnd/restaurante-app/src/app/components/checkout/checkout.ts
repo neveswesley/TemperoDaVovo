@@ -40,7 +40,6 @@ export class CheckoutComponent implements OnInit {
         this.orderService.getCurrentOrder(restaurantId, clientSessionId).subscribe(() => {
           this.orderService.order$.subscribe(order => {
             this.order = order ?? null;
-            console.log('order carregado:', order);
           });
         });
       }

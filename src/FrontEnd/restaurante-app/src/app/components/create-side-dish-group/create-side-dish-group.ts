@@ -123,13 +123,11 @@ export class CreateSideDishGroup implements OnInit {
       isRequired: formValue.isRequired === 'true' || formValue.isRequired === true
     };
 
-    console.log('📤 Enviando request:', request);
 
     this.loading = true;
 
     this.sideDishService.createSideDishGroup(request).subscribe({
       next: (response) => {
-        console.log('✅ Grupo de complementos criado:', response);
         this.notificationService.show('Grupo criado com sucesso!');
 
         if (isPlatformBrowser(this.platformId)) {

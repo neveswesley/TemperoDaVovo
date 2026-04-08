@@ -38,8 +38,6 @@ export class CategoryService {
       ...data,
       restaurantId
     };
-
-    console.log('restaurantId:', restaurantId);
     
     return this.http.post<CreateCategoryResponse>(
       this.apiUrl,

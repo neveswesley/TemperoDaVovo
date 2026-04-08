@@ -20,21 +20,7 @@ export class SignalrService {
             })
             .withAutomaticReconnect()
             .build();
-
-        this.connection.onclose((error?: Error) => {
-            console.log('SignalR desconectado', error);
-        });
-
-        this.connection.onreconnecting((error?: Error) => {
-            console.log('SignalR reconectando...', error);
-        });
-
-        this.connection.onreconnected((connectionId?: string) => {
-            console.log('SignalR reconectado:', connectionId);
-        });
-
         await this.connection.start();
-        console.log('SignalR conectado');
     }
 
     async stop(): Promise<void> {

@@ -162,8 +162,6 @@ export class ListProducts implements OnInit, OnDestroy {
   }
 
   openAddSideDishModal(product: Product) {
-    console.log('🔓 Abrindo modal para produto:', product.id);
-
     const restaurantId = localStorage.getItem('restaurantId');
     if (!restaurantId) {
       console.error('❌ Restaurant ID não encontrado');
@@ -171,15 +169,12 @@ export class ListProducts implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('🔄 Carregando grupos de complementos...');
 
     forkJoin({
       allGroups: this.sideDishService.getSideDishGroupsByRestaurant(restaurantId),
       linkedGroups: this.sideDishService.getSideDishGroupsByProduct(product.id),
     }).subscribe({
       next: ({ allGroups, linkedGroups }) => {
-        console.log('📦 Todos os grupos do restaurante:', allGroups);
-        console.log('🔗 Grupos vinculados ao produto:', linkedGroups);
 
         const linkedGroupIds = new Set(linkedGroups.map((g) => g.id));
 
@@ -188,7 +183,6 @@ export class ListProducts implements OnInit, OnDestroy {
           selected: linkedGroupIds.has(g.id),
         }));
 
-        console.log('✅ Grupos preparados para exibição:', this.complementGroupsFromRestaurant);
 
         this.selectedProduct = product;
         this.isAddSideDishModalOpen = true;
@@ -203,7 +197,6 @@ export class ListProducts implements OnInit, OnDestroy {
   }
 
   closeAddSideDishModal() {
-    console.log('🔒 Fechando modal de adicionar complementos');
     this.isAddSideDishModalOpen = false;
     this.selectedProduct = null;
     this.complementGroupsFromRestaurant = [];
@@ -259,9 +252,6 @@ export class ListProducts implements OnInit, OnDestroy {
           };
         });
 
-        console.log('📦 Categorias carregadas:', this.categories);
-
-
         this.loading = false;
 
         this.cdr.detectChanges();
@@ -283,33 +273,21 @@ export class ListProducts implements OnInit, OnDestroy {
     const openModal = localStorage.getItem('openAddSideDishModal');
     const productId = localStorage.getItem('currentProductId');
 
-    console.log('🔍 Verificando modal:', { openModal, productId });
 
     if (openModal === 'true' && productId) {
-      console.log('🔍 Procurando produto:', productId);
-      console.log('📦 Categorias disponíveis:', this.categories.length);
 
       let foundProduct: Product | null = null;
 
       for (const category of this.categories) {
-        console.log(
-          '🔎 Verificando categoria:',
-          category.categoryName,
-          'com',
-          category.products.length,
-          'produtos',
-        );
+        
         const product = category.products.find((p) => p.id === productId);
         if (product) {
           foundProduct = product;
-          console.log('✅ Produto encontrado:', product.name);
           break;
         }
       }
 
       if (foundProduct) {
-        console.log('✅ Abrindo modal para:', foundProduct.name);
-        // ⚡ Pequeno delay para garantir que a UI está pronta
         setTimeout(() => {
           this.openAddSideDishModal(foundProduct!);
         }, 300);
@@ -317,13 +295,9 @@ export class ListProducts implements OnInit, OnDestroy {
         console.warn('⚠️ Produto não encontrado nas categorias carregadas');
       }
 
-      // Limpa os sinais
       localStorage.removeItem('openAddSideDishModal');
     }
   }
-  /**
-   * Formata o preço corretamente, mostrando R$ 0,00 quando for 0
-   */
   formatPrice(price: number | string): string {
     const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
     if (isNaN(numericPrice)) {
@@ -332,7 +306,6 @@ export class ListProducts implements OnInit, OnDestroy {
     return numericPrice.toFixed(2).replace('.', ',');
   }
 
-  // ===== BUSCA =====
   get filteredCategories(): Category[] {
     if (!this.searchTerm.trim()) {
       return this.categories;
@@ -361,7 +334,6 @@ export class ListProducts implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  // ===== MODO REORGANIZAR =====
   toggleReorderMode() {
     this.isReorderMode = !this.isReorderMode;
     if (this.isReorderMode) {
@@ -506,7 +478,6 @@ export class ListProducts implements OnInit, OnDestroy {
 
   editProduct(product: Product) {
     const restaurantId = localStorage.getItem('restaurantId');
-    console.log('✏️ Editando produto:', product.id);
     this.router.navigate(['/restaurant', restaurantId, 'edit-product', product.id]);
   }
 
@@ -521,11 +492,9 @@ export class ListProducts implements OnInit, OnDestroy {
 
     if (!confirmed) return;
 
-    console.log('📋 Duplicando produto:', product.id);
 
     this.productService.duplicateProduct(product.id).subscribe({
       next: (response) => {
-        console.log('✅ Produto duplicado:', response);
         this.notificationService.show(`Item "${product.name}" duplicado com sucesso!`);
         this.closeAllMenus();
         this.loadCategories(); // Recarrega para mostrar o novo produto
@@ -548,7 +517,6 @@ export class ListProducts implements OnInit, OnDestroy {
 
     if (!confirmed) return;
 
-    console.log('🗑️ Deletando produto:', product.id);
 
     try {
       await this.productService.deleteProduct(product.id).toPromise();
@@ -611,10 +579,6 @@ export class ListProducts implements OnInit, OnDestroy {
       return;
     }
 
-    // ⚡ SEMPRE recarrega os grupos (mesmo que já tenha carregado antes)
-    console.log('🔄 Recarregando grupos para:', product.name);
-
-    // ⚡ Limpa os grupos existentes antes de recarregar
     product.complementGroups = [];
 
     this.loadProductComplementGroups(product);
@@ -657,7 +621,6 @@ export class ListProducts implements OnInit, OnDestroy {
     this.sideDishService.getSideDishGroupsByProduct(product.id).subscribe({
       next: (groups) => {
         product.complementGroups = groups;
-        console.log('✅ Grupos carregados para', product.name, ':', groups);
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -668,7 +631,6 @@ export class ListProducts implements OnInit, OnDestroy {
   }
 
   onComplementsLinked(): void {
-    console.log('🎉 Complementos vinculados com sucesso!');
 
     const productId = this.selectedProduct?.id;
 
@@ -698,10 +660,8 @@ export class ListProducts implements OnInit, OnDestroy {
         const key = `${categoryIndex}-${productIndex}`;
         const isOpen = this.openComplements.has(key);
 
-        console.log('🔍 Produto encontrado:', targetProduct.name, '- Accordion aberto:', isOpen);
 
         if (isOpen) {
-          console.log('🔄 Recarregando grupos do produto...');
           this.loadProductComplementGroups(targetProduct);
         }
       }
@@ -724,7 +684,6 @@ export class ListProducts implements OnInit, OnDestroy {
 
   addComplement(product: Product): void {
     const restaurantId = localStorage.getItem('restaurantId');
-    console.log('➕ Criar novo grupo para produto:', product.id);
 
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('currentProductId', product.id);
@@ -735,7 +694,6 @@ export class ListProducts implements OnInit, OnDestroy {
   }
 
   openAddComplementGroupModal(product: Product) {
-    console.log('🔓 Tentando abrir modal para produto:', product.id);
 
     const restaurantId = localStorage.getItem('restaurantId');
     if (!restaurantId) {
@@ -743,25 +701,20 @@ export class ListProducts implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('🔍 Carregando grupos para produto:', product.id);
 
     forkJoin({
       allGroups: this.sideDishService.getSideDishGroupsByRestaurant(restaurantId),
       linkedGroups: this.sideDishService.getSideDishGroupsByProduct(product.id),
     }).subscribe({
       next: ({ allGroups, linkedGroups }) => {
-        console.log('📦 Todos os grupos do restaurante:', allGroups);
-        console.log('🔗 Grupos já vinculados ao produto:', linkedGroups);
 
         const linkedGroupIds = new Set(linkedGroups.map((g) => g.id));
-        console.log('🆔 IDs vinculados:', Array.from(linkedGroupIds));
 
         this.complementGroupsFromRestaurant = allGroups.map((g) => ({
           ...g,
           selected: linkedGroupIds.has(g.id),
         }));
 
-        console.log('✅ Grupos com seleção aplicada:', this.complementGroupsFromRestaurant);
 
         this.selectedProductForComplements = product;
         this.isComplementGroupModalOpen = true;
@@ -776,7 +729,6 @@ export class ListProducts implements OnInit, OnDestroy {
   }
 
   closeComplementGroupModal() {
-    console.log('🔒 Fechando modal de grupos de complementos');
     this.isComplementGroupModalOpen = false;
     this.selectedProductForComplements = null;
     this.complementGroupsFromRestaurant = [];
@@ -868,7 +820,6 @@ export class ListProducts implements OnInit, OnDestroy {
   }
 
   editComplementGroup(group: any, product: Product): void {
-    console.log('✏️ Editar grupo:', group, 'do produto:', product);
 
     this.openComplementGroupMenuIndex = null;
 
@@ -932,7 +883,6 @@ export class ListProducts implements OnInit, OnDestroy {
   }
 
   onGroupUpdated() {
-    console.log('✅ Grupo atualizado com sucesso');
 
     const groupProductId = this.selectedGroup?.productId;
 
@@ -959,7 +909,6 @@ export class ListProducts implements OnInit, OnDestroy {
         const isOpen = this.openComplements.has(key);
 
         if (isOpen) {
-          console.log('🔄 Recarregando grupos após edição...');
           this.loadProductComplementGroups(targetProduct);
         }
       }

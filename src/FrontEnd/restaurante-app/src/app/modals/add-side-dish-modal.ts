@@ -569,7 +569,6 @@ export class AddSideDishModalComponent implements OnInit, OnChanges {
         .filter((g) => g.selected)
         .map((g) => g.id.toString());
 
-      console.log('📌 Estado original capturado:', this.originallySelectedGroupIds);
     }
   }
 
@@ -669,7 +668,6 @@ export class AddSideDishModalComponent implements OnInit, OnChanges {
           next: () => {
             this.complementGroups = this.complementGroups.filter((g) => g.id !== group.id);
             this.cdr.detectChanges(); // atualiza o modal sem recarregar
-            console.log(`✅ Grupo ${group.name} excluído`);
           },
           error: (err) => {
             console.error('❌ Erro ao excluir:', err);
