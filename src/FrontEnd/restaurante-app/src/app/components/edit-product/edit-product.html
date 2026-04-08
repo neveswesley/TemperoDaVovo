@@ -1,0 +1,117 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+<div class="page-header">
+  <button class="back-button" (click)="goBack()">&lsaquo;</button>
+  <h1 class="title">Editar produto</h1>
+</div>
+
+<p class="subtitle">Atualize as informações do produto.</p>
+
+  <!-- NOME -->
+  <label>Nome do produto</label>
+  <input type="text" formControlName="name" />
+
+  <!-- DESCRIÇÃO -->
+  <label>Descrição</label>
+  <textarea formControlName="description"></textarea>
+
+  <!-- PREÇO -->
+  <label>Preço</label>
+  <div class="price-container">
+    <input
+      type="text"
+      formControlName="price"
+      inputmode="decimal"
+      (input)="onPriceInput($event)"
+      (blur)="onPriceBlur()"
+      (focus)="onPriceFocus($event)"
+      placeholder="0.00"
+    />
+  </div>
+
+  <!-- CATEGORIA (SEMPRE TRAVADA) -->
+  <div class="category-locked-info">
+    <label>Categoria</label>
+
+    <div class="locked-category-display">
+      <svg class="lock-icon" viewBox="0 0 24 24">
+        <rect x="5" y="11" width="14" height="10" rx="2" />
+        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+      </svg>
+
+      <span class="locked-category-name">
+        {{ categoryName }}
+      </span>
+    </div>
+
+    <small class="locked-message">
+      A categoria do produto não pode ser alterada
+    </small>
+  </div>
+
+  <!-- IMAGEM -->
+  <div class="image-upload-container">
+    <label class="image-label">Imagem do produto</label>
+
+    <div *ngIf="imagePreview" class="image-preview">
+      <img [src]="imagePreview" class="preview-image" />
+
+      <div class="image-info">
+        <span class="file-name">{{ selectedFile?.name || 'Imagem atual' }}</span>
+
+        <div class="image-actions">
+          <label for="file-input" class="icon-button edit">
+            <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+          </label>
+
+          <button
+            type="button"
+            class="icon-button delete"
+            (click)="removeImage()"
+          >
+            <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <label *ngIf="!imagePreview" for="file-input" class="upload-button">
+      ➕ Trocar imagem
+    </label>
+
+    <input
+      id="file-input"
+      type="file"
+      hidden
+      accept="image/*"
+      (change)="onFileSelected($event)"
+    />
+  </div>
+
+  <!-- SUBMIT -->
+  <button type="submit" [disabled]="form.invalid">
+    Salvar alterações
+  </button>
+</form>
